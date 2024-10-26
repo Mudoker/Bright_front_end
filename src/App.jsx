@@ -30,7 +30,7 @@ import { SettingLayout } from './layouts/setting-layout';
 import { Welcome } from './test/Welcome';
 // test
 import { UsersList } from './test/users/userList';
-import { FileUpload} from './components/general/file-upload';
+// import { FileUpload} from './components/general/file-upload';
 
 // Routing from landing page to its child and sign in paage
 const router = createBrowserRouter(

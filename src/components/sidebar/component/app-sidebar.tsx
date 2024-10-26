@@ -29,6 +29,8 @@ import {
   Bell,
   Cable,
   ChevronDown,
+  ChevronUp,
+  Circle,
   CircleUser,
   Gem,
   HelpCircle,
@@ -39,8 +41,9 @@ import {
   PanelsTopLeft,
   Plus,
   Quote,
+  UserCircle,
 } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
 // Menu items.
@@ -146,10 +149,11 @@ const CollapsibleSidebarGroup: React.FC<CollapsibleSidebarGroupProps> = ({
       <CollapsibleContent>
         <SidebarGroupContent>
           <SidebarMenu>
-            {items.map(item => {
+            {items.map((item, index) => {
+              const key = `${item.title}-${index}`;
               if (item.title === 'Projects') {
                 return (
-                  <Collapsible defaultOpen className="group/collapsible">
+                  <Collapsible key={key} defaultOpen className="group/collapsible">
                     <SidebarMenuItem>
                       <CollapsibleTrigger asChild>
                         <div className="flex">
@@ -173,7 +177,7 @@ const CollapsibleSidebarGroup: React.FC<CollapsibleSidebarGroupProps> = ({
                         </div>
                       </CollapsibleTrigger>
                       <CollapsibleContent>
-                        <SidebarMenuSub asChild>
+                        <SidebarMenuSub>
                           {listOfProjects.map(project => (
                             <SidebarMenuSubItem key={project.title}>
                               <SidebarMenuSubButton asChild>
@@ -191,7 +195,7 @@ const CollapsibleSidebarGroup: React.FC<CollapsibleSidebarGroupProps> = ({
                 );
               } else {
                 return (
-                  <SidebarMenuItem key={item.title}>
+                  <SidebarMenuItem key={key}>
                     <SidebarMenuButton asChild>
                       <NavLink
                         to={item.url}
@@ -213,6 +217,12 @@ const CollapsibleSidebarGroup: React.FC<CollapsibleSidebarGroupProps> = ({
 );
 
 export function AppSidebar({ setOpen, open }: { setOpen: any; open: boolean }) {
+  const footerRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    console.log(footerRef.current);
+  }, [footerRef]);
+
   return (
     <Sidebar
       collapsible="icon"
@@ -253,17 +263,37 @@ export function AppSidebar({ setOpen, open }: { setOpen: any; open: boolean }) {
         <CollapsibleSidebarGroup label="About" items={itemsAbout} />
       </SidebarContent>
 
-      <SidebarFooter>
+      <SidebarFooter ref={footerRef} className="flex flex-row gap-10 justify-between items-center">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <NavLink to={`/user/settings`}>
-                <CircleUser />
-                <span className="text-base">{'Mudoker'}</span>
-              </NavLink>
-            </SidebarMenuButton>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton>
+                  <UserCircle /> Username
+                  <ChevronUp className="ml-auto" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="top"
+                className="w-[--radix-popper-anchor-width]"
+              >
+                <DropdownMenuItem>
+                  <span>Account</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <span>Billing</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <span>Sign out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
+
+        <div className='ml-auto w-fit'>
+          <CircleUser className='w-4 h-4' />
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

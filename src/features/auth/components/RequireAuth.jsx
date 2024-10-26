@@ -1,20 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { jwtDecode } from 'jwt-decode';
 import { Loader2 } from 'lucide-react';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 // Function to decode the JWT token
 const decodeToken = (token) => {
   try {
-    const base64Url = token.split('.')[1]; // JWT payload is in the second part
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
-    );
-    return JSON.parse(jsonPayload);
+    return jwtDecode(token);
   } catch (error) {
     return null;
   }
@@ -49,7 +42,7 @@ export const RequireAuth = () => {
       setSpinning(true); // Show spinner when redirecting
       setTimeout(() => {
         navigate('/auth', { state: { from: location }, replace: true });
-      }, 2000); // Optional delay for showing spinner before navigation
+      }, 3000); // Optional delay for showing spinner before navigation
     } else {
       setLoading(true); // Start loading to simulate token checking
       setTimeout(() => {
@@ -93,15 +86,14 @@ export const RequireAuth = () => {
           </p>
 
           <p className="text-primary-600 dark:text-primary-500 mb-2 text-4xl font-bold tracking-tight lg:text-4xl">
-            {'401 Mising Authenticated'}
+            {'401 Unauthorized Access'}
           </p>
 
           <p className="mt-4 font-semibold text-gray-500/70 dark:text-gray-400">
             {
-              'We searched high and low, but couldn’t find what you’re looking for. Let’s find a better place for you to go.'
+              'You need to be logged in to access this content. Please log in and try again.'
             }
           </p>
-
         </div>
       </div>
     </div>

@@ -218,16 +218,20 @@ const CollapsibleSidebarGroup: React.FC<CollapsibleSidebarGroupProps> = ({
 
 export function AppSidebar({ setOpen, open }: { setOpen: any; open: boolean }) {
   const [shouldCheckMousePosition, setShouldCheckMousePosition] = React.useState(false);
-  const sidebarWidth = 14 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+  const [sidebarWidth, setSidebarWidth] = React.useState(1);
+
+  useEffect(() => {
+    const base = !open && !shouldCheckMousePosition ? 3 : 14;
+    setSidebarWidth(base * parseFloat(getComputedStyle(document.documentElement).fontSize));
+  }, [open, shouldCheckMousePosition]);
 
   const handleMouseMove = (event: MouseEvent) => {
     if (event.clientX > sidebarWidth) {
       setOpen(false);
       setShouldCheckMousePosition(false);
-      return
+    } else {
+      setOpen(true);
     }
-
-    setOpen(true);
   };
 
   useEffect(() => {
@@ -238,13 +242,37 @@ export function AppSidebar({ setOpen, open }: { setOpen: any; open: boolean }) {
 
     // Add mouse move event listener
     window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    }
   }, [shouldCheckMousePosition]);
+
+  const isPersistSidebarOn = (): boolean | null => {
+    const sidebarName = 'sidebar:state';
+    const sidebarOpen = localStorage.getItem(sidebarName);
+
+    console.log('sidebarOpen', sidebarOpen);
+    if (sidebarOpen !== null) {
+      return true;
+    }
+
+    return null; // Return null if the key does not exist
+  };
+
+  useEffect(() => {
+    isPersistSidebarOn();
+  }, [open]);
 
   return (
     <Sidebar
       collapsible="icon"
-      onMouseEnter={() => setOpen(true)}
+      onMouseEnter={() => {
+        if (isPersistSidebarOn()) return;
+        setOpen(true)
+      }}
       onMouseLeave={() => {
+        if (isPersistSidebarOn()) return;
         setShouldCheckMousePosition(true);
       }}
     >

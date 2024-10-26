@@ -17,6 +17,7 @@ import { AuthenticationPage } from './features/auth';
 import { RequireAuth } from './features/auth/components/RequireAuth';
 import Board from './features/board/Board';
 import Dashboard from './features/dashboard';
+import DeveloperDock from './features/dev-dock';
 import { LandingPage } from './features/landingPage';
 import MessagePage from './features/message';
 import Account from './features/setting/component/account-page';

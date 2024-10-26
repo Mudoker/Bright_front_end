@@ -21,10 +21,10 @@ module.exports = {
     './app/**/*.{js,jsx}',
     './src/**/*.{js,jsx}',
   ],
-  darkMode: 'class',
+  darkMode: ['class', '[data-theme="dark-default"]'],
   theme: {
     container: {
-      center: true,
+      center: 'true',
       padding: '2rem',
       screens: {
         '2xl': '1400px',
@@ -133,6 +133,16 @@ module.exports = {
           DEFAULT: 'hsl(var(--signup_complete_text))',
           foreground: 'hsl(var(--signup_complete_text-foreground))',
         },
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -141,16 +151,29 @@ module.exports = {
       },
       keyframes: {
         'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' },
+          from: {
+            height: '0',
+          },
+          to: {
+            height: 'var(--radix-accordion-content-height)',
+          },
         },
         'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' },
+          from: {
+            height: 'var(--radix-accordion-content-height)',
+          },
+          to: {
+            height: '0',
+          },
         },
         meteor: {
-          '0%': { transform: 'rotate(215deg) translateX(0)', opacity: '1' },
-          '70%': { opacity: '1' },
+          '0%': {
+            transform: 'rotate(215deg) translateX(0)',
+            opacity: '1',
+          },
+          '70%': {
+            opacity: '1',
+          },
           '100%': {
             transform: 'rotate(215deg) translateX(-500px)',
             opacity: '0',
@@ -165,8 +188,12 @@ module.exports = {
           },
         },
         move: {
-          '0%': { transform: 'translateX(-200px)' },
-          '100%': { transform: 'translateX(200px)' },
+          '0%': {
+            transform: 'translateX(-200px)',
+          },
+          '100%': {
+            transform: 'translateX(200px)',
+          },
         },
       },
       animation: {

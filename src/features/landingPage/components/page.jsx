@@ -151,14 +151,14 @@ export const Page = () => {
       <div className="bg-black">
         <div className="mt-5 flex flex-col items-center gap-5">
           <div className="mb-5 font-monument text-3xl font-bold text-neutral-200">
-            {'Why Zen Bright?'}
+            {'Why Bright?'}
           </div>
 
           <div>
             <MissionGroup />
           </div>
 
-          <div className="mb-20 mt-20 font-monument text-3xl font-bold text-neutral-200">
+          <div className="mb-20 mt-32 font-monument text-3xl font-bold text-neutral-200">
             {"What's else?"}
           </div>
 
@@ -193,7 +193,7 @@ export const Page = () => {
             </div>
           </div>
 
-          <div className="grid w-full grid-cols-2 items-center px-32 font-monument text-2xl text-neutral-200">
+          <div className="mt-32 grid w-full grid-cols-2 items-center px-32 font-monument text-2xl text-neutral-200">
             <AICard />
             <div className="font-monument text-2xl text-neutral-200">
               {'AI-Powered Insights'}
@@ -221,7 +221,7 @@ export const Page = () => {
                 Your data is safe <br /> with us.
                 <div className="mt-10 flex flex-col items-center gap-6 text-xl">
                   We are committed to protecting your data and privacy.
-                  <div className="grid grid-cols-2 gap-12 text-neutral-300">
+                  <div className="mt-3 grid grid-cols-2 gap-12 text-lg text-neutral-300">
                     <div className="flex gap-2">
                       <Fingerprint /> Multi-factor authentication
                     </div>
@@ -231,7 +231,7 @@ export const Page = () => {
                       End-to-end encryption
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-12 text-neutral-300">
+                  <div className="grid grid-cols-2 gap-12 text-lg text-neutral-300">
                     <div className="flex gap-2">
                       <Headset /> 24/7 Monitoring & Support
                     </div>

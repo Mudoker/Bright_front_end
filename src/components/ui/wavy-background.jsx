@@ -23,6 +23,12 @@ import { createNoise3D } from 'simplex-noise';
 
 /* eslint-disable react/prop-types */
 
+/* eslint-disable react/prop-types */
+
+/* eslint-disable react/prop-types */
+
+/* eslint-disable react/prop-types */
+
 const WavyBackground = ({
   children,
   className,

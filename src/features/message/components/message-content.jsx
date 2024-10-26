@@ -95,7 +95,7 @@ export const MessageContent = ({
         <div className="top-0 flex h-20 w-full items-center justify-between gap-2 border-b px-4 py-5 align-baseline">
           <div className="flex flex-grow items-center">
             <div className="relative h-10 w-10 rounded-full">
-              <Avatar src={aaa}>
+              <Avatar>
                 <AvatarImage src={userProfileImage} alt="@shadcn" />
                 <AvatarFallback>{userName.slice(0, 2)}</AvatarFallback>
               </Avatar>

@@ -295,6 +295,7 @@ export function AppSidebar({ setOpen, open }: { setOpen: any; open: boolean }) {
               <DropdownMenuContent
                 side="top"
                 className="w-[--radix-popper-anchor-width]"
+                close={!open}
               >
                 <DropdownMenuItem>
                   <span>Profile</span>

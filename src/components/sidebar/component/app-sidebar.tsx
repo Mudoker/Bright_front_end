@@ -217,17 +217,36 @@ const CollapsibleSidebarGroup: React.FC<CollapsibleSidebarGroupProps> = ({
 );
 
 export function AppSidebar({ setOpen, open }: { setOpen: any; open: boolean }) {
-  const footerRef = React.useRef<HTMLDivElement>(null);
+  const [shouldCheckMousePosition, setShouldCheckMousePosition] = React.useState(false);
+  const sidebarWidth = 14 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+  const handleMouseMove = (event: MouseEvent) => {
+    if (event.clientX > sidebarWidth) {
+      setOpen(false);
+      setShouldCheckMousePosition(false);
+      return
+    }
+
+    setOpen(true);
+  };
 
   useEffect(() => {
-    console.log(footerRef.current);
-  }, [footerRef]);
+    if (!shouldCheckMousePosition) {
+      window.removeEventListener('mousemove', handleMouseMove);
+      return;
+    }
+
+    // Add mouse move event listener
+    window.addEventListener('mousemove', handleMouseMove);
+  }, [shouldCheckMousePosition]);
 
   return (
     <Sidebar
       collapsible="icon"
       onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseLeave={() => {
+        setShouldCheckMousePosition(true);
+      }}
     >
       <SidebarHeader>
         <SidebarMenu>
@@ -263,13 +282,13 @@ export function AppSidebar({ setOpen, open }: { setOpen: any; open: boolean }) {
         <CollapsibleSidebarGroup label="About" items={itemsAbout} />
       </SidebarContent>
 
-      <SidebarFooter ref={footerRef} className="flex flex-row gap-10 justify-between items-center">
+      <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton>
-                  <UserCircle /> Username
+                  <UserCircle /> Mudoker
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -278,10 +297,12 @@ export function AppSidebar({ setOpen, open }: { setOpen: any; open: boolean }) {
                 className="w-[--radix-popper-anchor-width]"
               >
                 <DropdownMenuItem>
-                  <span>Account</span>
+                  <span>Profile</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <span>Billing</span>
+                  <NavLink to={`/user/settings`}>
+                    <span className="text-base">{'Settings'}</span>
+                  </NavLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <span>Sign out</span>
@@ -290,10 +311,6 @@ export function AppSidebar({ setOpen, open }: { setOpen: any; open: boolean }) {
             </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
-
-        <div className='ml-auto w-fit'>
-          <CircleUser className='w-4 h-4' />
-        </div>
       </SidebarFooter>
     </Sidebar>
   );

@@ -37,7 +37,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<LandingPage />} />
       <Route path="/auth" element={<AuthenticationPage />} />
 
-      {/* <Route element={<RequireAuth />}> */}
+      <Route element={<RequireAuth />}>
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/users" element={<UsersList />} />
 
@@ -67,7 +67,7 @@ const router = createBrowserRouter(
         {/* 404 route */}
         <Route path="*" element={<Notfoundpage />} />
       </Route>
-      {/* </Route>j */}
+      </Route>
 
       {/* 404 route */}
       <Route path="*" element={<Notfoundpage />} />

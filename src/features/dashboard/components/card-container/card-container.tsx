@@ -7,6 +7,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from "@components/ui/card";
 import {
   ChartContainer,
@@ -16,8 +17,6 @@ import {
 import { getValueDisparityBetweenTwoTimestamps, generateRandomChartData } from "../../util/calculator";
 import { Button } from "@components/ui/button"
 import { TaskButton } from "./task-button";
-
-export const description = "A simple area chart";
 
 // Define colors as constants
 const COLORS = {
@@ -29,45 +28,34 @@ const taskCompletedData = generateRandomChartData(12);
 const taskAssignedData = generateRandomChartData(12);
 const joinedProjectData = generateRandomChartData(12);
 
-const chartConfig = {
-  data: {
-    label: "Completed",
-    color: "hsl(var(--chart-1))",
-  },
-};
 
 export function Component({ title, data, startInterval, endInterval }: { title: string, data: any, startInterval: string, endInterval: string }) {
   const disparity = getValueDisparityBetweenTwoTimestamps(data[0].data, data[11].data);
   const isPositive = parseFloat(disparity) > 0;
   const trendColor = isPositive ? COLORS.positive : COLORS.negative;
   const TrendIcon = isPositive ? TrendingUp : TrendingDown;
-
+  const chartConfig = {
+    data: {
+      label: title.split(" ")[1],
+      color: "hsl(var(--chart-1))",
+    },
+  };
   return (
     <Card>
-      <CardHeader className="py-4">
+      <CardHeader className="m-0 p-4">
         <CardTitle className="text-lg">{title}</CardTitle>
       </CardHeader>
-      <CardContent className="">
+      <CardContent>
         <ChartContainer config={chartConfig}>
           <AreaChart
             accessibilityLayer
             data={data}
-            margin={{
-              left: 0,
-              right: 0,
-            }}
           >
             <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
+
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
+              content={<ChartTooltipContent labelKey="timestamp" />}
             />
             <Area
               dataKey="data"
@@ -79,7 +67,7 @@ export function Component({ title, data, startInterval, endInterval }: { title: 
           </AreaChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="-mt-4">
+      <CardFooter>
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className={`flex items-center gap-2 font-medium leading-none ${trendColor}`}>
@@ -137,16 +125,18 @@ const UpcommingTask: React.FC<UpcommingTaskProps> = ({ paging, setPaging }) => {
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0 px-4">
         <div className="grid w-full items-center gap-4">
           <div className="flex flex-col gap-2">
             <TaskButton taskId="ZEN-123" title="Design New Landing Page" time="10:00 AM" />
             <TaskButton taskId="ZEN-124" title="Regular Team Meeting" time="12:00 AM" />
             <TaskButton taskId="ZEN-125" title="Fix Mobile Responsiveness" time="02:00 PM" />
+            <span className="ml-auto text-xs mt-2 dark:text-neutral-400">
+              Page {paging + 1} of 3
+            </span>
           </div>
         </div>
       </CardContent>
-
     </Card>
   );
 };

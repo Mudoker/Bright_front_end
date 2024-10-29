@@ -6,7 +6,7 @@ export const getValueDisparityBetweenTwoTimestamps = (firstValue: number, second
 export const generateRandomChartData = (length: number): { timestamp: string, data: number }[] => {
     const chartData = [];
     for (let i = 0; i <= length; i++) {
-        const timestamp = faker.date.future().toISOString().slice(0, 10).replace(/-/g, '/').split('/').reverse().join('/');
+        const timestamp = faker.date.month();
         const data = faker.number.int({ min: 100, max: 500 });
         chartData.push({ timestamp, data });
     }

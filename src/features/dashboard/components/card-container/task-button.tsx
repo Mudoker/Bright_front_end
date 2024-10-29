@@ -9,7 +9,7 @@ export const TaskButton = ({ taskId, title, time }: { taskId: string, title: str
     return (
         <Button variant="outline" className="justify-start h-14 text-neutral-500 text-xs text-left">
             {taskId}
-            <div className="ml-3 text-ellipsis truncate text-neutral-200 font-semibold text-sm">
+            <div className="ml-3 text-ellipsis truncate dark:text-white font-semibold text-sm">
                 {title}
             </div>
             <div className="ml-auto text-sm">

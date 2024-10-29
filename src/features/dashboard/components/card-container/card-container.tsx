@@ -30,7 +30,7 @@ const joinedProjectData = generateRandomChartData(12);
 
 
 export function Component({ title, data, startInterval, endInterval }: { title: string, data: any, startInterval: string, endInterval: string }) {
-  const disparity = getValueDisparityBetweenTwoTimestamps(data[0].data, data[11].data);
+  const disparity = getValueDisparityBetweenTwoTimestamps(data[0].data, data[data.length - 1].data);
   const isPositive = parseFloat(disparity) > 0;
   const trendColor = isPositive ? COLORS.positive : COLORS.negative;
   const TrendIcon = isPositive ? TrendingUp : TrendingDown;
@@ -40,22 +40,24 @@ export function Component({ title, data, startInterval, endInterval }: { title: 
       color: "hsl(var(--chart-1))",
     },
   };
+
   return (
     <Card>
-      <CardHeader className="m-0 p-4">
-        <CardTitle className="text-lg">{title}</CardTitle>
+      <CardHeader>
+        <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <AreaChart
             accessibilityLayer
             data={data}
+            margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
           >
             <CartesianGrid vertical={false} />
 
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent labelKey="timestamp" />}
+              content={<ChartTooltipContent />}
             />
             <Area
               dataKey="data"

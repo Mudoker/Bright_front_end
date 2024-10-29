@@ -1,21 +1,10 @@
 import { TrendingUp, TrendingDown, ArrowRight, ArrowLeft } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-import React, { Dispatch, SetStateAction } from 'react';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@components/ui/card";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@components/ui/chart";
+import React, { Dispatch, SetStateAction, useMemo, useCallback } from 'react';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@components/ui/card";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@components/ui/chart";
 import { getValueDisparityBetweenTwoTimestamps, generateRandomChartData } from "../../util/calculator";
-import { Button } from "@components/ui/button"
+import { Button } from "@components/ui/button";
 import { TaskButton } from "./task-button";
 
 // Define colors as constants
@@ -28,21 +17,20 @@ const taskCompletedData = generateRandomChartData(12);
 const taskAssignedData = generateRandomChartData(12);
 const joinedProjectData = generateRandomChartData(12);
 
-
-export function Component({ title, data, startInterval, endInterval }: { title: string, data: any, startInterval: string, endInterval: string }) {
-  const disparity = getValueDisparityBetweenTwoTimestamps(data[0].data, data[data.length - 1].data);
+const MemoizedChart = React.memo(({ title, data, startInterval, endInterval }: { title: string, data: { timestamp: string, data: number }[], startInterval: string, endInterval: string }) => {
+  const disparity = useMemo(() => getValueDisparityBetweenTwoTimestamps(data[0].data, data[data.length - 1].data), [data]);
   const isPositive = parseFloat(disparity) > 0;
   const trendColor = isPositive ? COLORS.positive : COLORS.negative;
   const TrendIcon = isPositive ? TrendingUp : TrendingDown;
-  const chartConfig = {
+  const chartConfig = useMemo(() => ({
     data: {
       label: title.split(" ")[1],
       color: "hsl(var(--chart-1))",
     },
-  };
+  }), [title]);
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader>
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
@@ -54,7 +42,6 @@ export function Component({ title, data, startInterval, endInterval }: { title: 
             margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
           >
             <CartesianGrid vertical={false} />
-
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent />}
@@ -84,7 +71,7 @@ export function Component({ title, data, startInterval, endInterval }: { title: 
       </CardFooter>
     </Card>
   );
-}
+});
 
 type UpcommingTaskProps = {
   paging: number;
@@ -92,6 +79,14 @@ type UpcommingTaskProps = {
 };
 
 const UpcommingTask: React.FC<UpcommingTaskProps> = ({ paging, setPaging }) => {
+  const handlePaging = useCallback((direction: 'prev' | 'next') => {
+    if (direction === 'prev' && paging > 0) {
+      setPaging(paging - 1);
+    } else if (direction === 'next' && paging < 2) {
+      setPaging(paging + 1);
+    }
+  }, [paging, setPaging]);
+
   return (
     <Card className="flex flex-1 flex-col">
       <CardHeader className="py-4">
@@ -103,22 +98,14 @@ const UpcommingTask: React.FC<UpcommingTaskProps> = ({ paging, setPaging }) => {
                 variant="outline"
                 className="ml-auto px-3 border-0 h-fit"
                 disabled={paging === 0}
-                onClick={() => {
-                  if (paging > 0) {
-                    setPaging(paging - 1);
-                  }
-                }}
+                onClick={() => handlePaging('prev')}
               >
                 <ArrowLeft width={10} height={10} />
               </Button>
               <Button
                 variant="outline"
                 className="ml-auto px-3 h-fit"
-                onClick={() => {
-                  if (paging < 2) {
-                    setPaging(paging + 1);
-                  }
-                }}
+                onClick={() => handlePaging('next')}
                 disabled={paging === 2}
               >
                 <ArrowRight width={10} height={10} />
@@ -148,13 +135,12 @@ const CardContainer = () => {
 
   return (
     <div className="flex cursor-default gap-2 w-full">
-      <Component title="Tasks Completed" data={taskCompletedData} startInterval="January" endInterval="December" />
-      <Component title="Tasks Assigned" data={taskAssignedData} startInterval="January" endInterval="December" />
-      <Component title="Projects Joined" data={joinedProjectData} startInterval="January" endInterval="December" />
+      <MemoizedChart title="Tasks Completed" data={taskCompletedData} startInterval="January" endInterval="December" />
+      <MemoizedChart title="Tasks Assigned" data={taskAssignedData} startInterval="January" endInterval="December" />
+      <MemoizedChart title="Projects Joined" data={joinedProjectData} startInterval="January" endInterval="December" />
       <UpcommingTask paging={paging} setPaging={setPaging} />
     </div>
   );
 };
-
 
 export default CardContainer;

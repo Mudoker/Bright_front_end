@@ -120,7 +120,10 @@ const UpcommingTask: React.FC<UpcommingTaskProps> = ({ paging, setPaging }) => {
             <TaskButton taskId="ZEN-123" title="Design New Landing Page" time="10:00 AM" />
             <TaskButton taskId="ZEN-124" title="Regular Team Meeting" time="12:00 AM" />
             <TaskButton taskId="ZEN-125" title="Fix Mobile Responsiveness" time="02:00 PM" />
-            <span className="ml-auto text-xs mt-2 dark:text-neutral-400">
+            <span className="flex justify-between text-xs mt-2 dark:text-neutral-400">
+              <span>
+                {"Auto-refresh in 5 minutes"}
+              </span>
               Page {paging + 1} of 3
             </span>
           </div>

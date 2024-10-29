@@ -60,7 +60,7 @@ function Dashboard() {
   const dateFormatted = currentTime.toLocaleDateString(undefined, options);
 
   return (
-    <div className="flex h-full w-full overflow-x-hidden gap-4 p-4">
+    <div className="flex h-full w-full gap-4 overflow-x-hidden p-4">
       {/* Section 1 */}
       <div className="mt-4 flex w-full flex-col justify-between gap-3">
         <div className="flex items-center justify-between space-y-2">
@@ -105,14 +105,14 @@ function Dashboard() {
 
           <div>
             <div className="flex flex-row items-center">
-              <Button className="mr-2" variant="outline">
+              <Button variant="outline">
                 <BellDot size={16} className="animate-swingPause" />
               </Button>
 
               <Dialog>
                 <DialogTrigger asChild>
                   <Button
-                    className="inline-flex animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-white transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+                    className="mx-2 inline-flex animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-white transition-colors hover:text-white"
                     onClick={handleCreateNewProject}
                     variant="outline"
                   >
@@ -161,7 +161,7 @@ function Dashboard() {
           <Chart />
         </div>
 
-        <div className="flex h-full w-full gap-3">
+        <div className="mb-8 flex h-full w-full gap-3">
           <TaskPage />
         </div>
       </div>

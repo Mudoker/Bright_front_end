@@ -33,14 +33,14 @@ const LimitItem: React.FC<LimitItemProps> = ({ Icon, label, currentUsage, usageL
 
 export const CurrentPlanLimitContainer = () => {
     return (
-        <Card className="w-[350px] h-56">
+        <Card className="w-[350px]">
             <CardHeader>
                 <CardTitle className="text-lg">Current Plan</CardTitle>
                 <CardDescription>
-                    You're exploring as a Free Tier member.
+                    {"You're exploring as a Free Tier member."}
                 </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="h-60">
                 <div className="grid w-full items-center gap-4">
                     <div className="flex flex-col space-y-1.5">
                         <LimitItem Icon={Kanban} label="Projects" currentUsage={0} usageLimit={5} />

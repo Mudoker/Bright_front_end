@@ -51,7 +51,7 @@ export const CurrentPlanLimitContainer = () => {
                 </div>
             </CardContent>
             <CardFooter className="flex justify-between">
-                <Button className="w-full flex gap-4 items-center font-semibold">Upgrade to Premium <Sparkles className='stroke-1' /></Button>
+                <Button variant="outline" className="w-full flex gap-4 items-center font-semibold">Upgrade to Premium <Sparkles className='stroke-1' /></Button>
             </CardFooter>
         </Card>
     )

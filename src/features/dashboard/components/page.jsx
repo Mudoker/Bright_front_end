@@ -24,15 +24,20 @@ import BrightLogo from '@assets/images/app-logo/light.svg';
 import { PackagePlus } from 'lucide-react';
 import { BellDot } from 'lucide-react';
 import { Settings } from 'lucide-react';
+// import { Calendar } from './calendar';
+import React from 'react';
 import { useEffect, useState } from 'react';
 
-import { Calendar } from './calendar';
-import CardContainer from './card-container.tsx';
-import Chart from './chart';
+import { Calendar } from './calendar.tsx';
+import CardContainer from './card-container/card-container.tsx';
+import { CurrentPlanLimitContainer } from './current-plan-limit/current-plan-limit-container.tsx';
+import Chart from './project-stats/chart.jsx';
+import TaskPage from './task-list/task-page.tsx';
 
 function Dashboard() {
   const [currentTime, setCurrentTime] = useState(new Date());
-
+  // const [date, setDate] = (React.useState < Date) | (undefined > new Date());
+  const [date, setDate] = useState(new Date());
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
@@ -51,17 +56,17 @@ function Dashboard() {
   const currentHour = currentTime.getHours();
   const user = 'Kien';
   const greeting = `Good ${getCurrentTimeSession(currentHour)}, ${user}!`;
-
   const options = { weekday: 'long', month: 'long', day: 'numeric' };
   const dateFormatted = currentTime.toLocaleDateString(undefined, options);
+
   return (
-    <div className="flex w-full gap-4 p-4">
+    <div className="flex h-full w-full gap-4 p-4">
       {/* Section 1 */}
-      <div className="mt-4 flex w-full flex-col justify-between gap-8">
+      <div className="mt-4 flex w-full flex-col justify-between gap-3">
         <div className="flex items-center justify-between space-y-2">
           <div className="flex flex-row items-center gap-12">
             <div>
-              <p className='text-sm'>{dateFormatted}</p>
+              <p className="text-sm">{dateFormatted}</p>
               <p className="text-xl font-bold">{greeting}</p>
             </div>
 
@@ -97,19 +102,17 @@ function Dashboard() {
               </SelectContent>
             </Select>
           </div>
+
           <div>
             <div className="flex flex-row items-center">
               <Button className="mr-2" variant="outline">
-                <BellDot
-                  size={16}
-                  className="animate-swingPause"
-                />
+                <BellDot size={16} className="animate-swingPause" />
               </Button>
 
               <Dialog>
                 <DialogTrigger asChild>
                   <Button
-                    className="animate-shimmer inline-flex h-12 items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-white transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+                    className="inline-flex animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-white transition-colors hover:text-white focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
                     onClick={handleCreateNewProject}
                     variant="outline"
                   >
@@ -149,21 +152,19 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="place-content-center rounded-md">
-          <div className="flex w-full place-content-center">
-            <CardContainer />
-          </div>
+        <div className="mb-auto mt-2 flex w-full place-content-center">
+          <CardContainer />
         </div>
 
-        <div className="h-full text-xl font-semibold">
+        <div className="flex gap-3">
+          <CurrentPlanLimitContainer />
           <Chart />
         </div>
-      </div>
 
-      {/* Section 2 */}
-      {/* <div className="mr-2 w-3/12 rounded-md border-[1px]">
-        <Calendar />
-      </div> */}
+        <div className="flex h-full w-full gap-3">
+          <TaskPage />
+        </div>
+      </div>
     </div>
   );
 }

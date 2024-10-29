@@ -8,7 +8,7 @@ export const AppLayout = () => {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <div className="flex h-dvh">
+    <div className="flex h-full">
       <SidebarProvider
         style={{
           '--sidebar-width': '14rem',

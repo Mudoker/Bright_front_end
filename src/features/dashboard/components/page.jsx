@@ -60,7 +60,7 @@ function Dashboard() {
   const dateFormatted = currentTime.toLocaleDateString(undefined, options);
 
   return (
-    <div className="flex h-full w-full gap-4 p-4">
+    <div className="flex h-full w-full overflow-x-hidden gap-4 p-4">
       {/* Section 1 */}
       <div className="mt-4 flex w-full flex-col justify-between gap-3">
         <div className="flex items-center justify-between space-y-2">

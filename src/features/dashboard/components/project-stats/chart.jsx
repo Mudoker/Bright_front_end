@@ -21,7 +21,6 @@ import {
   Title,
   Tooltip,
 } from 'chart.js';
-import { TrendingUp } from 'lucide-react';
 import { RefreshCcw } from 'lucide-react';
 import React, { useState } from 'react';
 import { useEffect } from 'react';

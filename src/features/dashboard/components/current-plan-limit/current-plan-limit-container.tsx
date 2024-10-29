@@ -8,7 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { CircleDot, FileText, Kanban, Sparkles } from 'lucide-react'
+import { Braces, CircleDot, Database, FileText, Kanban, Sparkles } from 'lucide-react'
 
 interface LimitItemProps {
     Icon: React.ComponentType<SVGProps<SVGSVGElement>>;
@@ -40,18 +40,21 @@ export const CurrentPlanLimitContainer = () => {
                     {"You're exploring as a Free Tier member."}
                 </CardDescription>
             </CardHeader>
-            <CardContent className="h-60">
+            <CardContent>
                 <div className="grid w-full items-center gap-4">
                     <div className="flex flex-col space-y-1.5">
-                        <LimitItem Icon={Kanban} label="Projects" currentUsage={0} usageLimit={5} />
-                        <LimitItem Icon={CircleDot} label="Issues" currentUsage={0} usageLimit={200} />
-                        <LimitItem Icon={FileText} label="Storage" currentUsage={"0 GB"} usageLimit={"5 GB"} />
-                        <LimitItem Icon={FileText} label="File Upload" currentUsage={"0 GB"} usageLimit={"5 GB"} />
+                        <LimitItem Icon={Kanban} label="Projects" currentUsage={0} usageLimit={"5 Created"} />
+                        <LimitItem Icon={CircleDot} label="Issues" currentUsage={0} usageLimit={"200 Unit"} />
+                        <LimitItem Icon={Database} label="Storage" currentUsage={"0"} usageLimit={"5 GB"} />
+                        <LimitItem Icon={FileText} label="File Upload" currentUsage={"0"} usageLimit={"1 GB"} />
+                        <LimitItem Icon={Braces} label="Tokens Used" currentUsage={"0"} usageLimit={"1 Mil"} />
                     </div>
                 </div>
             </CardContent>
             <CardFooter className="flex justify-between">
-                <Button variant="outline" className="w-full flex gap-4 items-center font-semibold">Upgrade to Premium <Sparkles className='stroke-1' /></Button>
+                <Button variant="outline" className="w-full flex gap-4 items-center font-semibold">
+                    Upgrade to Premium <Sparkles className='w-4 h-4' />
+                </Button>
             </CardFooter>
         </Card>
     )

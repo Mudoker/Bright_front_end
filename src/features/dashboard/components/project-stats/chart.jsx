@@ -12,6 +12,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import { animate } from '@tsparticles/engine';
 import {
   BarElement,
   CategoryScale,
@@ -32,7 +33,6 @@ import { generateRandomRecentActivity } from '../../util/calculator';
 export const description = 'An area chart with gradient fill';
 
 const chartData = generateRandomRecentActivity(12);
-console.log(chartData);
 const chartConfig = {
   desktop: {
     label: 'Desktop',
@@ -104,8 +104,16 @@ function Chart() {
         <CardHeader>
           <CardTitle className="flex items-center">
             Recent Activities
-            <Button variant="ghost" className="ml-auto">
-              <RefreshCcw className="ml-auto h-4 w-4" />
+            <Button
+              variant="ghost"
+              className="ml-auto"
+              onClick={() => {
+                setSpinning(true);
+              }}
+            >
+              <RefreshCcw
+                className={`ml-auto h-4 w-4 ${spinning ? 'animate-spin' : ''}`}
+              />
             </Button>
           </CardTitle>
           <CardDescription>
@@ -113,7 +121,7 @@ function Chart() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer className="h-60 w-full" config={chartConfig}>
+          <ChartContainer className="h-72 w-full" config={chartConfig}>
             <AreaChart
               accessibilityLayer
               data={chartData}

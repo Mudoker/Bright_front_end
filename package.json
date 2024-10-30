@@ -66,6 +66,7 @@
     "file-saver": "^2.0.5",
     "firebase": "^10.14.1",
     "framer-motion": "^11.11.9",
+    "input-otp": "^1.2.5",
     "lucide-react": "^0.321.0",
     "next-themes": "^0.3.0",
     "overlayscrollbars": "^2.10.0",

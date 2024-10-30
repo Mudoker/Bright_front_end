@@ -13,17 +13,18 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
-import { AuthenticationPage } from './features/auth';
-import { RequireAuth } from './features/auth/components/RequireAuth';
-import Board from './features/board/Board';
-import Dashboard from './features/dashboard';
-import DeveloperDock from './features/dev-dock';
-import { LandingPage } from './features/landingPage';
-import MessagePage from './features/message';
-import Account from './features/setting/component/account-page';
-import Appearance from './features/setting/component/appearance-page';
-import Notification from './features/setting/component/notification-page';
-import Profile from './features/setting/component/profile-page';
+import OTPVerification from '@features/auth/components/otp-verification';
+import { AuthenticationPage } from '@features/auth';
+import { RequireAuth } from '@features/auth/components/RequireAuth';
+import Board from '@features/board/Board';
+import Dashboard from '@features/dashboard';
+import DeveloperDock from '@features/dev-dock';
+import { LandingPage } from '@features/landingPage';
+import MessagePage from '@features/message';
+import Account from '@features/setting/component/account-page';
+import Appearance from '@features/setting/component/appearance-page';
+import Notification from '@features/setting/component/notification-page';
+import Profile from '@features/setting/component/profile-page';
 import Notfoundpage from './layouts/404-page';
 import { AppLayout } from './layouts/app-layout';
 import { LandingAuthLayout } from './layouts/landing-auth-layout';
@@ -38,7 +39,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<LandingAuthLayout />}>
       {/* Landing page and authentication routes */}
-      <Route path="/" element={<LandingPage />} />
+      <Route path="/" element={<OTPVerification />} />
       <Route path="/auth" element={<AuthenticationPage />} />
       {/* <Route element={<RequireAuth />}> */}
         <Route path="/welcome" element={<Welcome />} />

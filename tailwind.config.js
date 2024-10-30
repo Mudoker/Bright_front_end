@@ -150,6 +150,10 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
+        "caret-blink": {
+          "0%,70%,100%": { opacity: "1" },
+          "20%,50%": { opacity: "0" },
+        },
         'accordion-down': {
           from: {
             height: '0',
@@ -219,6 +223,7 @@ module.exports = {
         move: 'move 5s linear infinite',
         shimmer: "shimmer 2s linear infinite",
         swingPause: 'swingPause 1s linear infinite',
+        "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],

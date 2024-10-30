@@ -38,12 +38,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<LandingAuthLayout />}>
       {/* Landing page and authentication routes */}
-      <Route path="/" element={<ProjectManagementPage />} />
+      <Route path="/" element={<LandingPage />} />
       <Route path="/auth" element={<AuthenticationPage />} />
-
-      {/* <Route element={<RequireAuth />}> */}
-      <Route path="/welcome" element={<Welcome />} />
-      <Route path="/users" element={<UsersList />} />
       {/* <Route element={<RequireAuth />}> */}
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/users" element={<UsersList />} />

@@ -29,6 +29,8 @@ import {
   Bell,
   Cable,
   ChevronDown,
+  ChevronUp,
+  Circle,
   CircleUser,
   Gem,
   HelpCircle,
@@ -39,8 +41,9 @@ import {
   PanelsTopLeft,
   Plus,
   Quote,
+  UserCircle,
 } from 'lucide-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
 // Menu items.
@@ -146,10 +149,11 @@ const CollapsibleSidebarGroup: React.FC<CollapsibleSidebarGroupProps> = ({
       <CollapsibleContent>
         <SidebarGroupContent>
           <SidebarMenu>
-            {items.map(item => {
+            {items.map((item, index) => {
+              const key = `${item.title}-${index}`;
               if (item.title === 'Projects') {
                 return (
-                  <Collapsible defaultOpen className="group/collapsible">
+                  <Collapsible key={key} defaultOpen className="group/collapsible">
                     <SidebarMenuItem>
                       <CollapsibleTrigger asChild>
                         <div className="flex">
@@ -173,7 +177,7 @@ const CollapsibleSidebarGroup: React.FC<CollapsibleSidebarGroupProps> = ({
                         </div>
                       </CollapsibleTrigger>
                       <CollapsibleContent>
-                        <SidebarMenuSub asChild>
+                        <SidebarMenuSub>
                           {listOfProjects.map(project => (
                             <SidebarMenuSubItem key={project.title}>
                               <SidebarMenuSubButton asChild>
@@ -191,7 +195,7 @@ const CollapsibleSidebarGroup: React.FC<CollapsibleSidebarGroupProps> = ({
                 );
               } else {
                 return (
-                  <SidebarMenuItem key={item.title}>
+                  <SidebarMenuItem key={key}>
                     <SidebarMenuButton asChild>
                       <NavLink
                         to={item.url}
@@ -213,11 +217,64 @@ const CollapsibleSidebarGroup: React.FC<CollapsibleSidebarGroupProps> = ({
 );
 
 export function AppSidebar({ setOpen, open }: { setOpen: any; open: boolean }) {
+  const [shouldCheckMousePosition, setShouldCheckMousePosition] = React.useState(false);
+  const [sidebarWidth, setSidebarWidth] = React.useState(1);
+
+  useEffect(() => {
+    const base = !open && !shouldCheckMousePosition ? 3 : 14;
+    setSidebarWidth(base * parseFloat(getComputedStyle(document.documentElement).fontSize));
+  }, [open, shouldCheckMousePosition]);
+
+  const handleMouseMove = (event: MouseEvent) => {
+    if (event.clientX > sidebarWidth) {
+      setOpen(false);
+      setShouldCheckMousePosition(false);
+    } else {
+      setOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!shouldCheckMousePosition) {
+      window.removeEventListener('mousemove', handleMouseMove);
+      return;
+    }
+
+    // Add mouse move event listener
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    }
+  }, [shouldCheckMousePosition]);
+
+  const isPersistSidebarOn = (): boolean | null => {
+    const sidebarName = 'sidebar:state';
+    const sidebarOpen = localStorage.getItem(sidebarName);
+
+    console.log('sidebarOpen', sidebarOpen);
+    if (sidebarOpen !== null) {
+      return true;
+    }
+
+    return null; // Return null if the key does not exist
+  };
+
+  useEffect(() => {
+    isPersistSidebarOn();
+  }, [open]);
+
   return (
     <Sidebar
       collapsible="icon"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      onMouseEnter={() => {
+        if (isPersistSidebarOn()) return;
+        setOpen(true)
+      }}
+      onMouseLeave={() => {
+        if (isPersistSidebarOn()) return;
+        setShouldCheckMousePosition(true);
+      }}
     >
       <SidebarHeader>
         <SidebarMenu>
@@ -256,12 +313,31 @@ export function AppSidebar({ setOpen, open }: { setOpen: any; open: boolean }) {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <NavLink to={`/user/settings`}>
-                <CircleUser />
-                <span className="text-base">{'Mudoker'}</span>
-              </NavLink>
-            </SidebarMenuButton>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton>
+                  <UserCircle /> Mudoker
+                  <ChevronUp className="ml-auto" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="top"
+                className="w-[--radix-popper-anchor-width]"
+                close={!open}
+              >
+                <DropdownMenuItem>
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <NavLink to={`/user/settings`}>
+                    <span className="text-base">{'Settings'}</span>
+                  </NavLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <span>Sign out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

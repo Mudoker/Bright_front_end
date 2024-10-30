@@ -23,6 +23,7 @@ const SIDEBAR_WIDTH = '16rem';
 const SIDEBAR_WIDTH_MOBILE = '18rem';
 const SIDEBAR_WIDTH_ICON = '3rem';
 const SIDEBAR_KEYBOARD_SHORTCUT = 'b';
+const SIDEBAR_TURN_OFF_OPEN_STATE_PERSISTENCE = 'y';
 
 const SidebarContext = React.createContext(null);
 
@@ -66,7 +67,8 @@ const SidebarProvider = React.forwardRef(
         _setOpen(value);
 
         // This sets the cookie to keep the sidebar state.
-        document.cookie = `${SIDEBAR_COOKIE_NAME}=${open}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+        console.log('trying to set cookie');
+        localStorage.setItem(SIDEBAR_COOKIE_NAME, JSON.stringify(open));
       },
       [setOpenProp, open]
     );
@@ -84,7 +86,14 @@ const SidebarProvider = React.forwardRef(
           (event.metaKey || event.ctrlKey)
         ) {
           event.preventDefault();
+          localStorage.setItem(SIDEBAR_COOKIE_NAME, JSON.stringify(open));
           toggleSidebar();
+        } else if (
+          event.key === SIDEBAR_TURN_OFF_OPEN_STATE_PERSISTENCE &&
+          (event.metaKey || event.ctrlKey)
+        ) {
+          event.preventDefault();
+          localStorage.removeItem(SIDEBAR_COOKIE_NAME);
         }
       };
 
@@ -203,7 +212,7 @@ const Sidebar = React.forwardRef(
         />
         <div
           className={cn(
-            'fixed inset-y-0 z-10 hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-200 ease-linear md:flex',
+            'fixed inset-y-0 z-50 hidden h-svh w-[--sidebar-width] transition-[left,right,width] duration-200 ease-linear md:flex',
             side === 'left'
               ? 'left-0 group-data-[collapsible=offcanvas]:left-[calc(var(--sidebar-width)*-1)]'
               : 'right-0 group-data-[collapsible=offcanvas]:right-[calc(var(--sidebar-width)*-1)]',
@@ -475,6 +484,7 @@ const SidebarMenuButton = React.forwardRef(
       size = 'default',
       tooltip,
       className,
+      onClick,
       ...props
     },
     ref

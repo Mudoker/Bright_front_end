@@ -8,5 +8,7 @@ declare module '@assets/*';
 declare module '@lib/*';
 declare module '@hooks/*';
 declare module '@styles/*';
+declare module '@/*';
+
 // src/tailwindcss.d.ts
 declare module 'tailwindcss/lib/util/flattenColorPalette';

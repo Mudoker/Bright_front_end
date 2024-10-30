@@ -2,12 +2,13 @@ import dayjs from 'dayjs';
 import { CalendarX2 } from 'lucide-react';
 import { useState } from 'react';
 import { GrFormNext, GrFormPrevious } from 'react-icons/gr';
-
-import { generateDate } from '../test/data/date';
-import { events } from '../test/data/event';
-import { months } from '../test/data/month';
-import cn from '../util/cn';
-import EventDetail from './event_detail';
+import React from 'react';
+import { generateDate } from '@features/dashboard/test/data/date';
+import { events } from '@features/dashboard/test/data/event';
+import { months } from '@features/dashboard/test/data/month';
+import cn from '@features/dashboard/util/cn'
+import EventDetail from '@features/dashboard/components/event-detail';
+import { features } from 'process';
 
 export const Calendar = () => {
   const dateInWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -15,11 +16,11 @@ export const Calendar = () => {
   const [today, setToday] = useState(currentDate);
   const [selectDate, setSelectDate] = useState(currentDate);
 
-  const getEventsForDate = date => {
+  const getEventsForDate = (date: any) => {
     return events.filter(event => dayjs(event.dueTo).isSame(date, 'day'));
   };
 
-  const renderEventDots = date => {
+  const renderEventDots = (date: any) => {
     const eventList = getEventsForDate(date);
 
     const sortedEvents = eventList.sort((a, b) => {
@@ -64,7 +65,7 @@ export const Calendar = () => {
     return dots;
   };
 
-  const hasEvents = date => {
+  const hasEvents = (date: any) => {
     return events.some(event => dayjs(event.dueTo).isSame(date, 'day'));
   };
 
@@ -104,7 +105,7 @@ export const Calendar = () => {
         </div>
         <div className="grid w-full grid-cols-7">
           {generateDate(today.month(), today.year()).map(
-            ({ date, currentMonth, today }, index) => (
+            ({ date, currentMonth, today }: any, index: any) => (
               <div
                 key={index}
                 className="group grid h-10 place-content-center border-t text-sm"

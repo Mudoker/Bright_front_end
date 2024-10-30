@@ -195,6 +195,21 @@ module.exports = {
             transform: 'translateX(200px)',
           },
         },
+        shimmer: {
+          from: {
+            "backgroundPosition": "0 0"
+          },
+          to: {
+            "backgroundPosition": "-200% 0"
+          }
+        },
+        swingPause: {
+          '0%, 20%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(-10deg)' },
+          '50%': { transform: 'rotate(10deg)' },
+          '75%': { transform: 'rotate(-10deg)' },
+          '80%, 100%': { transform: 'rotate(0deg)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -202,6 +217,8 @@ module.exports = {
         'meteor-effect': 'meteor 5s linear infinite',
         aurora: 'aurora 60s linear infinite',
         move: 'move 5s linear infinite',
+        shimmer: "shimmer 2s linear infinite",
+        swingPause: 'swingPause 1s linear infinite',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],

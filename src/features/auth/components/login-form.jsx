@@ -28,7 +28,7 @@ import { useLoginMutation } from '../utils/authApi';
 import { setLoginStatus } from '../utils/authSlice';
 
 const formShcema = z.object({
-  account: z.string({ required_error: SIGN_IN_VALIDATOR.ACCOUNT }),
+  email: z.string({ required_error: SIGN_IN_VALIDATOR.EMAIL }),
   password: z
     .string({ required_error: PASSWORD_INPUT_VALIDATOR.REQUIRED })
     .min(6, { message: PASSWORD_INPUT_VALIDATOR.SHORT })
@@ -39,7 +39,7 @@ const formShcema = z.object({
 function Loginform() {
   // Import necessary hooks and functions
   const dispatch = useDispatch(); // Hook to dispatch actions to the Redux store
-  const [account, setAccount] = useState(''); // State to hold the account input
+  const [email, setEmail] = useState(''); // State to hold the email input
   const [password, setPassword] = useState(''); // State to hold the password input
 
   // State to manage the spinner for the login button
@@ -57,9 +57,9 @@ function Loginform() {
     try {
       setSpinning(true); // Show the spinner when login starts
 
-      // Prepare the request body with account and password
+      // Prepare the request body with email and password
       const body = {
-        account: account,
+        email: email,
         password: password,
       };
 
@@ -67,7 +67,7 @@ function Loginform() {
       const data = await login(body);
 
       // Dispatch action to update login state in the Redux store
-      dispatch(setLoginStatus(data, account));
+      dispatch(setLoginStatus(data, email));
 
       // Log success and navigate to the user dashboard
       console.log('login success', data);
@@ -143,10 +143,10 @@ function Loginform() {
                 <FormControl>
                   <Input
                     type="email"
-                    value={account}
+                    value={email}
                     placeholder={'Account Email'}
                     autoComplete="email"
-                    onChangeCapture={e => setAccount(e.currentTarget.value)}
+                    onChangeCapture={e => setEmail(e.currentTarget.value)}
                     className="border border-black/20 focus:border-transparent"
                     {...field}
                   />

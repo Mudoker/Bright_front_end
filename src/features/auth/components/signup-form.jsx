@@ -27,7 +27,7 @@ const formSchema = z
   .object({
     firstname: z.string({ required_error: SIGN_UP_VALIDATOR.NAME_REQUIRED }),
     lastname: z.string({ required_error: SIGN_UP_VALIDATOR.NAME_REQUIRED }),
-    account: z.string({ required_error: SIGN_UP_VALIDATOR.ACCOUNT }),
+    email: z.string({ required_error: SIGN_UP_VALIDATOR.EMAIL }),
     password: z
       .string({ required_error: PASSWORD_INPUT_VALIDATOR.REQUIRED })
       .min(6, { message: PASSWORD_INPUT_VALIDATOR.SHORT })
@@ -52,7 +52,7 @@ function Signupform({ onSignUpComplete }) {
     defaultValues: {
       firstname: '',
       lastname: '',
-      account: '',
+      email: '',
       password: '',
       confirm_password: '',
       dob: null,
@@ -64,7 +64,7 @@ function Signupform({ onSignUpComplete }) {
 
     try {
       const body = {
-        account: data.account,
+        email: data.email,
         password: data.password,
         fullname: `${data.firstname} ${data.lastname}`,
         dob: new Date(formattedDob).toISOString().slice(0, 10),
@@ -170,20 +170,20 @@ function Signupform({ onSignUpComplete }) {
 
           <FormField
             control={form.control}
-            name="account"
+            name="email"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Input
                     type="text"
-                    placeholder={'Account name'}
-                    autoComplete={'account'}
+                    placeholder={'Account Email'}
+                    autoComplete={'email'}
                     className="border border-auth_form_border focus:border-transparent"
                     {...field}
                   />
                 </FormControl>
                 <FormMessage>
-                  {form.formState.errors.account?.message}
+                  {form.formState.errors.email?.message}
                 </FormMessage>
               </FormItem>
             )}

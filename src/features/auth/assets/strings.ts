@@ -11,12 +11,12 @@ export const SIGN_UP = {
 
 export const SIGN_UP_VALIDATOR = {
   NAME_REQUIRED: 'Please fill out this field',
-  ACCOUNT: 'Please fill out your account name',
+  EMAIL: 'Please fill out your email',
 };
 
 export const SIGN_IN_VALIDATOR = {
   PASSWORD: 'Please fill out your password',
-  ACCOUNT: 'Please fill out your account name',
+  ACCOUNT: 'Please fill out your email',
 };
 
 export const WEB_BRIEF_INTRO =

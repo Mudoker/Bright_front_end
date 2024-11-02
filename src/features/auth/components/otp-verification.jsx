@@ -19,10 +19,11 @@ import {
     FormField,
     FormItem,
     FormMessage,
-  } from "@/components/ui/form"
+} from "@/components/ui/form";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useState } from 'react';
 
 const FormSchema = z.object({
     pin: z.string().min(6, {
@@ -30,7 +31,9 @@ const FormSchema = z.object({
     }),
 });
 
-function OTPVerification() {
+function OTPVerification({ onComplete }) {
+    const [isOpen, setIsOpen] = useState(true); // State to manage dialog visibility
+
     const form = useForm({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -40,10 +43,12 @@ function OTPVerification() {
 
     function onSubmit(data) {
         console.log(data);
+        setIsOpen(false); // Close the dialog on successful submission
+        onComplete(); // Call the onComplete callback
     }
 
     return (
-        <Dialog open="true">
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>OTP Verification</DialogTitle>

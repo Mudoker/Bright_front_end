@@ -14,6 +14,7 @@ import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import PropTypes from 'prop-types';
 
 import {
   PASSWORD_INPUT_VALIDATOR,
@@ -22,6 +23,7 @@ import {
 } from '../assets/strings';
 import { useSignupMutation } from '../utils/authApi';
 import { BirthdayPicker } from './birthday-picker';
+import OTPVerification from './otp-verification'; // Import the OTPVerification component
 
 const formSchema = z
   .object({
@@ -44,6 +46,7 @@ const formSchema = z
 
 function Signupform({ onSignUpComplete }) {
   const [loading, setLoading] = useState(false);
+  const [showOTPVerification, setShowOTPVerification] = useState(false); // State to manage OTP verification dialog visibility
   const { toast } = useToast();
   const [signup] = useSignupMutation();
 
@@ -67,11 +70,12 @@ function Signupform({ onSignUpComplete }) {
         email: data.email,
         password: data.password,
         fullname: `${data.firstname} ${data.lastname}`,
-        dob: new Date(formattedDob).toISOString().slice(0, 10),
+        dob: new Date(data.dob).toISOString().slice(0, 10),
       };
 
       const response = await signup(body);
-
+      console.log(response);
+      
       if (response.error) {
         const error_code = response.error.status;
         if (error_code === 400) {
@@ -94,7 +98,7 @@ function Signupform({ onSignUpComplete }) {
         title: SYSTEM_ALERT.SIGNUP_SUCCESS_TITLE,
       });
 
-      onSignUpComplete();
+      setShowOTPVerification(true); // Show OTP verification dialog
     } catch (error) {
       toast({
         className: SYSTEM_COLORS.SIGN_UP_FAILED_COLOR,
@@ -107,6 +111,11 @@ function Signupform({ onSignUpComplete }) {
 
   const onError = errors => {
     console.log(errors);
+  };
+
+  const handleOTPVerificationComplete = () => {
+    setShowOTPVerification(false);
+    onSignUpComplete();
   };
 
   return (
@@ -239,8 +248,15 @@ function Signupform({ onSignUpComplete }) {
           </Button>
         </form>
       </Form>
+      {showOTPVerification && (
+        <OTPVerification onComplete={handleOTPVerificationComplete} />
+      )}
     </div>
   );
 }
+
+Signupform.propTypes = {
+  onSignUpComplete: PropTypes.func.isRequired,
+};
 
 export default Signupform;

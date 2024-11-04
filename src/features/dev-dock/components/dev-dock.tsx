@@ -1,8 +1,10 @@
 import { FloatingDock } from '@components/ui/floating-dock';
 import { setTheme } from '@features/theme/utils/themeSlice';
 import {
+  Database,
+  DatabaseBackup,
+  DatabaseZap,
   Home,
-  Info,
   Moon,
   MousePointer,
   MousePointerClick,
@@ -10,35 +12,47 @@ import {
 } from 'lucide-react';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { setDataViewMode } from '../utils/data-slice.js';
 import {
   getCurrentSystemPerformance,
   getDimensionsInString,
   getZoomLevelInPercentage,
 } from '../utils/utils.js';
 
+import { DevModeConfig, ViewMode } from '../data/type.js';
+
 export function DeveloperDock() {
+  // Theme state from Redux store
   const currentTheme = useSelector((state: any) => state.currentTheme.value);
-  const [isSelectionMode, setIsSelectionMode] = React.useState<boolean>(false);
-  const [language, setLanguage] = React.useState<string>('EN');
-  const [systemPerformance, setSystemPerformance] = React.useState<{
-    cpuUsage: string;
-    ramUsage: string;
-    networkUsage: number;
-  } | null>(null);
-  const [dimensions, setDimensions] = React.useState<string>('');
-  const [zoom, setZoom] = React.useState<number>(100);
   const dispatch = useDispatch();
 
+  // Developer Dock configuration
+  const [devModeConfig, setDevModeConfig] = React.useState<DevModeConfig>({
+    theme: currentTheme,
+    isSelectionMode: false,
+    selectedLanguage: 'EN',
+    systemPerformance: null,
+    currentZoomLevel: getZoomLevelInPercentage(window),
+    currentScreenDimension: '',
+    viewAs: useSelector((state: any) => state.dataViewMode.current),
+  });
+
+  const highlighterRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    const dimensions = getDimensionsInString(window);
-    setDimensions(dimensions);
+    setDevModeConfig(prevConfig => ({
+      ...prevConfig,
+      currentScreenDimension: getDimensionsInString(window),
+    }));
   }, [window.innerWidth]);
 
   useEffect(() => {
     const updatePerformance = () => {
       const performance = getCurrentSystemPerformance(window);
-      setSystemPerformance(performance);
+      setDevModeConfig(prevConfig => ({
+        ...prevConfig,
+        systemPerformance: performance,
+      }));
     };
 
     updatePerformance();
@@ -49,8 +63,10 @@ export function DeveloperDock() {
 
   useEffect(() => {
     const updateZoom = () => {
-      const zoom = getZoomLevelInPercentage(window);
-      setZoom(zoom);
+      setDevModeConfig(prevConfig => ({
+        ...prevConfig,
+        currentZoomLevel: getZoomLevelInPercentage(window),
+      }));
     };
 
     updateZoom();
@@ -63,7 +79,6 @@ export function DeveloperDock() {
     };
   }, []);
 
-  const highlighterRef = useRef<HTMLDivElement | null>(null);
 
   const toggleTheme = () => {
     const newTheme =
@@ -72,16 +87,22 @@ export function DeveloperDock() {
   };
 
   const toggleSelectionMode = () => {
-    setIsSelectionMode(prev => !prev);
+    setDevModeConfig(prevConfig => ({
+      ...prevConfig,
+      isSelectionMode: !prevConfig.isSelectionMode,
+    }));
   };
 
   const toggleLanguage = () => {
-    setLanguage(prev => (prev === 'EN' ? 'VI' : 'EN'));
+    setDevModeConfig(prevConfig => ({
+      ...prevConfig,
+      selectedLanguage: prevConfig.selectedLanguage === 'EN' ? 'VI' : 'EN',
+    }));
   };
 
   useEffect(() => {
     const handleMouseEnter = (event: MouseEvent) => {
-      if (!isSelectionMode) return;
+      if (!devModeConfig.isSelectionMode) return;
 
       const target = event.target as HTMLElement;
       if (target && highlighterRef.current) {
@@ -105,7 +126,7 @@ export function DeveloperDock() {
       }
     };
 
-    if (isSelectionMode) {
+    if (devModeConfig.isSelectionMode) {
       document.addEventListener('mouseenter', handleMouseEnter, true);
       document.addEventListener('mouseleave', handleMouseLeave, true);
     }
@@ -114,18 +135,12 @@ export function DeveloperDock() {
       document.removeEventListener('mouseenter', handleMouseEnter, true);
       document.removeEventListener('mouseleave', handleMouseLeave, true);
     };
-  }, [isSelectionMode]);
-
-  const resetZoom = () => {
-    document.body.style.transform = 'scale(1)';
-    document.body.style.transformOrigin = '0 0';
-    setZoom(100);
-  };
+  }, [devModeConfig.isSelectionMode]);
 
   const links = [
     {
-      title: isSelectionMode ? 'Selection Mode: ON' : 'Selection Mode: OFF',
-      icon: isSelectionMode ? (
+      title: devModeConfig.isSelectionMode ? 'Selection Mode: ON' : 'Selection Mode: OFF',
+      icon: devModeConfig.isSelectionMode ? (
         <MousePointerClick className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ) : (
         <MousePointer className="h-full w-full text-neutral-500 dark:text-neutral-300" />
@@ -134,11 +149,11 @@ export function DeveloperDock() {
       action: toggleSelectionMode,
     },
     {
-      title: `Language: ${language}`,
+      title: `Language: ${devModeConfig.selectedLanguage}`,
       icon: (
         <div>
           <span className="text-base text-neutral-500 dark:text-neutral-300">
-            {language}
+            {devModeConfig.selectedLanguage}
           </span>
         </div>
       ),
@@ -150,7 +165,7 @@ export function DeveloperDock() {
       icon: (
         <div>
           <span className="text-base text-neutral-500 dark:text-neutral-300">
-            {dimensions}
+            {devModeConfig.currentScreenDimension}
           </span>
         </div>
       ),
@@ -158,14 +173,14 @@ export function DeveloperDock() {
     {
       title: (
         <div className="flex gap-2 text-base text-neutral-500 dark:text-neutral-300">
-          {systemPerformance ? (
+          {devModeConfig.systemPerformance ? (
             <>
               <span className="font-bold">CPU:</span>{' '}
-              {systemPerformance.cpuUsage}
+              {devModeConfig.systemPerformance.cpuUsage}
               <span className="font-bold">RAM:</span>{' '}
-              {systemPerformance.ramUsage}
+              {devModeConfig.systemPerformance.ramUsage}
               <span className="font-bold">Network:</span>{' '}
-              {systemPerformance.networkUsage}
+              {devModeConfig.systemPerformance.networkUsage}
             </>
           ) : (
             'Loading...'
@@ -193,24 +208,41 @@ export function DeveloperDock() {
       icon: (
         <div>
           <span className="text-xs text-neutral-500 dark:text-neutral-300">
-            {zoom}%
+            {devModeConfig.currentZoomLevel}%
           </span>
         </div>
       ),
     },
     {
-      title: `Info`,
+      title: `View as: ${devModeConfig.viewAs}`,
       icon: (
-        <Info className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <>
+          {devModeConfig.viewAs === ViewMode.NO_DATA && <DatabaseBackup className="h-full w-full text-neutral-500 dark:text-neutral-300" />}
+          {devModeConfig.viewAs === ViewMode.FAKE_DATA && <DatabaseZap className="h-full w-full text-neutral-500 dark:text-neutral-300" />}
+          {devModeConfig.viewAs === ViewMode.REAL_DATA && <Database className="h-full w-full text-neutral-500 dark:text-neutral-300" />}
+        </>
       ),
-      action: () => alert(`Browser: ${navigator.userAgent}`),
+      action: () => {
+        const newViewAs = devModeConfig.viewAs === ViewMode.NO_DATA
+          ? ViewMode.FAKE_DATA
+          : devModeConfig.viewAs === ViewMode.FAKE_DATA
+            ? ViewMode.REAL_DATA
+            : ViewMode.NO_DATA;
+
+        setDevModeConfig(prevConfig => ({
+          ...prevConfig,
+          viewAs: newViewAs,
+        }));
+
+        dispatch(setDataViewMode(newViewAs));
+      }
     },
   ];
 
   return (
     <div className="relative flex h-[35rem] w-full items-center justify-center">
       <FloatingDock mobileClassName="translate-y-20" items={links} />
-      {isSelectionMode && (
+      {devModeConfig.isSelectionMode && (
         <div
           ref={highlighterRef}
           className="fixed transition-all"

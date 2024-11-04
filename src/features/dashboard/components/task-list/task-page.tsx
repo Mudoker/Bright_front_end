@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Card,
     CardContent,
@@ -8,9 +8,17 @@ import {
 } from '@/components/ui/card'
 import { columns } from "./components/columns"
 import { DataTable } from "./components/data-table"
-import tasks from '@features/dashboard/components/task-list/data/tasks.json' // Import the JSON file directly
+import { DataFactory } from '../../utils/data-factory'
+import { useSelector } from 'react-redux'
 
 export default function TaskPage() {
+    const currentDataViewMode = useSelector((state: any) => state.dataViewMode.current);
+    const [tasks, setTasks] = React.useState(DataFactory.getAllTasks(currentDataViewMode));
+
+    useEffect(() => {
+        setTasks(DataFactory.getAllTasks(currentDataViewMode));
+    }, [currentDataViewMode]);
+
     return (
         <Card className="w-full">
             <CardHeader>

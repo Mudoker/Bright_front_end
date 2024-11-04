@@ -12,7 +12,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { animate } from '@tsparticles/engine';
 import {
   BarElement,
   CategoryScale,
@@ -28,53 +27,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
-import { generateRandomRecentActivity } from '../../util/calculator';
-
-export const description = 'An area chart with gradient fill';
-
-const chartData = generateRandomRecentActivity(12);
-const chartConfig = {
-  desktop: {
-    label: 'Desktop',
-    color_light: '#FFB3BA', // Light theme color
-    color_dark: '#FF6F61', // Dark theme color
-  },
-  mobile: {
-    label: 'Mobile',
-    color_light: '#BAE1FF', // Light theme color
-    color_dark: '#007ACC', // Dark theme color
-  },
-  bright: {
-    label: 'Bright',
-    color_light: '#FFB3BA', // Pastel Red
-    color_dark: '#FF6F61', // Slightly darker pastel red
-  },
-  tuturuuu: {
-    label: 'Tuturuuu',
-    color_light: '#BFFCC6', // Pastel Green
-    color_dark: '#7BC47F', // Slightly darker pastel green
-  },
-  sasuke: {
-    label: 'Sasuke',
-    color_light: '#FFDFBA', // Pastel Orange
-    color_dark: '#FFAA85', // Slightly darker pastel orange
-  },
-};
-
-{
-  chartData.map((dataPoint, index) => (
-    <Area
-      key={index}
-      dataKey="bright"
-      type="natural"
-      fill="url(#fillMobile)"
-      fillOpacity={0.4}
-      stroke="var(--color-mobile)"
-      stackId="a"
-    />
-  ));
-}
-const chartKeys = ['bright', 'tuturuuu', 'sasuke'];
+import { DataFactory } from '../../utils/data-factory';
 
 ChartJS.register(
   CategoryScale,
@@ -87,7 +40,32 @@ ChartJS.register(
 
 function Chart() {
   const currentTheme = useSelector(state => state.currentTheme.value);
+  const dataViewMode = useSelector(state => state.dataViewMode.current);
+  const [chartData, setChartData] = useState([]);
+  const [chartKeys, setChartKeys] = useState([]);
+  const [chartConfig, setChartConfig] = useState({});
   const [spinning, setSpinning] = useState(true);
+
+  useEffect(() => {
+    const fetchedActivityData = DataFactory.getRecentActivityData(dataViewMode);
+    setChartData(fetchedActivityData);
+
+    const projectNames = Object.keys(fetchedActivityData[0]).filter(
+      key => key !== 'month'
+    );
+    setChartKeys(projectNames);
+
+    const chartConfiguration = projectNames.reduce((config, project, index) => {
+      config[project] = {
+        label: project,
+        color_light: ['#FFB3BA', '#BFFCC6', '#FFDFBA'][index],
+        color_dark: ['#FF6F61', '#7BC47F', '#FFAA85'][index],
+      };
+      return config;
+    }, {});
+
+    setChartConfig(chartConfiguration);
+  }, [dataViewMode]);
 
   // This code simply used to simulate a loading spinner
   useEffect(() => {
@@ -122,44 +100,57 @@ function Chart() {
         </CardHeader>
         <CardContent>
           <ChartContainer className="h-72 w-full" config={chartConfig}>
-            <AreaChart
-              accessibilityLayer
-              data={chartData}
-              margin={{
-                left: 12,
-                right: 12,
-              }}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="month"
-                tickLine={false}
-                axisLine={false}
-                tickMargin={8}
-                tickFormatter={value => value.slice(0, 3)}
-              />
-              <ChartTooltip content={<ChartTooltipContent />} />
-
-              {chartKeys.map((key, index) => (
-                <Area
-                  key={index}
-                  dataKey={key}
-                  type="natural"
-                  fill={
-                    currentTheme === 'light'
-                      ? chartConfig[key].color_light
-                      : chartConfig[key].color_dark
-                  }
-                  fillOpacity={0.1}
-                  stroke={
-                    currentTheme === 'light'
-                      ? chartConfig[key].color_light
-                      : chartConfig[key].color_dark
-                  }
-                  stackId="a"
+            {chartKeys.length === 0 ? (
+              <div className="flex h-full items-center justify-center text-base text-muted-foreground">
+                {'Seems like there is no recent activity data available.'}
+              </div>
+            ) : (
+              <AreaChart
+                accessibilityLayer
+                data={chartData}
+                margin={{
+                  left: 12,
+                  right: 12,
+                }}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="month"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  tickFormatter={value => value.slice(0, 3)}
                 />
-              ))}
-            </AreaChart>
+                <ChartTooltip content={<ChartTooltipContent />} />
+
+                {chartKeys.length === 0 && (
+                  <text x={50} y={50} textAnchor="middle" fill="currentColor">
+                    No data available. Please select a different view mode.
+                  </text>
+                )}
+
+                {chartKeys.length > 0 &&
+                  chartKeys.map((key, index) => (
+                    <Area
+                      key={index}
+                      dataKey={key}
+                      type="natural"
+                      fill={
+                        currentTheme === 'light'
+                          ? chartConfig[key].color_light
+                          : chartConfig[key].color_dark
+                      }
+                      fillOpacity={0.1}
+                      stroke={
+                        currentTheme === 'light'
+                          ? chartConfig[key].color_light
+                          : chartConfig[key].color_dark
+                      }
+                      stackId="a"
+                    />
+                  ))}
+              </AreaChart>
+            )}
           </ChartContainer>
         </CardContent>
         <CardFooter>

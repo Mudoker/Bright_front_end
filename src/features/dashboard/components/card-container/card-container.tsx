@@ -1,11 +1,13 @@
 import { TrendingUp, TrendingDown, ArrowRight, ArrowLeft } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-import React, { Dispatch, SetStateAction, useMemo, useCallback } from 'react';
+import React, { Dispatch, SetStateAction, useMemo, useCallback, useEffect } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@components/ui/chart";
 import { getValueDisparityBetweenTwoTimestamps, generateRandomChartData } from "../../utils/calculator";
 import { Button } from "@components/ui/button";
 import { TaskButton } from "./task-button";
+import { useSelector } from "react-redux";
+import { DataFactory } from "../../utils/data-factory";
 
 // Define colors as constants
 const COLORS = {
@@ -13,15 +15,29 @@ const COLORS = {
   negative: "#ff6b6b",
 };
 
-const taskCompletedData = generateRandomChartData(12);
-const taskAssignedData = generateRandomChartData(12);
-const joinedProjectData = generateRandomChartData(12);
+interface ChartData {
+  timestamp: string;
+  data: number;
+}
 
-const MemoizedChart = React.memo(({ title, data, startInterval, endInterval }: { title: string, data: { timestamp: string, data: number }[], startInterval: string, endInterval: string }) => {
-  const disparity = useMemo(() => getValueDisparityBetweenTwoTimestamps(data[0].data, data[data.length - 1].data), [data]);
+interface MemoizedChartProps {
+  title: string;
+  data: ChartData[];
+  startInterval: string;
+  endInterval: string;
+}
+
+const MemoizedChart: React.FC<MemoizedChartProps> = React.memo(({ title, data, startInterval, endInterval }) => {
+  const disparity = useMemo(() => {
+    return data.length > 0 ? getValueDisparityBetweenTwoTimestamps(data[0].data, data[data.length - 1].data) : "0"; // Default to "0" if no data
+  }, [data]);
+
+  // Determine the trend direction and corresponding color/icon
   const isPositive = parseFloat(disparity) > 0;
   const trendColor = isPositive ? COLORS.positive : COLORS.negative;
   const TrendIcon = isPositive ? TrendingUp : TrendingDown;
+
+  // Create chart configuration
   const chartConfig = useMemo(() => ({
     data: {
       label: title.split(" ")[1],
@@ -35,28 +51,33 @@ const MemoizedChart = React.memo(({ title, data, startInterval, endInterval }: {
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
       <CardContent>
+
         <ChartContainer config={chartConfig}>
-          <AreaChart
-            accessibilityLayer
-            data={data}
-            margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
-          >
-            <CartesianGrid vertical={false} />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent />}
-            />
-            <Area
-              dataKey="data"
-              type="natural"
-              fill={trendColor}
-              fillOpacity={0.1}
-              stroke={trendColor}
-            />
-          </AreaChart>
+          {data == null || data.length === 0 ? ( // Check for null, undefined, or empty array
+            <div className="flex h-full items-center justify-center text-muted-foreground text-base">
+              {"No data available"}
+            </div>
+          ) : (
+            <AreaChart
+              accessibilityLayer
+              data={data}
+              margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+            >
+              <CartesianGrid vertical={false} />
+              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+              <Area
+                dataKey="data"
+                type="natural"
+                fill={trendColor}
+                fillOpacity={0.1}
+                stroke={trendColor}
+              />
+            </AreaChart>
+          )}
         </ChartContainer>
       </CardContent>
       <CardFooter>
+
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
             <div className={`flex items-center gap-2 font-medium leading-none ${trendColor}`}>
@@ -135,6 +156,16 @@ const UpcommingTask: React.FC<UpcommingTaskProps> = ({ paging, setPaging }) => {
 
 const CardContainer = () => {
   const [paging, setPaging] = React.useState<number>(0);
+  const currentDataViewMode = useSelector((state: any) => state.dataViewMode.current);
+  const [taskCompletedData, setTaskCompletedData] = React.useState(DataFactory.getTaskCompletedData(currentDataViewMode));
+  const [taskAssignedData, setTaskAssignedData] = React.useState(DataFactory.getTaskAssignedData(currentDataViewMode));
+  const [joinedProjectData, setJoinedProjectData] = React.useState(DataFactory.getJoinedProjectData(currentDataViewMode));
+
+  useEffect(() => {
+    setTaskCompletedData(DataFactory.getTaskCompletedData(currentDataViewMode));
+    setTaskAssignedData(DataFactory.getTaskAssignedData(currentDataViewMode));
+    setJoinedProjectData(DataFactory.getJoinedProjectData(currentDataViewMode));
+  }, [currentDataViewMode]);
 
   return (
     <div className="flex cursor-default gap-2 w-full">

@@ -40,6 +40,7 @@ export const CurrentPlanLimitContainer = () => {
         setCurrentUsage(DataFactory.getUsageData(currentDataViewMode));
     }, [currentDataViewMode]);
 
+
     return (
         <Card className="w-[350px]">
             <CardHeader>

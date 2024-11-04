@@ -1,5 +1,5 @@
 import { ViewMode } from "@/features/dev-dock/data/type";
-import { generateRandomRecentActivity } from "./calculator";
+import { generateRandomRecentActivity, generateRandomChartData } from "./calculator";
 import { faker } from "@faker-js/faker";
 
 export type UsageDataType = {
@@ -16,11 +16,47 @@ export class DataFactory {
             return [{}];
         }
         if (dataViewMode === ViewMode.FAKE_DATA) {
-            return generateRandomRecentActivity(12);
+            return generateRandomChartData(12);
         }
 
         // Should be replaced with real data
-        return generateRandomRecentActivity(12);
+        return generateRandomChartData(12);
+    }
+
+    public static getTaskCompletedData(dataViewMode: ViewMode): any {
+        if (dataViewMode === ViewMode.NO_DATA) {
+            return [];
+        }
+        if (dataViewMode === ViewMode.FAKE_DATA) {
+            return generateRandomChartData(12);
+        }
+
+        // Should be replaced with real data
+        return generateRandomChartData(12);
+    }
+
+    public static getTaskAssignedData(dataViewMode: ViewMode): any {
+        if (dataViewMode === ViewMode.NO_DATA) {
+            return [];
+        }
+        if (dataViewMode === ViewMode.FAKE_DATA) {
+            return generateRandomChartData(12);
+        }
+
+        // Should be replaced with real data
+        return generateRandomChartData(12);
+    }
+
+    public static getJoinedProjectData(dataViewMode: ViewMode): any {
+        if (dataViewMode === ViewMode.NO_DATA) {
+            return [];
+        }
+        if (dataViewMode === ViewMode.FAKE_DATA) {
+            return generateRandomChartData(12);
+        }
+
+        // Should be replaced with real data
+        return generateRandomChartData(12);
     }
 
     public static getUsageData(dataViewMode: ViewMode): any {

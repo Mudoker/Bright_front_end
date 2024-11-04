@@ -34,7 +34,7 @@ export function DeveloperDock() {
     systemPerformance: null,
     currentZoomLevel: getZoomLevelInPercentage(window),
     currentScreenDimension: '',
-    viewAs: useSelector((state: any) => state.data.dataViewMode),
+    viewAs: useSelector((state: any) => state.dataViewMode.current),
   });
 
   const highlighterRef = useRef<HTMLDivElement | null>(null);

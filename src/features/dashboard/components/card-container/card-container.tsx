@@ -3,7 +3,7 @@ import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import React, { Dispatch, SetStateAction, useMemo, useCallback } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@components/ui/chart";
-import { getValueDisparityBetweenTwoTimestamps, generateRandomChartData } from "../../util/calculator";
+import { getValueDisparityBetweenTwoTimestamps, generateRandomChartData } from "../../utils/calculator";
 import { Button } from "@components/ui/button";
 import { TaskButton } from "./task-button";
 

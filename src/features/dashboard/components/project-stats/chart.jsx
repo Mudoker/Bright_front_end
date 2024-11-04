@@ -1,34 +1,17 @@
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import { animate } from '@tsparticles/engine';
-import {
-  BarElement,
-  CategoryScale,
-  Chart as ChartJS,
-  Legend,
-  LinearScale,
-  Title,
-  Tooltip,
-} from 'chart.js';
+import { BarElement, CategoryScale, Chart as ChartJS, Legend, LinearScale, Title, Tooltip } from 'chart.js';
 import { RefreshCcw } from 'lucide-react';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
-import { generateRandomRecentActivity } from '../../util/calculator';
+
+
+import { generateRandomRecentActivity } from '../../utils/calculator';
 
 export const description = 'An area chart with gradient fill';
 

@@ -23,12 +23,10 @@ import { UserFactory } from '@/data/user/user-factory.ts';
 import { ViewMode } from '@/features/dev-dock/data/type.ts';
 import { getCurrentTimeSession } from '@/lib/utils/date-converter';
 import BrightLogo from '@assets/images/app-logo/light.svg';
-import { faker } from '@faker-js/faker';
 import { PackagePlus } from 'lucide-react';
 import { BellDot } from 'lucide-react';
 import { Settings } from 'lucide-react';
 import React from 'react';
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import CardContainer from './card-container/card-container.tsx';

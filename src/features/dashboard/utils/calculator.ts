@@ -18,13 +18,20 @@ export const generateRandomChartData = (length: number): { timestamp: string, da
 export const generateRandomRecentActivity = (length: number): Object[] => {
     const chartData = [];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const projects = ['bright', faker.animal.type(), faker.animal.type()];
 
     for (let i = 0; i < length; i++) {
         const month = `${months[i % 12]}`;
-        const bright = faker.number.int({ min: 1000, max: 5000 });
-        const tuturuuu = faker.number.int({ min: 1000, max: 5000 });
-        const sasuke = faker.number.int({ min: 1000, max: 5000 });
-        chartData.push({ month, bright, tuturuuu, sasuke });
+        const projectOneMetrics = faker.number.int({ min: 1000, max: 5000 });
+        const projectTwoMetrics = faker.number.int({ min: 1000, max: 5000 });
+        const projectThreeMetrics = faker.number.int({ min: 1000, max: 5000 });
+
+        chartData.push({
+            month,
+            [projects[0]]: projectOneMetrics,
+            [projects[1]]: projectTwoMetrics,
+            [projects[2]]: projectThreeMetrics
+        });
     }
 
     return chartData;

@@ -12,7 +12,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-import { animate } from '@tsparticles/engine';
 import {
   BarElement,
   CategoryScale,
@@ -28,7 +27,6 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
-import { generateRandomRecentActivity } from '../../utils/calculator';
 import { DataFactory } from '../../utils/data-factory';
 
 ChartJS.register(
@@ -49,25 +47,24 @@ function Chart() {
   const [spinning, setSpinning] = useState(true);
 
   useEffect(() => {
-    const fetchedData = DataFactory.getRecentActivityData(dataViewMode);
-    setChartData(fetchedData);
-    setChartKeys(Object.keys(fetchedData[0]).slice(1));
-    const projectLabels = Object.keys(fetchedData[0]).filter(
+    const fetchedActivityData = DataFactory.getRecentActivityData(dataViewMode);
+    setChartData(fetchedActivityData);
+
+    const projectNames = Object.keys(fetchedActivityData[0]).filter(
       key => key !== 'month'
     );
-    setChartKeys(projectLabels);
+    setChartKeys(projectNames);
 
-    const config = projectLabels.reduce((cfg, project, index) => {
-      cfg[project] = {
+    const chartConfiguration = projectNames.reduce((config, project, index) => {
+      config[project] = {
         label: project,
-        color_light: ['#FFB3BA', '#BFFCC6', '#FFDFBA'][index], // Example colors
-        color_dark: ['#FF6F61', '#7BC47F', '#FFAA85'][index], // Example darker colors
+        color_light: ['#FFB3BA', '#BFFCC6', '#FFDFBA'][index],
+        color_dark: ['#FF6F61', '#7BC47F', '#FFAA85'][index],
       };
-      return cfg;
+      return config;
     }, {});
-    setChartConfig(config);
 
-    console.log(config);
+    setChartConfig(chartConfiguration);
   }, [dataViewMode]);
 
   // This code simply used to simulate a loading spinner

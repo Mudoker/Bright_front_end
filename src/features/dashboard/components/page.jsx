@@ -19,16 +19,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { UserFactory } from '@/data/user/user-factory.ts';
+import { ViewMode } from '@/features/dev-dock/data/type.ts';
 import { getCurrentTimeSession } from '@/lib/utils/date-converter';
 import BrightLogo from '@assets/images/app-logo/light.svg';
+import { faker } from '@faker-js/faker';
 import { PackagePlus } from 'lucide-react';
 import { BellDot } from 'lucide-react';
 import { Settings } from 'lucide-react';
 // import { Calendar } from './calendar';
 import React from 'react';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-import { Calendar } from './calendar.tsx';
 import CardContainer from './card-container/card-container.tsx';
 import { CurrentPlanLimitContainer } from './current-plan-limit/current-plan-limit-container.tsx';
 import Chart from './project-stats/chart.jsx';
@@ -36,17 +39,7 @@ import TaskPage from './task-list/task-page.tsx';
 
 function Dashboard() {
   const [currentTime, setCurrentTime] = useState(new Date());
-  // const [date, setDate] = (React.useState < Date) | (undefined > new Date());
-  const [date, setDate] = useState(new Date());
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  const dataViewMode = useSelector(state => state.dataViewMode.current);
 
   // !TODO: Implement create new project form
   const handleCreateNewProject = () => {
@@ -54,8 +47,8 @@ function Dashboard() {
   };
 
   const currentHour = currentTime.getHours();
-  const user = 'Kien';
-  const greeting = `Good ${getCurrentTimeSession(currentHour)}, ${user}!`;
+  const user = UserFactory.getUser(dataViewMode);
+  const greeting = `Good ${getCurrentTimeSession(currentHour)}, ${user.name}!`;
   const options = { weekday: 'long', month: 'long', day: 'numeric' };
   const dateFormatted = currentTime.toLocaleDateString(undefined, options);
 

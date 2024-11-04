@@ -27,9 +27,8 @@ import { faker } from '@faker-js/faker';
 import { PackagePlus } from 'lucide-react';
 import { BellDot } from 'lucide-react';
 import { Settings } from 'lucide-react';
-// import { Calendar } from './calendar';
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import CardContainer from './card-container/card-container.tsx';
@@ -38,19 +37,18 @@ import Chart from './project-stats/chart.jsx';
 import TaskPage from './task-list/task-page.tsx';
 
 function Dashboard() {
-  const [currentTime, setCurrentTime] = useState(new Date());
   const dataViewMode = useSelector(state => state.dataViewMode.current);
-
-  // !TODO: Implement create new project form
-  const handleCreateNewProject = () => {
-    console.log('Create new project');
-  };
-
+  const currentTime = new Date();
   const currentHour = currentTime.getHours();
   const user = UserFactory.getUser(dataViewMode);
   const greeting = `Good ${getCurrentTimeSession(currentHour)}, ${user.name}!`;
   const options = { weekday: 'long', month: 'long', day: 'numeric' };
   const dateFormatted = currentTime.toLocaleDateString(undefined, options);
+
+  // !TODO: Implement create new project form
+  const handleCreateNewProject = () => {
+    console.log('Create new project');
+  };
 
   return (
     <div className="flex h-full w-full gap-4 overflow-x-hidden p-4">

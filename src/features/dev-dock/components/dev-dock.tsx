@@ -5,7 +5,6 @@ import {
   DatabaseBackup,
   DatabaseZap,
   Home,
-  Info,
   Moon,
   MousePointer,
   MousePointerClick,
@@ -13,7 +12,7 @@ import {
 } from 'lucide-react';
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { setDataViewMode } from '../utils/data-slice.js';
 import {
   getCurrentSystemPerformance,
   getDimensionsInString,
@@ -35,7 +34,7 @@ export function DeveloperDock() {
     systemPerformance: null,
     currentZoomLevel: getZoomLevelInPercentage(window),
     currentScreenDimension: '',
-    viewAs: ViewMode.FAKE_DATA,
+    viewAs: useSelector((state: any) => state.data.dataViewMode),
   });
 
   const highlighterRef = useRef<HTMLDivElement | null>(null);
@@ -224,16 +223,18 @@ export function DeveloperDock() {
         </>
       ),
       action: () => {
-        const newViewAs =
-          devModeConfig.viewAs === ViewMode.NO_DATA
-            ? ViewMode.FAKE_DATA
-            : devModeConfig.viewAs === ViewMode.FAKE_DATA
-              ? ViewMode.REAL_DATA
-              : ViewMode.NO_DATA;
+        const newViewAs = devModeConfig.viewAs === ViewMode.NO_DATA
+          ? ViewMode.FAKE_DATA
+          : devModeConfig.viewAs === ViewMode.FAKE_DATA
+            ? ViewMode.REAL_DATA
+            : ViewMode.NO_DATA;
+
         setDevModeConfig(prevConfig => ({
           ...prevConfig,
           viewAs: newViewAs,
         }));
+
+        dispatch(setDataViewMode(newViewAs));
       }
     },
   ];

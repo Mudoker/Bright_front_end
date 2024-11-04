@@ -36,3 +36,24 @@ export const generateRandomRecentActivity = (length: number): Object[] => {
 
     return chartData;
 }
+
+export const generateRandomUpcomingTasks = (length: number): { taskID: string, title: string, time: string }[] => {
+    const tasks: { taskID: string, title: string, time: string }[] = []; // Explicitly type the array
+
+    for (let i = 0; i < length; i++) {
+        const taskID = faker.person.firstName().slice(0, 3).toUpperCase() + "-" + faker.number.int({ min: 1000, max: 9999 });
+        const title = faker.lorem.sentence();
+
+        // Generate time in 12-hour format
+        const hours = faker.number.int({ min: 0, max: 23 }).toString().padStart(2, '0');
+        const minutes = faker.number.int({ min: 0, max: 59 }).toString().padStart(2, '0');
+        const period = parseInt(hours) >= 12 ? 'PM' : 'AM'; // Use parseInt to compare
+        const adjustedHours = (parseInt(hours) % 12) || 12; // Convert 0 and 12 to 12
+        const time12hr = `${adjustedHours.toString().padStart(2, '0')}:${minutes} ${period}`;
+
+        // Assign the constructed time to the task object
+        tasks.push({ taskID, title, time: time12hr }); // Fixed here
+    }
+
+    return tasks;
+}

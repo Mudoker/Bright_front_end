@@ -1,5 +1,5 @@
 import { ViewMode } from "@/features/dev-dock/data/type";
-import { generateRandomRecentActivity, generateRandomChartData } from "./calculator";
+import { generateRandomRecentActivity, generateRandomChartData, generateRandomUpcomingTasks } from "./calculator";
 import { faker } from "@faker-js/faker";
 
 export type UsageDataType = {
@@ -16,11 +16,11 @@ export class DataFactory {
             return [{}];
         }
         if (dataViewMode === ViewMode.FAKE_DATA) {
-            return generateRandomChartData(12);
+            return generateRandomRecentActivity(12);
         }
 
         // Should be replaced with real data
-        return generateRandomChartData(12);
+        return generateRandomRecentActivity(12);
     }
 
     public static getTaskCompletedData(dataViewMode: ViewMode): any {
@@ -57,6 +57,18 @@ export class DataFactory {
 
         // Should be replaced with real data
         return generateRandomChartData(12);
+    }
+
+    public static getUpcomingTaskData(dataViewMode: ViewMode): any {
+        if (dataViewMode === ViewMode.NO_DATA) {
+            return [];
+        }
+        if (dataViewMode === ViewMode.FAKE_DATA) {
+            return generateRandomUpcomingTasks(3);
+        }
+
+        // Should be replaced with real data
+        return generateRandomUpcomingTasks(3);
     }
 
     public static getUsageData(dataViewMode: ViewMode): any {

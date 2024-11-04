@@ -1,5 +1,6 @@
 import { ViewMode } from "@/features/dev-dock/data/type";
 import { generateRandomRecentActivity, generateRandomChartData, generateRandomUpcomingTasks } from "./calculator";
+import { generateTasks } from "../components/task-list/data/task-data";
 import { faker } from "@faker-js/faker";
 
 export type UsageDataType = {
@@ -99,5 +100,17 @@ export class DataFactory {
             fileUpload: faker.number.int({ min: 0, max: 1 }),
             tokensUsed: faker.number.int({ min: 0, max: 1 }),
         };
+    }
+
+    public static getAllTasks(dataViewMode: ViewMode): any {
+        if (dataViewMode === ViewMode.NO_DATA) {
+            return [];
+        }
+        if (dataViewMode === ViewMode.FAKE_DATA) {
+            return generateTasks(100);
+        }
+
+        // Should be replaced with real data
+        return generateTasks(100);
     }
 }

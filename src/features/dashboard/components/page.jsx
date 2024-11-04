@@ -20,7 +20,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { UserFactory } from '@/data/user/user-factory.ts';
-import { ViewMode } from '@/features/dev-dock/data/type.ts';
 import { getCurrentTimeSession } from '@/lib/utils/date-converter';
 import BrightLogo from '@assets/images/app-logo/light.svg';
 import { PackagePlus } from 'lucide-react';

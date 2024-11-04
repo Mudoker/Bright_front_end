@@ -1,6 +1,6 @@
-import { TrendingUp, TrendingDown, ArrowRight, ArrowLeft } from "lucide-react";
+import { TrendingUp, TrendingDown, ArrowRight, ArrowLeft, CircleOff } from "lucide-react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
-import React, { Dispatch, SetStateAction, useMemo, useCallback, useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useMemo, useCallback, useEffect, useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@components/ui/card";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@components/ui/chart";
 import { getValueDisparityBetweenTwoTimestamps, generateRandomChartData } from "../../utils/calculator";
@@ -97,16 +97,33 @@ const MemoizedChart: React.FC<MemoizedChartProps> = React.memo(({ title, data, s
 type UpcommingTaskProps = {
   paging: number;
   setPaging: Dispatch<SetStateAction<number>>;
+  dataViewMode?: any;
 };
 
-const UpcommingTask: React.FC<UpcommingTaskProps> = ({ paging, setPaging }) => {
+interface Task {
+  taskId: string;
+  title: string;
+  time: string;
+}
+
+const UpcomingTask: React.FC<UpcommingTaskProps> = ({ paging, setPaging, dataViewMode }) => {
+  const [taskData, setTaskData] = useState<{ taskID: string; title: string; time: string }[]>([]); // Adjust type based on DataFactory output
+
+  useEffect(() => {
+    const fetchTaskData = () => {
+      const data = DataFactory.getUpcomingTaskData(dataViewMode);
+      setTaskData(data);
+    };
+    fetchTaskData();
+  }, [dataViewMode]);
+
   const handlePaging = useCallback((direction: 'prev' | 'next') => {
-    if (direction === 'prev' && paging > 0) {
-      setPaging(paging - 1);
-    } else if (direction === 'next' && paging < 2) {
-      setPaging(paging + 1);
-    }
-  }, [paging, setPaging]);
+    setPaging(prev => {
+      if (direction === 'prev' && prev > 0) return prev - 1;
+      if (direction === 'next' && prev < 2) return prev + 1;
+      return prev; // Return current paging if no changes are made
+    });
+  }, [setPaging]);
 
   return (
     <Card className="flex flex-1 flex-col">
@@ -135,18 +152,28 @@ const UpcommingTask: React.FC<UpcommingTaskProps> = ({ paging, setPaging }) => {
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-0 px-4">
-        <div className="grid w-full items-center gap-4">
-          <div className="flex flex-col gap-2">
-            <TaskButton taskId="ZEN-123" title="Design New Landing Page" time="10:00 AM" />
-            <TaskButton taskId="ZEN-124" title="Regular Team Meeting" time="12:00 AM" />
-            <TaskButton taskId="ZEN-125" title="Fix Mobile Responsiveness" time="02:00 PM" />
-            <span className="flex justify-between text-xs mt-2 dark:text-neutral-400">
-              <span>
-                {"Auto-refresh in 5 minutes"}
-              </span>
-              Page {paging + 1} of 3
-            </span>
+      <CardContent className="p-0 px-4 h-full w-full">
+        <div className="grid items-center gap-4 h-full w-full">
+          <div className="flex flex-col gap-2 justify-between h-full w-full items-center">
+            {taskData.length > 0 ? (
+              <>
+                {taskData.map(task => (
+                  <TaskButton key={task.taskID} taskID={task.taskID} title={task.title} time={task.time} />
+                ))}
+                <span className="flex justify-between text-xs mt-2 pb-2 dark:text-neutral-400 w-full">
+                  <span>{"Auto-refresh in 5 minutes"}</span>
+                  Page {paging + 1} of 3
+                </span>
+              </>
+            ) : (
+              <div className="text-center text-muted-foreground w-full flex flex-col items-center py-4 gap-4 h-full justify-center">
+                <CircleOff className="h-12 w-12" />
+
+                <Button className="flex flex-col w-[350px] text-base font-thin hover:bg-transparent hover:text-neutral-300 hover:cursor-default" variant="ghost">
+                  No upcoming tasks available.
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </CardContent>
@@ -172,7 +199,7 @@ const CardContainer = () => {
       <MemoizedChart title="Tasks Completed" data={taskCompletedData} startInterval="January" endInterval="December" />
       <MemoizedChart title="Tasks Assigned" data={taskAssignedData} startInterval="January" endInterval="December" />
       <MemoizedChart title="Projects Joined" data={joinedProjectData} startInterval="January" endInterval="December" />
-      <UpcommingTask paging={paging} setPaging={setPaging} />
+      <UpcomingTask paging={paging} setPaging={setPaging} dataViewMode={currentDataViewMode} />
     </div>
   );
 };

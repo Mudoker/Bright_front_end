@@ -1,6 +1,9 @@
 import { FloatingDock } from '@components/ui/floating-dock';
 import { setTheme } from '@features/theme/utils/themeSlice';
 import {
+  Database,
+  DatabaseBackup,
+  DatabaseZap,
   Home,
   Info,
   Moon,
@@ -17,7 +20,7 @@ import {
   getZoomLevelInPercentage,
 } from '../utils/utils.js';
 
-import { DevModeConfig } from '../data/type.js';
+import { DevModeConfig, ViewMode } from '../data/type.js';
 
 export function DeveloperDock() {
   // Theme state from Redux store
@@ -31,7 +34,8 @@ export function DeveloperDock() {
     selectedLanguage: 'EN',
     systemPerformance: null,
     currentZoomLevel: getZoomLevelInPercentage(window),
-    currentScreenDimension: ''
+    currentScreenDimension: '',
+    viewAs: ViewMode.FAKE_DATA,
   });
 
   const highlighterRef = useRef<HTMLDivElement | null>(null);
@@ -211,11 +215,26 @@ export function DeveloperDock() {
       ),
     },
     {
-      title: `Info`,
+      title: `View as: ${devModeConfig.viewAs}`,
       icon: (
-        <Info className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <>
+          {devModeConfig.viewAs === ViewMode.NO_DATA && <DatabaseBackup className="h-full w-full text-neutral-500 dark:text-neutral-300" />}
+          {devModeConfig.viewAs === ViewMode.FAKE_DATA && <DatabaseZap className="h-full w-full text-neutral-500 dark:text-neutral-300" />}
+          {devModeConfig.viewAs === ViewMode.REAL_DATA && <Database className="h-full w-full text-neutral-500 dark:text-neutral-300" />}
+        </>
       ),
-      action: () => alert(`Browser: ${navigator.userAgent}`),
+      action: () => {
+        const newViewAs =
+          devModeConfig.viewAs === ViewMode.NO_DATA
+            ? ViewMode.FAKE_DATA
+            : devModeConfig.viewAs === ViewMode.FAKE_DATA
+              ? ViewMode.REAL_DATA
+              : ViewMode.NO_DATA;
+        setDevModeConfig(prevConfig => ({
+          ...prevConfig,
+          viewAs: newViewAs,
+        }));
+      }
     },
   ];
 

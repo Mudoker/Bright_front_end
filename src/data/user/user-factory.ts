@@ -1,5 +1,5 @@
-import { ViewMode } from "@/features/dev-dock/data/type";
-import { faker } from "@faker-js/faker";
+import { ViewMode } from '@/features/dev-dock/data/type';
+import { faker } from '@faker-js/faker';
 
 export class User {
     public id: number;

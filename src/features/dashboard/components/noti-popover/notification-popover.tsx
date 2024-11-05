@@ -2,19 +2,26 @@ import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/components/ui/popover"
-import React from "react"
-import { NotificationItem, NotificationItemProps } from "./notification-item";
-import { useSelector } from "react-redux";
-import { DataFactory } from "../../utils/data-factory";
+} from '@/components/ui/popover';
+import React from 'react';
+import { useSelector } from 'react-redux';
+
+import { DataFactory } from '../../utils/data-factory';
+import { NotificationItem, NotificationItemProps } from './notification-item';
 
 interface NotificationPopoverProps {
-    children: React.ReactNode
+    children: React.ReactNode;
 }
 
-export const NotificationPopover: React.FC<NotificationPopoverProps> = ({ children }) => {
-    const dataViewMode = useSelector((state: any) => state.dataViewMode.current);
-    const [notifications, setNotifications] = React.useState<NotificationItemProps[]>([]);
+export const NotificationPopover: React.FC<NotificationPopoverProps> = ({
+    children,
+}) => {
+    const dataViewMode = useSelector(
+        (state: any) => state.dataViewMode.current
+    );
+    const [notifications, setNotifications] = React.useState<
+        NotificationItemProps[]
+    >([]);
 
     React.useEffect(() => {
         setNotifications(DataFactory.getNotificationData(dataViewMode));
@@ -23,7 +30,7 @@ export const NotificationPopover: React.FC<NotificationPopoverProps> = ({ childr
     return (
         <Popover>
             <PopoverTrigger>{children}</PopoverTrigger>
-            <PopoverContent className="w-80 p-0 flex flex-col gap-2">
+            <PopoverContent className="flex w-80 flex-col gap-2 p-0">
                 {notifications.map((notification, index) => (
                     <NotificationItem
                         key={index}
@@ -34,7 +41,6 @@ export const NotificationPopover: React.FC<NotificationPopoverProps> = ({ childr
                     />
                 ))}
             </PopoverContent>
-
         </Popover>
     );
 };

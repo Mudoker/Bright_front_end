@@ -1,20 +1,30 @@
-import { Button } from "@components/ui/button"
-import React from "react"
-export const TaskButton = ({ taskID, title, time }: { taskID: string, title: string, time: string }) => {
-    title = title.trim()
+import { Button } from '@components/ui/button';
+import React from 'react';
+
+export const TaskButton = ({
+    taskID,
+    title,
+    time,
+}: {
+    taskID: string;
+    title: string;
+    time: string;
+}) => {
+    title = title.trim();
     if (title.length > 25) {
-        title = title.slice(0, 25) + '...'
+        title = title.slice(0, 25) + '...';
     }
 
     return (
-        <Button variant="outline" className="justify-start h-14 text-neutral-500 text-xs text-left w-[350px]">
+        <Button
+            variant="outline"
+            className="h-14 w-[350px] justify-start text-left text-xs text-neutral-500"
+        >
             {taskID}
-            <div className="ml-3 text-ellipsis truncate dark:text-white font-semibold text-sm mr-4">
+            <div className="ml-3 mr-4 truncate text-ellipsis text-sm font-semibold dark:text-white">
                 {title}
             </div>
-            <div className="ml-auto text-sm">
-                {time}
-            </div>
+            <div className="ml-auto text-sm">{time}</div>
         </Button>
-    )
-}
+    );
+};

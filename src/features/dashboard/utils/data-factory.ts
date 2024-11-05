@@ -1,7 +1,13 @@
-import { ViewMode } from "@/features/dev-dock/data/type";
-import { generateRandomRecentActivity, generateRandomChartData, generateRandomUpcomingTasks, generateRandomNotifications } from "./generator";
-import { generateTasks } from "../components/task-list/data/task-data";
-import { faker } from "@faker-js/faker";
+import { ViewMode } from '@/features/dev-dock/data/type';
+import { faker } from '@faker-js/faker';
+
+import { generateTasks } from '../components/task-list/data/task-data';
+import {
+    generateRandomChartData,
+    generateRandomNotifications,
+    generateRandomRecentActivity,
+    generateRandomUpcomingTasks,
+} from './generator';
 
 export type UsageDataType = {
     projects: number;
@@ -9,7 +15,7 @@ export type UsageDataType = {
     storage: number;
     fileUpload: number;
     tokensUsed: number;
-}
+};
 
 export class DataFactory {
     public static getRecentActivityData(dataViewMode: ViewMode): any {

@@ -32,6 +32,7 @@ import CardContainer from './card-container/card-container.tsx';
 import { CurrentPlanLimitContainer } from './current-plan-limit/current-plan-limit-container.tsx';
 import Chart from './project-stats/chart.jsx';
 import TaskPage from './task-list/task-page.tsx';
+import {NotificationPopover} from './noti-popover/notification-popover.tsx';
 
 function Dashboard() {
   const dataViewMode = useSelector(state => state.dataViewMode.current);
@@ -93,9 +94,11 @@ function Dashboard() {
 
           <div>
             <div className="flex flex-row items-center">
-              <Button variant="outline">
-                <BellDot size={16} className="animate-swingPause" />
-              </Button>
+              <NotificationPopover>
+                <Button variant="outline">
+                  <BellDot size={16} className="animate-swingPause" />
+                </Button>
+              </NotificationPopover>
 
               <Dialog>
                 <DialogTrigger asChild>

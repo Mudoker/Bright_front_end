@@ -1,5 +1,5 @@
 import { ViewMode } from "@/features/dev-dock/data/type";
-import { generateRandomRecentActivity, generateRandomChartData, generateRandomUpcomingTasks } from "./calculator";
+import { generateRandomRecentActivity, generateRandomChartData, generateRandomUpcomingTasks, generateRandomNotifications } from "./generator";
 import { generateTasks } from "../components/task-list/data/task-data";
 import { faker } from "@faker-js/faker";
 
@@ -112,5 +112,18 @@ export class DataFactory {
 
         // Should be replaced with real data
         return generateTasks(100);
+    }
+
+    public static getNotificationData(dataViewMode: ViewMode): any {
+        if (dataViewMode === ViewMode.NO_DATA) {
+            return [];
+        }
+
+        if (dataViewMode === ViewMode.FAKE_DATA) {
+            return generateRandomNotifications(3);
+        }
+
+        // Should be replaced with real data
+        return generateRandomNotifications(3);
     }
 }

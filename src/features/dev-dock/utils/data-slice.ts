@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+
 import { ViewMode } from '../data/type';
 
 const initialState = {

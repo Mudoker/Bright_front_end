@@ -3,11 +3,11 @@ import 'overlayscrollbars/styles/overlayscrollbars.css';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import {
-  Navigate,
-  Route,
-  RouterProvider,
-  createBrowserRouter,
-  createRoutesFromElements,
+    Navigate,
+    Route,
+    RouterProvider,
+    createBrowserRouter,
+    createRoutesFromElements,
 } from 'react-router-dom';
 
 import { AuthenticationPage } from './features/auth';
@@ -31,59 +31,65 @@ import { UsersList } from './test/users/userList';
 
 // Routing from landing page to its child and sign in paage
 const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<LandingAuthLayout />}>
-      {/* Landing page and authentication routes */}
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/auth" element={<AuthenticationPage />} />
+    createRoutesFromElements(
+        <Route path="/" element={<LandingAuthLayout />}>
+            {/* Landing page and authentication routes */}
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/auth" element={<AuthenticationPage />} />
 
-      {/* <Route element={<RequireAuth />}> */}
-      <Route path="/welcome" element={<Welcome />} />
-      <Route path="/users" element={<UsersList />} />
+            {/* <Route element={<RequireAuth />}> */}
+            <Route path="/welcome" element={<Welcome />} />
+            <Route path="/users" element={<UsersList />} />
 
-      <Route path="/user" element={<AppLayout />}>
-        {/* Settings routes */}
-        <Route path="/user/settings" element={<SettingLayout />}>
-          <Route path="" element={<Navigate to="edit-profile" replace />} />
-          <Route path="edit-profile" element={<Profile />} />
-          <Route path="account" element={<Account />} />
-          <Route path="appearance" element={<Appearance />} />
-          <Route path="notification" element={<Notification />} />
-          <Route path="*" element={<Notfoundpage />} />j
+            <Route path="/user" element={<AppLayout />}>
+                {/* Settings routes */}
+                <Route path="/user/settings" element={<SettingLayout />}>
+                    <Route
+                        path=""
+                        element={<Navigate to="edit-profile" replace />}
+                    />
+                    <Route path="edit-profile" element={<Profile />} />
+                    <Route path="account" element={<Account />} />
+                    <Route path="appearance" element={<Appearance />} />
+                    <Route path="notification" element={<Notification />} />
+                    <Route path="*" element={<Notfoundpage />} />j
+                </Route>
+
+                {/* Dashboard route */}
+                <Route path="/user/dashboard" element={<Dashboard />} />
+
+                {/* Project route */}
+                {/* Temporary Only */}
+                <Route
+                    path="/user/notification"
+                    element={<ProjectManagementPage />}
+                />
+
+                {/* Board route */}
+                <Route path="/user/board/:id" element={<Board />} />
+
+                {/*Message route */}
+                <Route path="/user/inbox" element={<MessagePage />} />
+                {/* 404 route */}
+                <Route path="*" element={<Notfoundpage />} />
+            </Route>
+            {/* </Route>j */}
+
+            {/* 404 route */}
+            <Route path="*" element={<Notfoundpage />} />
         </Route>
-
-        {/* Dashboard route */}
-        <Route path="/user/dashboard" element={<Dashboard />} />
-
-        {/* Project route */}
-        {/* Temporary Only */}
-        <Route path="/user/notification" element={<ProjectManagementPage />} />
-
-        {/* Board route */}
-        <Route path="/user/board/:id" element={<Board />} />
-
-        {/*Message route */}
-        <Route path="/user/inbox" element={<MessagePage />} />
-        {/* 404 route */}
-        <Route path="*" element={<Notfoundpage />} />
-      </Route>
-      {/* </Route>j */}
-
-      {/* 404 route */}
-      <Route path="*" element={<Notfoundpage />} />
-    </Route>
-  )
+    )
 );
 
 function App() {
-  // Global States
-  const currentTheme = useSelector(state => state.currentTheme.value);
+    // Global States
+    const currentTheme = useSelector(state => state.currentTheme.value);
 
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', currentTheme);
-  }, [currentTheme]);
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', currentTheme);
+    }, [currentTheme]);
 
-  return <RouterProvider router={router} />;
+    return <RouterProvider router={router} />;
 }
 
 export default App;

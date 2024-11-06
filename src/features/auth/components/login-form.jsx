@@ -214,12 +214,12 @@ function Loginform() {
                         />
                     </div>
 
-                    <a
-                        href="#"
+                    <button
+                        type="button"
                         className="text-primary-600 dark:text-primary-500 text-sm font-medium hover:underline"
                     >
                         {'Forgot password?'}
-                    </a>
+                    </button>
                 </div>
             </Form>
         </div>

@@ -24,6 +24,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const FormSchema = z.object({
     pin: z.string().min(6, {
@@ -95,5 +96,8 @@ function OTPVerification({ onComplete }) {
         </Dialog>
     );
 }
+OTPVerification.propTypes = {
+    onComplete: PropTypes.func.isRequired,
+};
 
 export default OTPVerification;

@@ -29,10 +29,6 @@ module.exports = {
       screens: {
         '2xl': '1400px',
       },
-      drag_box: {
-        DEFAULT: 'hsl(var(--drag_box))',
-        foreground: 'hsl(var(--drag_box-foreground))',
-      }
     },
     extend: {
       colors: {
@@ -150,9 +146,9 @@ module.exports = {
         sm: 'calc(var(--radius) - 4px)',
       },
       keyframes: {
-        "caret-blink": {
-          "0%,70%,100%": { opacity: "1" },
-          "20%,50%": { opacity: "0" },
+        'caret-blink': {
+          '0%,70%,100%': { opacity: '1' },
+          '20%,50%': { opacity: '0' },
         },
         'accordion-down': {
           from: {
@@ -201,11 +197,11 @@ module.exports = {
         },
         shimmer: {
           from: {
-            "backgroundPosition": "0 0"
+            backgroundPosition: '0 0',
           },
           to: {
-            "backgroundPosition": "-200% 0"
-          }
+            backgroundPosition: '-200% 0',
+          },
         },
         swingPause: {
           '0%, 20%': { transform: 'rotate(0deg)' },
@@ -221,9 +217,8 @@ module.exports = {
         'meteor-effect': 'meteor 5s linear infinite',
         aurora: 'aurora 60s linear infinite',
         move: 'move 5s linear infinite',
-        shimmer: "shimmer 2s linear infinite",
+        shimmer: 'shimmer 2s linear infinite',
         swingPause: 'swingPause 1s linear infinite',
-        "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],

@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
 } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
 import { Upload, X } from 'lucide-react';
@@ -116,12 +116,12 @@ export function FileUpload() {
                 {'Click to upload'}
               </div>
 
-              {'or'}
+                            {'or'}
 
-              <div>{'drop your files here'}</div>
+                            <div>{'drop your files here'}</div>
 
-              <input {...getInputProps()} />
-            </div>
+                            <input {...getInputProps()} />
+                        </div>
 
             <div className="text-sm">
               {'(Maximum file size: 25MB, multiple files allowed)'}
@@ -180,15 +180,15 @@ export function FileUpload() {
           </Button>
         </DialogFooter>
 
-        {isUploadFailed && (
-          <FailureAlert
-            open={isUploadFailed}
-            setOpen={setIsUploadFailed}
-            title={error.title}
-            des={error.des}
-          />
-        )}
-      </DialogContent>
-    </Dialog>
-  );
+                {isUploadFailed && (
+                    <FailureAlert
+                        open={isUploadFailed}
+                        setOpen={setIsUploadFailed}
+                        title={error.title}
+                        des={error.des}
+                    />
+                )}
+            </DialogContent>
+        </Dialog>
+    );
 }

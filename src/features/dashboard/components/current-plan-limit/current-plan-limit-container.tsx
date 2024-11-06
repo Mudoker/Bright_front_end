@@ -1,5 +1,4 @@
-import React, { SVGProps } from 'react'
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
     Card,
     CardContent,
@@ -7,8 +6,19 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
-import { Braces, CircleDot, Database, FileText, Kanban, Sparkles } from 'lucide-react'
+} from '@/components/ui/card';
+import {
+    Braces,
+    CircleDot,
+    Database,
+    FileText,
+    Kanban,
+    Sparkles,
+} from 'lucide-react';
+import React, { SVGProps, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+
+import { DataFactory, UsageDataType } from '../../utils/data-factory';
 
 interface LimitItemProps {
     Icon: React.ComponentType<SVGProps<SVGSVGElement>>;
@@ -17,21 +27,37 @@ interface LimitItemProps {
     usageLimit: any;
 }
 
-const LimitItem: React.FC<LimitItemProps> = ({ Icon, label, currentUsage, usageLimit }) => (
-    <div className="flex flex-col space-y-1.5 h-full w-72">
-        <Button variant="outline" className="justify-start py-6 rounded-lg">
+const LimitItem: React.FC<LimitItemProps> = ({
+    Icon,
+    label,
+    currentUsage,
+    usageLimit,
+}) => (
+    <div className="flex h-full w-72 flex-col space-y-1.5">
+        <Button variant="outline" className="justify-start rounded-lg py-6">
             <Icon className="h-5 w-5" />
-            <div className="ml-3 text-ellipsis truncate dark:text-white font-semibold text-sm mr-4">
+            <div className="ml-3 mr-4 truncate text-ellipsis text-sm font-semibold dark:text-white">
                 {label}
             </div>
-            <div className="flex flex-row items-center ml-auto">
+            <div className="ml-auto flex flex-row items-center">
                 {currentUsage} / {usageLimit}
             </div>
         </Button>
     </div>
-)
+);
 
 export const CurrentPlanLimitContainer = () => {
+    const currentDataViewMode = useSelector(
+        (state: any) => state.dataViewMode.current
+    );
+    const [currentUsage, setCurrentUsage] = React.useState<UsageDataType>(
+        DataFactory.getUsageData(currentDataViewMode)
+    );
+
+    useEffect(() => {
+        setCurrentUsage(DataFactory.getUsageData(currentDataViewMode));
+    }, [currentDataViewMode]);
+
     return (
         <Card className="w-[350px]">
             <CardHeader>
@@ -43,19 +69,47 @@ export const CurrentPlanLimitContainer = () => {
             <CardContent>
                 <div className="grid w-full items-center gap-4">
                     <div className="flex flex-col space-y-1.5">
-                        <LimitItem Icon={Kanban} label="Projects" currentUsage={0} usageLimit={"5 Created"} />
-                        <LimitItem Icon={CircleDot} label="Issues" currentUsage={0} usageLimit={"200 Unit"} />
-                        <LimitItem Icon={Database} label="Storage" currentUsage={"0"} usageLimit={"5 GB"} />
-                        <LimitItem Icon={FileText} label="File Upload" currentUsage={"0"} usageLimit={"1 GB"} />
-                        <LimitItem Icon={Braces} label="Tokens Used" currentUsage={"0"} usageLimit={"1 Mil"} />
+                        <LimitItem
+                            Icon={Kanban}
+                            label="Projects"
+                            currentUsage={currentUsage.projects}
+                            usageLimit={'5 Created'}
+                        />
+                        <LimitItem
+                            Icon={CircleDot}
+                            label="Issues"
+                            currentUsage={currentUsage.issues}
+                            usageLimit={'200 Unit'}
+                        />
+                        <LimitItem
+                            Icon={Database}
+                            label="Storage"
+                            currentUsage={currentUsage.storage}
+                            usageLimit={'5 GB'}
+                        />
+                        <LimitItem
+                            Icon={FileText}
+                            label="File Upload"
+                            currentUsage={currentUsage.fileUpload}
+                            usageLimit={'1 GB'}
+                        />
+                        <LimitItem
+                            Icon={Braces}
+                            label="Tokens Used"
+                            currentUsage={currentUsage.tokensUsed}
+                            usageLimit={'1 Mil'}
+                        />
                     </div>
                 </div>
             </CardContent>
             <CardFooter className="flex justify-between">
-                <Button variant="outline" className="w-full flex gap-4 items-center font-semibold">
-                    Upgrade to Premium <Sparkles className='w-4 h-4' />
+                <Button
+                    variant="outline"
+                    className="flex w-full items-center gap-4 font-semibold"
+                >
+                    Upgrade to Premium <Sparkles className="h-4 w-4" />
                 </Button>
             </CardFooter>
         </Card>
-    )
-}
+    );
+};

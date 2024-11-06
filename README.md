@@ -4,12 +4,12 @@ Bright is an all-in-one project management tool designed to streamline and enhan
 
 ## Table of Contents
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [Commit Guidelines](#commit-guidelines)
-- [Tech Stack](#tech-stack)
-- [Contributing](#contributing)
-- [Feedback](#feedback)
+-   [Installation](#installation)
+-   [Usage](#usage)
+-   [Commit Guidelines](#commit-guidelines)
+-   [Tech Stack](#tech-stack)
+-   [Contributing](#contributing)
+-   [Feedback](#feedback)
 
 ## Installation
 
@@ -17,27 +17,27 @@ To run Bright locally, follow these steps:
 
 1. Clone the project repository:
 
-   ```bash
-   git clone https://github.com/Mudoker/Bright_FE.git
-   ```
+    ```bash
+    git clone https://github.com/Mudoker/Bright_FE.git
+    ```
 
 2. Navigate to the project directory:
 
-   ```bash
-   cd bright_frontend
-   ```
+    ```bash
+    cd bright_frontend
+    ```
 
 3. Install the necessary dependencies:
 
-   ```bash
-   npm i -g pnpm && pnpm i && pnpm i prop-types
-   ```
+    ```bash
+    npm i -g pnpm && pnpm i && pnpm i prop-types
+    ```
 
 4. Start the development server:
 
-   ```bash
-   pnpm start
-   ```
+    ```bash
+    pnpm start
+    ```
 
 ## Usage
 

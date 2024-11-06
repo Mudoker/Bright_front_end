@@ -1,11 +1,11 @@
 /* eslint-disable max-len */
 import { Checkbox } from '@/components/ui/checkbox';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { setTheme } from '@/features/theme/utils/themeSlice';
@@ -20,9 +20,9 @@ import { z } from 'zod';
 
 import { Button } from '../../../components/ui/button';
 import {
-  PASSWORD_INPUT_VALIDATOR,
-  SIGN_IN,
-  SIGN_IN_VALIDATOR,
+    PASSWORD_INPUT_VALIDATOR,
+    SIGN_IN,
+    SIGN_IN_VALIDATOR,
 } from '../assets/strings';
 import { useLoginMutation } from '../utils/authApi';
 import { setLoginStatus } from '../utils/authSlice';
@@ -42,20 +42,20 @@ function Loginform() {
   const [email, setEmail] = useState(''); // State to hold the email input
   const [password, setPassword] = useState(''); // State to hold the password input
 
-  // State to manage the spinner for the login button
-  const [spinning, setSpinning] = useState(false);
+    // State to manage the spinner for the login button
+    const [spinning, setSpinning] = useState(false);
 
-  // Hook to trigger the login mutation
-  const [login] = useLoginMutation();
-  // Hook to navigate programmatically
-  const navigate = useNavigate();
+    // Hook to trigger the login mutation
+    const [login] = useLoginMutation();
+    // Hook to navigate programmatically
+    const navigate = useNavigate();
 
-  // Function to handle the login process
-  const handleLogin = async e => {
-    e.preventDefault(); // Prevent the default form submission
+    // Function to handle the login process
+    const handleLogin = async e => {
+        e.preventDefault(); // Prevent the default form submission
 
-    try {
-      setSpinning(true); // Show the spinner when login starts
+        try {
+            setSpinning(true); // Show the spinner when login starts
 
       // Prepare the request body with email and password
       const body = {
@@ -63,70 +63,70 @@ function Loginform() {
         password: password,
       };
 
-      // Perform the login mutation
-      const data = await login(body);
+            // Perform the login mutation
+            const data = await login(body);
 
       // Dispatch action to update login state in the Redux store
       dispatch(setLoginStatus(data, email));
 
-      // Log success and navigate to the user dashboard
-      console.log('login success', data);
-      navigate('/welcome');
+            // Log success and navigate to the user dashboard
+            console.log('login success', data);
+            navigate('/welcome');
 
-      // Stop the spinner after a delay
-      setTimeout(() => {
-        setSpinning(false);
-      }, 2000);
-    } catch (error) {
-      // Log the error and stop the spinner
-      console.error('failed', error);
-      setSpinning(false);
-    }
-  };
-
-  useEffect(() => {
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    const codeParam = urlSearchParams.get('code');
-    if (codeParam) {
-      const onGitHubCallback = async () => {
-        const code = codeParam;
-        try {
-          const response = await axios.post(
-            'http://3.27.142.116:4000/bright-backend/api/auth/git',
-            { code }
-          );
-          console.log(response);
-          return response.data;
+            // Stop the spinner after a delay
+            setTimeout(() => {
+                setSpinning(false);
+            }, 2000);
         } catch (error) {
-          console.error('failed', error);
+            // Log the error and stop the spinner
+            console.error('failed', error);
+            setSpinning(false);
         }
-      };
-      onGitHubCallback(codeParam);
-    }
-  }, []);
+    };
 
-  const form = useForm({
-    resolver: zodResolver(formShcema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
+    useEffect(() => {
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const codeParam = urlSearchParams.get('code');
+        if (codeParam) {
+            const onGitHubCallback = async () => {
+                const code = codeParam;
+                try {
+                    const response = await axios.post(
+                        'http://3.27.142.116:4000/bright-backend/api/auth/git',
+                        { code }
+                    );
+                    console.log(response);
+                    return response.data;
+                } catch (error) {
+                    console.error('failed', error);
+                }
+            };
+            onGitHubCallback(codeParam);
+        }
+    }, []);
 
-  const onSubmit = () => {
-    console.log('Sign in complete');
-  };
+    const form = useForm({
+        resolver: zodResolver(formShcema),
+        defaultValues: {
+            email: '',
+            password: '',
+        },
+    });
 
-  const onError = error => {
-    console.log(error);
-  };
+    const onSubmit = () => {
+        console.log('Sign in complete');
+    };
 
-  return (
-    <div className="flex flex-col gap-3 space-y-2 text-center">
-      <div className="flex flex-col space-y-2 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          {SIGN_IN.TITLE}
-        </h1>
+    const onError = error => {
+        console.log(error);
+    };
+
+    return (
+        <div className="flex flex-col gap-3 space-y-2 text-center">
+            <div className="flex flex-col space-y-2 text-center">
+                <h1 className="text-2xl font-semibold tracking-tight">
+                    {SIGN_IN.TITLE}
+                </h1>
 
         <p className="text-sm text-muted-foreground">{SIGN_IN.DES}</p>
       </div>
@@ -190,40 +190,40 @@ function Loginform() {
           </Button>
         </form>
 
-        <div className="flex items-center justify-between space-x-2">
-          <div className="flex items-center space-x-2">
-            <FormField
-              control={form.control}
-              name="remember"
-              render={({ field }) => (
-                <FormItem className="flex items-center space-x-2">
-                  <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Remember me
-                  </FormLabel>
+                <div className="flex items-center justify-between space-x-2">
+                    <div className="flex items-center space-x-2">
+                        <FormField
+                            control={form.control}
+                            name="remember"
+                            render={({ field }) => (
+                                <FormItem className="flex items-center space-x-2">
+                                    <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                        Remember me
+                                    </FormLabel>
 
-                  <FormItem>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                </FormItem>
-              )}
-            />
-          </div>
+                                    <FormItem>
+                                        <FormControl>
+                                            <Checkbox
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                </FormItem>
+                            )}
+                        />
+                    </div>
 
-          <a
-            href="#"
-            className="text-primary-600 dark:text-primary-500 text-sm font-medium hover:underline"
-          >
-            {'Forgot password?'}
-          </a>
+                    <a
+                        href="#"
+                        className="text-primary-600 dark:text-primary-500 text-sm font-medium hover:underline"
+                    >
+                        {'Forgot password?'}
+                    </a>
+                </div>
+            </Form>
         </div>
-      </Form>
-    </div>
-  );
+    );
 }
 
 export default Loginform;

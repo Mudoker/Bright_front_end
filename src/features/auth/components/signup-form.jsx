@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/components/ui/use-toast';
@@ -17,9 +17,9 @@ import { z } from 'zod';
 import PropTypes from 'prop-types';
 
 import {
-  PASSWORD_INPUT_VALIDATOR,
-  SIGN_UP,
-  SIGN_UP_VALIDATOR,
+    PASSWORD_INPUT_VALIDATOR,
+    SIGN_UP,
+    SIGN_UP_VALIDATOR,
 } from '../assets/strings';
 import { useSignupMutation } from '../utils/authApi';
 import { BirthdayPicker } from './birthday-picker';
@@ -62,8 +62,8 @@ function Signupform({ onSignUpComplete }) {
     },
   });
 
-  const handleSignUp = async data => {
-    setLoading(true);
+    const handleSignUp = async data => {
+        setLoading(true);
 
     try {
       const body = {
@@ -90,13 +90,13 @@ function Signupform({ onSignUpComplete }) {
           });
         }
 
-        return;
-      }
+                return;
+            }
 
-      toast({
-        className: SYSTEM_COLORS.SIGN_UP_COMPLETE_COLOR,
-        title: SYSTEM_ALERT.SIGNUP_SUCCESS_TITLE,
-      });
+            toast({
+                className: SYSTEM_COLORS.SIGN_UP_COMPLETE_COLOR,
+                title: SYSTEM_ALERT.SIGNUP_SUCCESS_TITLE,
+            });
 
       setShowOTPVerification(true); // Show OTP verification dialog
     } catch (error) {
@@ -118,64 +118,70 @@ function Signupform({ onSignUpComplete }) {
     onSignUpComplete();
   };
 
-  return (
-    <div className="flex flex-col space-y-2 text-center">
-      <div className="flex flex-col space-y-2 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          {SIGN_UP.TITLE}
-        </h1>
-        <p className="text-sm text-muted-foreground">{SIGN_UP.DES}</p>
-      </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleSignUp, onError)}
-          className="space-y-2"
-        >
-          <div className="flex-cols-2 flex gap-2">
-            <FormField
-              control={form.control}
-              name="firstname"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder={'First Name'}
-                      className="border border-auth_form_border focus:border-transparent"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage>
-                    {form.formState.errors.firstname?.message}
-                  </FormMessage>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastname"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder={'Last Name'}
-                      className="border border-auth_form_border focus:border-transparent"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage>
-                    {form.formState.errors.lastname?.message}
-                  </FormMessage>
-                </FormItem>
-              )}
-            />
-          </div>
+    return (
+        <div className="flex flex-col space-y-2 text-center">
+            <div className="flex flex-col space-y-2 text-center">
+                <h1 className="text-2xl font-semibold tracking-tight">
+                    {SIGN_UP.TITLE}
+                </h1>
+                <p className="text-sm text-muted-foreground">{SIGN_UP.DES}</p>
+            </div>
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(handleSignUp, onError)}
+                    className="space-y-2"
+                >
+                    <div className="flex-cols-2 flex gap-2">
+                        <FormField
+                            control={form.control}
+                            name="firstname"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            type="text"
+                                            placeholder={'First Name'}
+                                            className="border border-auth_form_border focus:border-transparent"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage>
+                                        {
+                                            form.formState.errors.firstname
+                                                ?.message
+                                        }
+                                    </FormMessage>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="lastname"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input
+                                            type="text"
+                                            placeholder={'Last Name'}
+                                            className="border border-auth_form_border focus:border-transparent"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage>
+                                        {
+                                            form.formState.errors.lastname
+                                                ?.message
+                                        }
+                                    </FormMessage>
+                                </FormItem>
+                            )}
+                        />
+                    </div>
 
-          <BirthdayPicker
-            date={form.watch('dob')}
-            setDate={date => form.setValue('dob', date)}
-          />
+                    <BirthdayPicker
+                        date={form.watch('dob')}
+                        setDate={date => form.setValue('dob', date)}
+                    />
 
           <FormField
             control={form.control}

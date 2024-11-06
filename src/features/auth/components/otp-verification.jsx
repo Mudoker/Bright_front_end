@@ -23,8 +23,10 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSendOTPMutation, useVerifyOTPMutation } from '../utils/otpApi';
+import { useToast } from '@/components/ui/use-toast';
 
 const FormSchema = z.object({
     pin: z.string().min(6, {
@@ -32,8 +34,12 @@ const FormSchema = z.object({
     }),
 });
 
-function OTPVerification({ onComplete }) {
+function OTPVerification({ email, onComplete }) {
     const [isOpen, setIsOpen] = useState(true); // State to manage dialog visibility
+    const [cooldown, setCooldown] = useState(0); // State to manage cooldown timer
+    const { toast } = useToast();
+    const [sendOTP] = useSendOTPMutation();
+    const [verifyOTP] = useVerifyOTPMutation();
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
@@ -42,11 +48,91 @@ function OTPVerification({ onComplete }) {
         },
     });
 
-    function onSubmit(data) {
-        console.log(data);
-        setIsOpen(false); // Close the dialog on successful submission
-        onComplete(); // Call the onComplete callback
-    }
+    const startCooldown = () => {
+        setCooldown(60); // Set cooldown to 60 seconds
+    };
+
+    useEffect(() => {
+        const sendOTPRequest = async () => {
+            try {
+                const response = await sendOTP({ email });
+                if (response.error) {
+                    toast({
+                        className: 'bg-red-500 text-white',
+                        title: 'Failed to send OTP',
+                    });
+                } else {
+                    toast({
+                        className: 'bg-green-500 text-white',
+                        title: 'OTP sent successfully',
+                    });
+                    startCooldown(); // Start cooldown after sending OTP
+                }
+            } catch (error) {
+                toast({
+                    className: 'bg-red-500 text-white',
+                    title: 'Failed to send OTP',
+                });
+            }
+        };
+
+        sendOTPRequest();
+    }, [email, sendOTP, toast]);
+
+    useEffect(() => {
+        if (cooldown > 0) {
+            const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [cooldown]);
+
+    const handleResendOTP = async () => {
+        try {
+            const response = await sendOTP({ email });
+            if (response.error) {
+                toast({
+                    className: 'bg-red-500 text-white',
+                    title: 'Failed to resend OTP',
+                });
+            } else {
+                toast({
+                    className: 'bg-green-500 text-white',
+                    title: 'OTP resent successfully',
+                });
+                startCooldown(); // Restart cooldown after resending OTP
+            }
+        } catch (error) {
+            toast({
+                className: 'bg-red-500 text-white',
+                title: 'Failed to resend OTP',
+            });
+        }
+    };
+
+    const onSubmit = async (data) => {
+        try {
+            console.log(data.pin);
+            const response = await verifyOTP({ email, userTypedOTP: data.pin });
+            if (response.error) {
+                toast({
+                    className: 'bg-red-500 text-white',
+                    title: 'Failed to verify OTP',
+                });
+            } else {
+                toast({
+                    className: 'bg-green-500 text-white',
+                    title: 'OTP verified successfully',
+                });
+                setIsOpen(false);
+                onComplete(); // Call the onComplete callback
+            }
+        } catch (error) {
+            toast({
+                className: 'bg-red-500 text-white',
+                title: 'Failed to verify OTP',
+            });
+        }
+    };
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -91,12 +177,23 @@ function OTPVerification({ onComplete }) {
                             </DialogFooter>
                         </form>
                     </Form>
+                    <div className="flex justify-center mt-4">
+                        <Button
+                            variant="outline"
+                            onClick={handleResendOTP}
+                            disabled={cooldown > 0}
+                        >
+                            {cooldown > 0 ? `Resend OTP in ${cooldown}s` : 'Resend OTP'}
+                        </Button>
+                    </div>
                 </div>
             </DialogContent>
         </Dialog>
     );
 }
+
 OTPVerification.propTypes = {
+    email: PropTypes.string.isRequired,
     onComplete: PropTypes.func.isRequired,
 };
 

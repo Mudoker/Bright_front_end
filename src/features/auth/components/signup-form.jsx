@@ -47,6 +47,7 @@ const formSchema = z
 function Signupform({ onSignUpComplete }) {
   const [loading, setLoading] = useState(false);
   const [showOTPVerification, setShowOTPVerification] = useState(false); // State to manage OTP verification dialog visibility
+  const [email, setEmail] = useState(''); // State to store the email
   const { toast } = useToast();
   const [signup] = useSignupMutation();
 
@@ -62,8 +63,8 @@ function Signupform({ onSignUpComplete }) {
     },
   });
 
-    const handleSignUp = async data => {
-        setLoading(true);
+  const handleSignUp = async data => {
+    setLoading(true);
 
     try {
       const body = {
@@ -90,14 +91,15 @@ function Signupform({ onSignUpComplete }) {
           });
         }
 
-                return;
-            }
+        return;
+      }
 
-            toast({
-                className: SYSTEM_COLORS.SIGN_UP_COMPLETE_COLOR,
-                title: SYSTEM_ALERT.SIGNUP_SUCCESS_TITLE,
-            });
+      toast({
+        className: SYSTEM_COLORS.SIGN_UP_COMPLETE_COLOR,
+        title: SYSTEM_ALERT.SIGNUP_SUCCESS_TITLE,
+      });
 
+      setEmail(data.email); // Set the email state
       setShowOTPVerification(true); // Show OTP verification dialog
     } catch (error) {
       toast({
@@ -118,70 +120,64 @@ function Signupform({ onSignUpComplete }) {
     onSignUpComplete();
   };
 
-    return (
-        <div className="flex flex-col space-y-2 text-center">
-            <div className="flex flex-col space-y-2 text-center">
-                <h1 className="text-2xl font-semibold tracking-tight">
-                    {SIGN_UP.TITLE}
-                </h1>
-                <p className="text-sm text-muted-foreground">{SIGN_UP.DES}</p>
-            </div>
-            <Form {...form}>
-                <form
-                    onSubmit={form.handleSubmit(handleSignUp, onError)}
-                    className="space-y-2"
-                >
-                    <div className="flex-cols-2 flex gap-2">
-                        <FormField
-                            control={form.control}
-                            name="firstname"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Input
-                                            type="text"
-                                            placeholder={'First Name'}
-                                            className="border border-auth_form_border focus:border-transparent"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage>
-                                        {
-                                            form.formState.errors.firstname
-                                                ?.message
-                                        }
-                                    </FormMessage>
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="lastname"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Input
-                                            type="text"
-                                            placeholder={'Last Name'}
-                                            className="border border-auth_form_border focus:border-transparent"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage>
-                                        {
-                                            form.formState.errors.lastname
-                                                ?.message
-                                        }
-                                    </FormMessage>
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-
-                    <BirthdayPicker
-                        date={form.watch('dob')}
-                        setDate={date => form.setValue('dob', date)}
+  return (
+    <div className="flex flex-col space-y-2 text-center">
+      <div className="flex flex-col space-y-2 text-center">
+        <h1 className="text-2xl font-semibold tracking-tight">
+          {SIGN_UP.TITLE}
+        </h1>
+        <p className="text-sm text-muted-foreground">{SIGN_UP.DES}</p>
+      </div>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(handleSignUp, onError)}
+          className="space-y-2"
+        >
+          <div className="flex-cols-2 flex gap-2">
+            <FormField
+              control={form.control}
+              name="firstname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder={'First Name'}
+                      className="border border-auth_form_border focus:border-transparent"
+                      {...field}
                     />
+                  </FormControl>
+                  <FormMessage>
+                    {form.formState.errors.firstname?.message}
+                  </FormMessage>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="lastname"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      placeholder={'Last Name'}
+                      className="border border-auth_form_border focus:border-transparent"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage>
+                    {form.formState.errors.lastname?.message}
+                  </FormMessage>
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <BirthdayPicker
+            date={form.watch('dob')}
+            setDate={date => form.setValue('dob', date)}
+          />
 
           <FormField
             control={form.control}
@@ -255,7 +251,7 @@ function Signupform({ onSignUpComplete }) {
         </form>
       </Form>
       {showOTPVerification && (
-        <OTPVerification onComplete={handleOTPVerificationComplete} />
+        <OTPVerification email={email} onComplete={handleOTPVerificationComplete} />
       )}
     </div>
   );

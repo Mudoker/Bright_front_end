@@ -28,19 +28,19 @@ import { useLoginMutation } from '../utils/authApi';
 import { setLoginStatus } from '../utils/authSlice';
 
 const formShcema = z.object({
-  email: z.string({ required_error: SIGN_IN_VALIDATOR.EMAIL }),
-  password: z
-    .string({ required_error: PASSWORD_INPUT_VALIDATOR.REQUIRED })
-    .min(6, { message: PASSWORD_INPUT_VALIDATOR.SHORT })
-    .max(50, { message: PASSWORD_INPUT_VALIDATOR.LONG }),
-  remember: z.boolean().default(false).optional(),
+    email: z.string({ required_error: SIGN_IN_VALIDATOR.EMAIL }),
+    password: z
+        .string({ required_error: PASSWORD_INPUT_VALIDATOR.REQUIRED })
+        .min(6, { message: PASSWORD_INPUT_VALIDATOR.SHORT })
+        .max(50, { message: PASSWORD_INPUT_VALIDATOR.LONG }),
+    remember: z.boolean().default(false).optional(),
 });
 
 function Loginform() {
-  // Import necessary hooks and functions
-  const dispatch = useDispatch(); // Hook to dispatch actions to the Redux store
-  const [email, setEmail] = useState(''); // State to hold the email input
-  const [password, setPassword] = useState(''); // State to hold the password input
+    // Import necessary hooks and functions
+    const dispatch = useDispatch(); // Hook to dispatch actions to the Redux store
+    const [email, setEmail] = useState(''); // State to hold the email input
+    const [password, setPassword] = useState(''); // State to hold the password input
 
     // State to manage the spinner for the login button
     const [spinning, setSpinning] = useState(false);
@@ -57,17 +57,17 @@ function Loginform() {
         try {
             setSpinning(true); // Show the spinner when login starts
 
-      // Prepare the request body with email and password
-      const body = {
-        email: email,
-        password: password,
-      };
+            // Prepare the request body with email and password
+            const body = {
+                email: email,
+                password: password,
+            };
 
             // Perform the login mutation
             const data = await login(body);
 
-      // Dispatch action to update login state in the Redux store
-      dispatch(setLoginStatus(data, email));
+            // Dispatch action to update login state in the Redux store
+            dispatch(setLoginStatus(data, email));
 
             // Log success and navigate to the user dashboard
             console.log('login success', data);
@@ -128,67 +128,67 @@ function Loginform() {
                     {SIGN_IN.TITLE}
                 </h1>
 
-        <p className="text-sm text-muted-foreground">{SIGN_IN.DES}</p>
-      </div>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit, onError)}
-          className="flex flex-col gap-3"
-        >
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    type="email"
-                    value={email}
-                    placeholder={'Account Email'}
-                    autoComplete="email"
-                    onChangeCapture={e => setEmail(e.currentTarget.value)}
-                    className="border border-black/20 focus:border-transparent"
-                    {...field}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    type="password"
-                    value={password}
-                    autoComplete="current-password"
-                    placeholder={'Password'}
-                    onChangeCapture={e => setPassword(e.currentTarget.value)}
-                    className="border border-black/30 focus:border-transparent"
-                    {...field}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <Button
-            type="submit"
-            className="inline-flex h-8 w-full items-center rounded border border-gray-400 bg-white px-5 py-2.5 text-center text-sm font-medium text-black hover:bg-gray-200"
-            onClick={handleLogin}
-            disabled={spinning}
-          >
-            {spinning ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                <span className="please-wait-text">Please wait...</span>
-              </>
-            ) : (
-              'Sign in'
-            )}
-          </Button>
-        </form>
+                <p className="text-sm text-muted-foreground">{SIGN_IN.DES}</p>
+            </div>
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(onSubmit, onError)}
+                    className="flex flex-col gap-3"
+                >
+                    <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <Input
+                                        type="email"
+                                        value={email}
+                                        placeholder={'Account Email'}
+                                        autoComplete="email"
+                                        onChangeCapture={e => setEmail(e.currentTarget.value)}
+                                        className="border border-black/20 focus:border-transparent"
+                                        {...field}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <Input
+                                        type="password"
+                                        value={password}
+                                        autoComplete="current-password"
+                                        placeholder={'Password'}
+                                        onChangeCapture={e => setPassword(e.currentTarget.value)}
+                                        className="border border-black/30 focus:border-transparent"
+                                        {...field}
+                                    />
+                                </FormControl>
+                            </FormItem>
+                        )}
+                    />
+                    <Button
+                        type="submit"
+                        className="inline-flex h-8 w-full items-center rounded border border-gray-400 bg-white px-5 py-2.5 text-center text-sm font-medium text-black hover:bg-gray-200"
+                        onClick={handleLogin}
+                        disabled={spinning}
+                    >
+                        {spinning ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                <span className="please-wait-text">Please wait...</span>
+                            </>
+                        ) : (
+                            'Sign in'
+                        )}
+                    </Button>
+                </form>
 
                 <div className="flex items-center justify-between space-x-2">
                     <div className="flex items-center space-x-2">

@@ -174,7 +174,7 @@ const UpcomingTask: React.FC<UpcommingTaskProps> = ({
     );
 
     return (
-        <Card className="flex flex-1 flex-col">
+        <Card className="flex flex-1 flex-col items-start">
             <CardHeader className="py-4">
                 <CardTitle className="flex items-center text-lg">
                     <span>{"Today's Task"}</span>

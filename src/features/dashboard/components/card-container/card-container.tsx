@@ -2,7 +2,6 @@ import { Button } from '@components/ui/button';
 import {
     Card,
     CardContent,
-    CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
@@ -32,7 +31,6 @@ import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
 import { DataFactory } from '../../utils/data-factory';
 import {
-    generateRandomChartData,
     getValueDisparityBetweenTwoTimestamps,
 } from '../../utils/generator';
 import { TaskButton } from './task-button';
@@ -60,9 +58,9 @@ const MemoizedChart: React.FC<MemoizedChartProps> = React.memo(
         const disparity = useMemo(() => {
             return data.length > 0
                 ? getValueDisparityBetweenTwoTimestamps(
-                      data[0].data,
-                      data[data.length - 1].data
-                  )
+                    data[0].data,
+                    data[data.length - 1].data
+                )
                 : '0'; // Default to "0" if no data
         }, [data]);
 
@@ -98,7 +96,7 @@ const MemoizedChart: React.FC<MemoizedChartProps> = React.memo(
                                 accessibilityLayer
                                 data={data}
                                 margin={{
-                                    top: 0,
+                                    top: 6,
                                     right: 0,
                                     left: 0,
                                     bottom: 0,
@@ -146,12 +144,6 @@ type UpcommingTaskProps = {
     setPaging: Dispatch<SetStateAction<number>>;
     dataViewMode?: any;
 };
-
-interface Task {
-    taskId: string;
-    title: string;
-    time: string;
-}
 
 const UpcomingTask: React.FC<UpcommingTaskProps> = ({
     paging,

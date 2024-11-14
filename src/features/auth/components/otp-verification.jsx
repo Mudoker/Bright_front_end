@@ -23,7 +23,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useSendOTPMutation, useVerifyOTPMutation } from '../utils/otpApi';
 import { useToast } from '@/components/ui/use-toast';
@@ -40,6 +40,7 @@ function OTPVerification({ email, onComplete }) {
     const { toast } = useToast();
     const [sendOTP] = useSendOTPMutation();
     const [verifyOTP] = useVerifyOTPMutation();
+    const hasSentOTP = useRef(false); // Ref to track if OTP has been sent
 
     const form = useForm({
         resolver: zodResolver(FormSchema),
@@ -54,6 +55,9 @@ function OTPVerification({ email, onComplete }) {
 
     useEffect(() => {
         const sendOTPRequest = async () => {
+            if (hasSentOTP.current) return; // Check if OTP has already been sent
+            hasSentOTP.current = true; // Mark OTP as sent
+
             try {
                 const response = await sendOTP({ email });
                 if (response.error) {
@@ -111,7 +115,6 @@ function OTPVerification({ email, onComplete }) {
 
     const onSubmit = async (data) => {
         try {
-            console.log(data.pin);
             const response = await verifyOTP({ email, userTypedOTP: data.pin });
             if (response.error) {
                 toast({

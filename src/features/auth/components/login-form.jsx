@@ -26,8 +26,9 @@ import {
 } from '../assets/strings';
 import { useLoginMutation } from '../utils/authApi';
 import { setLoginStatus } from '../utils/authSlice';
+import OTPVerification from './otp-verification'; // Import the OTPVerification component
 
-const formShcema = z.object({
+const formSchema = z.object({
     email: z.string({ required_error: SIGN_IN_VALIDATOR.EMAIL }),
     password: z
         .string({ required_error: PASSWORD_INPUT_VALIDATOR.REQUIRED })
@@ -44,6 +45,7 @@ function Loginform() {
 
     // State to manage the spinner for the login button
     const [spinning, setSpinning] = useState(false);
+    const [showOTPVerification, setShowOTPVerification] = useState(false); // State to manage OTP verification dialog visibility
 
     // Hook to trigger the login mutation
     const [login] = useLoginMutation();
@@ -65,6 +67,12 @@ function Loginform() {
 
             // Perform the login mutation
             const data = await login(body);
+
+            // Check if the email is unverified
+            if (!data.data.payload.userData.email.isVerified) {
+                setShowOTPVerification(true); // Show OTP verification dialog
+                return;
+            }
 
             // Dispatch action to update login state in the Redux store
             dispatch(setLoginStatus(data, email));
@@ -106,7 +114,7 @@ function Loginform() {
     }, []);
 
     const form = useForm({
-        resolver: zodResolver(formShcema),
+        resolver: zodResolver(formSchema),
         defaultValues: {
             email: '',
             password: '',
@@ -119,6 +127,11 @@ function Loginform() {
 
     const onError = error => {
         console.log(error);
+    };
+
+    const handleOTPVerificationComplete = () => {
+        setShowOTPVerification(false);
+        navigate('/welcome');
     };
 
     return (
@@ -222,6 +235,9 @@ function Loginform() {
                     </button>
                 </div>
             </Form>
+            {showOTPVerification && (
+                <OTPVerification email={email} onComplete={handleOTPVerificationComplete} />
+            )}
         </div>
     );
 }

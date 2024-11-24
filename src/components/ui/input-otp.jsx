@@ -1,6 +1,6 @@
 import * as React from "react"
 import { OTPInput, OTPInputContext } from "input-otp"
-import { Dot } from "lucide-react"
+import { Slash } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -45,7 +45,7 @@ InputOTPSlot.displayName = "InputOTPSlot"
 
 const InputOTPSeparator = React.forwardRef(({ ...props }, ref) => (
   <div ref={ref} role="separator" {...props}>
-    <Dot />
+    <Slash className="text-neutral-500 -rotate-6"/>
   </div>
 ))
 InputOTPSeparator.displayName = "InputOTPSeparator"

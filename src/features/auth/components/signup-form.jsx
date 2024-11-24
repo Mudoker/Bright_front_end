@@ -7,14 +7,13 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
-import { SYSTEM_ALERT, SYSTEM_COLORS } from '@/config/constants/strings.global';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import PropTypes from 'prop-types';
+import { toast } from 'sonner'; // Import the toast function from sonner
 
 import {
     PASSWORD_INPUT_VALIDATOR,
@@ -48,7 +47,6 @@ function Signupform({ onSignUpComplete }) {
   const [loading, setLoading] = useState(false);
   const [showOTPVerification, setShowOTPVerification] = useState(false); // State to manage OTP verification dialog visibility
   const [email, setEmail] = useState(''); // State to store the email
-  const { toast } = useToast();
   const [signup] = useSignupMutation();
 
   const form = useForm({
@@ -80,31 +78,32 @@ function Signupform({ onSignUpComplete }) {
       if (response.error) {
         const error_code = response.error.status;
         if (error_code === 400) {
-          toast({
-            className: SYSTEM_COLORS.SIGN_UP_FAILED_COLOR,
-            title: SYSTEM_ALERT.SIGNUP_INVALID_CREDENTIALS,
+          toast.error("Signup failed", {
+            description: "Invalid credentials. Please try again.",
           });
         } else if (error_code === 500) {
-          toast({
-            className: SYSTEM_COLORS.SIGN_UP_FAILED_COLOR,
-            title: SYSTEM_ALERT.SIGNUP_SERVER_ERROR,
+          toast.error("Signup failed", {
+            description: "Server error. Please try again later.",
           });
         }
 
         return;
       }
 
-      toast({
-        className: SYSTEM_COLORS.SIGN_UP_COMPLETE_COLOR,
-        title: SYSTEM_ALERT.SIGNUP_SUCCESS_TITLE,
+      toast.success("Signup successful", {
+        description: "Your account has been created successfully.",
       });
 
-      setEmail(data.email); // Set the email state
-      setShowOTPVerification(true); // Show OTP verification dialog
+      // Check if the email is unverified
+      if (response.data.emailUnverified) {
+        setEmail(data.email); // Set the email state
+        setShowOTPVerification(true); // Show OTP verification dialog
+      } else {
+        onSignUpComplete(); // Call the onSignUpComplete callback
+      }
     } catch (error) {
-      toast({
-        className: SYSTEM_COLORS.SIGN_UP_FAILED_COLOR,
-        title: SYSTEM_ALERT.SIGNUP_FAILED_TITLE,
+      toast.error("Signup failed", {
+        description: "An error occurred. Please try again.",
       });
     } finally {
       setLoading(false);

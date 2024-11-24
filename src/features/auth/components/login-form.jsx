@@ -11,11 +11,10 @@ import { Input } from '@/components/ui/input';
 import { setTheme } from '@/features/theme/utils/themeSlice';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
-import React, { useState } from 'react';
-import { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { Button } from '../../../components/ui/button';
@@ -46,6 +45,8 @@ function Loginform() {
     // State to manage the spinner for the login button
     const [spinning, setSpinning] = useState(false);
     const [showOTPVerification, setShowOTPVerification] = useState(false); // State to manage OTP verification dialog visibility
+    const [cooldown, setCooldown] = useState(0); // State to manage cooldown timer
+    const hasSentOTP = useRef(false); // Ref to track if OTP has been sent
 
     // Hook to trigger the login mutation
     const [login] = useLoginMutation();
@@ -93,25 +94,15 @@ function Loginform() {
     };
 
     useEffect(() => {
-        const urlSearchParams = new URLSearchParams(window.location.search);
-        const codeParam = urlSearchParams.get('code');
-        if (codeParam) {
-            const onGitHubCallback = async () => {
-                const code = codeParam;
-                try {
-                    const response = await axios.post(
-                        'http://3.27.142.116:4000/bright-backend/api/auth/git',
-                        { code }
-                    );
-                    console.log(response);
-                    return response.data;
-                } catch (error) {
-                    console.error('failed', error);
-                }
-            };
-            onGitHubCallback(codeParam);
+        if (cooldown > 0) {
+            const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+            return () => clearTimeout(timer);
         }
-    }, []);
+    }, [cooldown]);
+
+    const startCooldown = () => {
+        setCooldown(60); // Set cooldown to 60 seconds
+    };
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -131,7 +122,12 @@ function Loginform() {
 
     const handleOTPVerificationComplete = () => {
         setShowOTPVerification(false);
-        navigate('/welcome');
+        navigate('/user/dashboard');
+    };
+
+    const handleOTPVerificationClose = () => {
+        setShowOTPVerification(false);
+        setSpinning(false); // Stop the spinner when the OTP verification dialog is closed
     };
 
     return (
@@ -236,7 +232,14 @@ function Loginform() {
                 </div>
             </Form>
             {showOTPVerification && (
-                <OTPVerification email={email} onComplete={handleOTPVerificationComplete} />
+                <OTPVerification
+                    email={email}
+                    onComplete={handleOTPVerificationComplete}
+                    onClose={handleOTPVerificationClose}
+                    cooldown={cooldown}
+                    startCooldown={startCooldown}
+                    hasSentOTP={hasSentOTP}
+                />
             )}
         </div>
     );

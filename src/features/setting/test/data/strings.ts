@@ -18,7 +18,7 @@ export const ACCOUNT = {
 
 export const NOTIFICATION = {
     NOTIFICATION_DESCTIOPTION:
-        'Choose where you`d like emails to be sent. You can add more email addresses. Use custom routes to specify different email addresses to be used for individual organizations.',
+        'Choose where you`d like emails to be sent. You can add more email addresses.',
     COMMUNICATION_DESCRIPTION: 'Receive email about your account activity',
     SECURITY_DESCRIPTION: 'Receive email about your account security',
     SOCIAL_DESCRIPTION: 'Receive email about friend requests, follows and more',

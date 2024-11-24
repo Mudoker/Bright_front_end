@@ -57,5 +57,5 @@ export const FILE_UNSUPPORTED = {
     DES: `The uploaded file has an unsupported file type. Please upload files with the following extensions: ${ALLOWED_EXTENSIONS.join(', ')}`,
 };
 
-export const API_BASE_PORT = 5000;
+export const API_BASE_PORT = 4080;
 export const API_BASE_URL = 'http://localhost:' + API_BASE_PORT + '/api/v1/';

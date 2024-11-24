@@ -43,7 +43,9 @@
         /* 404 Page */
         --not_found_background: 0 0% 100%;
 
-        /* Card */
+        /* File Upload */
+        --drag_box: 0, 0%, 0%, 0.5;
+
         --card: 0 0% 100%;
         --card-foreground: 240 10% 3.9%;
 
@@ -120,9 +122,11 @@
         /* 404 Page */
         --not_found_background: 0, 0%, 14.1%;
 
-        /* Card */
-        --card: 240 10% 3.9%;
-        --card-foreground: 0 0% 98%;
+    /* File Upload */
+    --drag_box: 220, 14%, 91%, 0.4;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
 
         /* Popover */
         --popover: 240 10% 3.9%;

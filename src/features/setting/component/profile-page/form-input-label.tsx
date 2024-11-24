@@ -1,4 +1,3 @@
-import { FC } from "react";
 import React from "react";
 import { Control, FieldValues, FieldPath, FieldErrors, ControllerRenderProps } from "react-hook-form";
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";

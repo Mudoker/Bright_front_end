@@ -38,13 +38,6 @@ import { PROFILE } from '../../test/data/strings';
 import Modal from '../modal';
 import FormInputLabel from './form-input-label';
 
-const socialProfiles = [
-    { name: 'profile1', placeholder: 'Link to social profile 1' },
-    { name: 'profile2', placeholder: 'Link to social profile 2' },
-    { name: 'profile3', placeholder: 'Link to social profile 3' },
-    { name: 'profile4', placeholder: 'Link to social profile 4' },
-];
-
 const formShcema = z.object({
     username: z
         .string()

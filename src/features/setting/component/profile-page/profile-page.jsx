@@ -1,26 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from '@/components/ui/popover';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,11 +14,14 @@ import { LinkIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import FormInputLabel from './form-input-label';
 
-import userImage from '../asset/cat.jpg';
-import withScrollbarTheme from '../hoc/scroll-bar';
-import { PROFILE } from '../test/data/strings';
-import Modal from './modal';
+
+import userImage from '../../asset/cat.jpg';
+import withScrollbarTheme from '../../hoc/scroll-bar';
+import { PROFILE } from '../../test/data/strings';
+import Modal from '../modal';
+
 
 const formShcema = z.object({
     username: z
@@ -60,8 +47,6 @@ const formShcema = z.object({
 });
 
 function Profile() {
-    // eslint-disable-next-line no-unused-vars
-    const [date, setDate] = useState(Date);
     const [modalOpen, setModalOpen] = useState(false);
 
     const ref = useRef(null);
@@ -83,8 +68,9 @@ function Profile() {
 
     return (
         <div className="w-[74.4vw]">
-            <div className="mx-3 border-b-[1px] border-slate-300 pb-[14px] pt-8 text-2xl font-light">
-                {'Public Profile'}
+            <div className="flex flex-col mx-3 gap-4 pb-[14px] pt-8 text-2xl font-light">
+                {'Profile'}
+                <Separator />
             </div>
 
             <div className="flex">
@@ -95,46 +81,20 @@ function Profile() {
                             onSubmit={form.handleSubmit(onSubmit, onError)}
                         >
                             <div id="name-container" className="flex gap-7">
-                                {/* Username */}
-                                <FormField
+                                <FormInputLabel
                                     control={form.control}
                                     name="username"
-                                    render={({ field }) => (
-                                        <FormItem className="w-5/12">
-                                            <FormLabel className="text-md font-semibold">
-                                                {'Username'}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Username"
-                                                    {...field}
-                                                    className="h-9 focus:border-transparent"
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
+                                    label="Username"
+                                    placeholder="Enter your username"
+                                    className="w-5/12"
                                 />
 
-                                {/* Nickname */}
-                                <FormField
+                                <FormInputLabel
                                     control={form.control}
                                     name="nickname"
-                                    render={({ field }) => (
-                                        <FormItem className="w-5/12">
-                                            <FormLabel className="text-md font-semibold">
-                                                {'Nickname'}
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input
-                                                    placeholder="Nickname"
-                                                    {...field}
-                                                    className="h-9 focus:border-transparent"
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
+                                    label="Nickname"
+                                    placeholder="Enter your nickname"
+                                    className="w-5/12"
                                 />
                             </div>
 

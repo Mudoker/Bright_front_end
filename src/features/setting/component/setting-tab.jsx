@@ -6,12 +6,10 @@ function SettingTab({ tab, tabIndex, selectedActive, handleSelected }) {
     const isSelected = selectedActive === tabIndex;
     const iconStyle = `w-4 h-4 ${isSelected ? '' : 'group-hover:text-foreground'}`;
     return (
-        <NavLink
-            to={`/user/settings/${tab.name.toLowerCase().replace(/\s/g, '-')}`}
-        >
+        <NavLink to={`/settings/${tab.name.toLowerCase().replace(/\s/g, '-')}`}>
             <div
                 id={tab.name}
-                className={`group my-3 flex cursor-pointer flex-col rounded-md p-3 pl-3 ${selectedActive === tabIndex ? 'bg-black' : 'hover:bg-slate-200/50'}`}
+                className={`group my-2 flex cursor-pointer flex-col rounded-md p-3 pl-3 ${selectedActive === tabIndex ? 'bg-neutral-900' : 'hover:bg-slate-200/10'}`}
                 onClick={handleSelected}
             >
                 <div

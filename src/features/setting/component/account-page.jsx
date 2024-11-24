@@ -19,6 +19,7 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import { useForm } from 'react-hook-form';
@@ -68,16 +69,18 @@ function Account() {
     return (
         <OverlayScrollbarsComponent>
             <div className="container-ns flex w-[74.4vw] flex-col overflow-auto">
-                <div className="group sticky z-30 mx-3 border-b-[1px] border-slate-300 bg-background pb-[14px] pt-8 text-2xl font-light">
+                <div className="group sticky z-30 mx-3 flex flex-col gap-4 bg-background pb-[14px] pt-8 text-2xl font-light">
                     {'Account'}
+                    <Separator />
                 </div>
 
                 <div className="flex flex-col">
-                    <div className="m-3 border-b-[1px] p-2">
+                    <div className="m-3 flex flex-col gap-4 p-2">
                         <p className="font-semibold">{'Change Password'}</p>
+                        <Separator />
                     </div>
 
-                    <div className="mx-3 space-y-4 p-2">
+                    <div className="mx-3 flex flex-col space-y-4 p-2">
                         <Form {...form}>
                             <form
                                 onSubmit={form.handleSubmit({
@@ -85,20 +88,13 @@ function Account() {
                                     onError,
                                 })}
                             >
-                                {/* To support accesibility */}
-                                <input
-                                    hidden
-                                    type="text"
-                                    autoComplete="username"
-                                />
-
                                 <FormField
                                     control={form.control}
                                     name="old_password"
                                     render={({ field }) => (
                                         <FormItem className="flex flex-col">
                                             <div className="mt-2 flex w-[40vw] flex-row items-center justify-between">
-                                                <FormLabel className="text-base font-semibold">
+                                                <FormLabel>
                                                     {'Old password'}
                                                 </FormLabel>
                                                 <FormControl>
@@ -107,7 +103,7 @@ function Account() {
                                                         placeholder="Old password"
                                                         {...field}
                                                         type="password"
-                                                        className="w-[350px]"
+                                                        className="h-12 w-[350px]"
                                                     />
                                                 </FormControl>
                                             </div>
@@ -120,18 +116,17 @@ function Account() {
                                     control={form.control}
                                     name="new_password"
                                     render={({ field }) => (
-                                        <FormItem className="flex flex-col">
+                                        <FormItem className="mt-4 flex flex-col">
                                             <div className="mt-2 flex w-[40vw] flex-row items-center justify-between">
-                                                <FormLabel className="text-base font-semibold">
+                                                <FormLabel>
                                                     {'New password'}
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        autoComplete="new-password"
                                                         placeholder="New password"
                                                         {...field}
-                                                        type="password"
-                                                        className="w-[350px]"
+                                       type="password"
+                                                        className="h-12 w-[350px]"
                                                     />
                                                 </FormControl>
                                             </div>
@@ -144,9 +139,9 @@ function Account() {
                                     control={form.control}
                                     name="re_confirm_password"
                                     render={({ field }) => (
-                                        <FormItem className="flex flex-col">
+                                        <FormItem className="mt-4 flex flex-col">
                                             <div className="mt-2 flex w-[40vw] flex-row items-center justify-between">
-                                                <FormLabel className="text-base font-semibold">
+                                                <FormLabel>
                                                     {'Confirm new password'}
                                                 </FormLabel>
                                                 <FormControl>
@@ -155,7 +150,7 @@ function Account() {
                                                         placeholder="Confirm new password"
                                                         {...field}
                                                         type="password"
-                                                        className="w-[350px]"
+                                                        className="h-12 w-[350px]"
                                                     />
                                                 </FormControl>
                                             </div>
@@ -170,7 +165,7 @@ function Account() {
                     </div>
 
                     <div className="m-3 mt-12 border-b-[1px] p-2">
-                        <p className="font-bold text-rose-500">
+                        <p className="font-bold text-rose-400">
                             {'Delete Account'}
                         </p>
                     </div>
@@ -179,7 +174,7 @@ function Account() {
                         <p>{ACCOUNT.DELETE_DESCRIPTION}</p>
                         <AlertDialog>
                             <AlertDialogTrigger asChild>
-                                <Button className="border border-rose-500 bg-white text-red-400 hover:bg-rose-500 hover:text-white">
+                                <Button className="border bg-white hover:bg-rose-500 hover:text-white">
                                     {'Delete your account'}
                                 </Button>
                             </AlertDialogTrigger>

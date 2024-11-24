@@ -1,3 +1,4 @@
+import { Separator } from '@/components/ui/separator';
 import { useState } from 'react';
 
 import SETTING_TABS from '../test/data/setting';
@@ -11,11 +12,12 @@ function SettingSideBar() {
 
     return (
         <div className="no-scrollbar mr-[3vw] flex h-dvh w-[16vw] flex-col overflow-auto bg-background">
-            <div className="group top-0 w-full border-b-[1px] border-slate-300/30 px-2 pb-[14px] pt-8 text-2xl font-light">
-                {'Setting'}
+            <div className="flex flex-col gap-4 group top-0 ml-3 w-full border-slate-300/30 px-2 pb-[14px] pt-8 text-2xl">
+                {'Settings'}
+                <Separator />
             </div>
 
-            <div className="px-2">
+            <div className="px-3">
                 {SETTING_TABS.map((tab, index) => (
                     <SettingTab
                         key={index}

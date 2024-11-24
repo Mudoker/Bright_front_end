@@ -1,25 +1,15 @@
 import { Button } from '@/components/ui/button';
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-} from '@/components/ui/form';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { toast } from '@/components/ui/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
+
 
 import withScrollbarTheme from '../hoc/scroll-bar';
 import { NOTIFICATION } from '../test/data/strings';
@@ -94,8 +84,9 @@ function Notification() {
 
     return (
         <div className="container-ns flex w-[74.4vw] flex-col overflow-auto pb-10">
-            <div className="group sticky z-30 mx-3 border-b-[1px] border-slate-300 bg-background pb-[14px] pt-8 text-2xl font-light">
+            <div className="flex flex-col gap-4 group sticky z-30 mx-3 bg-background pb-[14px] pt-8 text-2xl font-light">
                 {'Notification'}
+                <Separator />
             </div>
             <div className="flex flex-col">
                 <Form {...form}>
@@ -109,7 +100,7 @@ function Notification() {
                                         <FormLabel className="text-base font-semibold">
                                             Default Notification
                                         </FormLabel>
-                                        <FormDescription className="text-md w-[90%]">
+                                        <FormDescription className="text-md w-[90%] pb-2">
                                             {
                                                 NOTIFICATION.NOTIFICATION_DESCTIOPTION
                                             }
@@ -250,7 +241,7 @@ function Notification() {
                                 )}
                             />
                         </div>
-                        <div className="mx-3 mb-2">
+                        <div className="mx-3 mb-2 mt-5">
                             <Button type="submit">{'Save changes'}</Button>
                         </div>
                     </form>

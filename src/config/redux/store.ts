@@ -4,12 +4,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import { authSlice } from '../../features/auth/utils/authSlice';
 import { themeSlice } from '../../features/theme/utils/themeSlice';
 import { apiSlice } from '../api/apiSlice';
-
+import fileSlice from '@/config/slice/file-slice';
 export const store = configureStore({
     reducer: {
         [authSlice.reducerPath]: authSlice.reducer,
         [themeSlice.name]: themeSlice.reducer,
         [apiSlice.reducerPath]: apiSlice.reducer,
+        file: fileSlice,
         [dataSlice.name]: dataSlice.reducer,
     },
     middleware: getDefaultMiddleware =>

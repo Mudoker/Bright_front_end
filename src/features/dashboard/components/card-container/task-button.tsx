@@ -10,21 +10,14 @@ export const TaskButton = ({
     title: string;
     time: string;
 }) => {
-    title = title.trim();
-    if (title.length > 25) {
-        title = title.slice(0, 25) + '...';
-    }
-
     return (
         <Button
             variant="outline"
-            className="h-14 w-[350px] justify-start text-left text-xs text-neutral-500"
+            className="h-14 w-[350px] text-xs text-neutral-500"
         >
-            {taskID}
-            <div className="ml-3 mr-4 truncate text-ellipsis text-sm font-semibold dark:text-white">
-                {title}
-            </div>
-            <div className="ml-auto text-sm">{time}</div>
-        </Button>
+            <div className="text-xs w-12 mr-4">{taskID}</div>
+            <span className="text-sm font-semibold dark:text-white mx-2 truncate">{title}</span>
+            <span className="text-xs ml-auto">{time}</span>
+        </Button >
     );
 };

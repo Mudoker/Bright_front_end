@@ -50,22 +50,22 @@ import { NavLink } from 'react-router-dom';
 const items = [
     {
         title: 'Dashboard',
-        url: '/user/dashboard',
+        url: '/dashboard',
         icon: Home,
     },
     {
         title: 'Inbox',
-        url: '/user/inbox',
+        url: '/inbox',
         icon: Inbox,
     },
     {
         title: 'Projects',
-        url: '/user/project',
+        url: '/project',
         icon: PanelsTopLeft,
     },
     {
         title: 'Notifications',
-        url: '/user/notification',
+        url: '/notification',
         icon: Bell,
     },
 ];
@@ -361,7 +361,7 @@ export function AppSidebar({ setOpen, open }: { setOpen: any; open: boolean }) {
                                     <span>Profile</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    <NavLink to={`/user/settings`}>
+                                    <NavLink to={`/settings`}>
                                         <span className="text-base">
                                             {'Settings'}
                                         </span>

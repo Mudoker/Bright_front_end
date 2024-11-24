@@ -76,11 +76,7 @@ function Loginform() {
             }
 
             // Dispatch action to update login state in the Redux store
-            dispatch(setLoginStatus(data, email));
-
-            // Log success and navigate to the user dashboard
-            console.log('login success', data);
-            navigate('/welcome');
+            dispatch(setLoginStatus(data, email));;
 
             // Stop the spinner after a delay
             setTimeout(() => {
@@ -122,7 +118,7 @@ function Loginform() {
 
     const handleOTPVerificationComplete = () => {
         setShowOTPVerification(false);
-        navigate('/user/dashboard');
+        navigate('/dashboard');
     };
 
     const handleOTPVerificationClose = () => {

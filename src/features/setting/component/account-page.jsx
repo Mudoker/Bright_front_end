@@ -125,7 +125,7 @@ function Account() {
                                                     <Input
                                                         placeholder="New password"
                                                         {...field}
-                                                        type="password"
+                                       type="password"
                                                         className="h-12 w-[350px]"
                                                     />
                                                 </FormControl>

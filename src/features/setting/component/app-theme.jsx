@@ -25,7 +25,7 @@ function Theme({ name, image }) {
             <img
                 src={image}
                 alt=""
-                className="h-[180px] w-[300px] object-fill"
+                className="max-h-[180px] w-full object-fill"
             />
             <div className="flex flex-row gap-2 p-2">
                 <input

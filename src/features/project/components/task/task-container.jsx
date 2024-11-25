@@ -19,7 +19,6 @@ import tinycolor from 'tinycolor2';
 
 import Divider from '../../../../components/general/divider';
 import { Task } from '../../utils/class';
-import { MemberList } from '../member-list';
 import { DetailedTaskView } from './detailed-task-view';
 
 export const TaskContainer = ({ task }) => {
@@ -117,7 +116,7 @@ export const TaskContainer = ({ task }) => {
             <div
                 ref={setNodeRef}
                 style={style}
-                className="mb-1 rounded-md border-2 border-slate-200 bg-white"
+                className="mb-1 rounded-lg bg-card py-2 text-foreground"
                 {...attributes}
                 {...listeners}
             >
@@ -137,14 +136,14 @@ export const TaskContainer = ({ task }) => {
                                             ).lighten(50),
                                             color: tinycolor(tag.color),
                                         }}
-                                        className="h-6"
+                                        className="h-6 rounded-md"
                                     >
                                         {tag.title}
                                     </Badge>
                                 ))}
 
                             {task.tags.length > 2 && (
-                                <Badge className="h-6 bg-slate-100 text-slate-500 hover:bg-slate-200/80">
+                                <Badge className="h-6 rounded-md bg-slate-100 text-slate-500 hover:bg-slate-200/80">
                                     + {task.tags.length - 2}
                                 </Badge>
                             )}
@@ -161,29 +160,12 @@ export const TaskContainer = ({ task }) => {
 
                     <div>
                         {/* Task Contents */}
-                        <div className="max-w-52 truncate text-xl font-semibold">
+                        <div className="max-w-52 truncate text-lg font-semibold">
                             {task.title}
                         </div>
 
                         <div className="max-w-60 truncate text-sm">
                             {task.des}
-                        </div>
-
-                        {/* Asignee List */}
-                        <div className="flex items-center justify-between">
-                            <MemberList
-                                width={6}
-                                height={6}
-                                members={task.memList}
-                            />
-
-                            {/* prevent on trigger drag event */}
-                            <Button
-                                onClick={e => e.stopPropagation()}
-                                variant="ghost"
-                            >
-                                <UserRoundPlus className="h-4 w-4" />
-                            </Button>
                         </div>
 
                         <Divider
@@ -195,23 +177,47 @@ export const TaskContainer = ({ task }) => {
                         {/* Helper Buttons */}
                         <div className="flex items-center justify-between">
                             <div className="flex gap-2 text-sm">
-                                <div className="flex items-center gap-1 p-2 hover:rounded-md hover:bg-slate-300/20">
-                                    <List className="h-5 w-4" />
+                                <Button
+                                    className="flex items-center gap-1 px-1.5 hover:rounded-md dark:text-neutral-300/80 text-xs"
+                                    variant="ghost"
+                                >
+                                    <List className="h-3.5 w-3.5" />
                                     {task.todos.length}
-                                </div>
+                                </Button>
 
-                                <div className="flex items-center gap-1 p-2 hover:rounded-md hover:bg-slate-300/20">
-                                    <Paperclip className="h-5 w-4" />
+                                <Button
+                                    className="flex items-center gap-1 px-1.5 hover:rounded-md dark:text-neutral-300/80 text-xs"
+                                    variant="ghost"
+                                >
+                                    <Paperclip className="h-3.5 w-3.5" />
                                     {task.attachments.length}
-                                </div>
+                                </Button>
+
+                                <Button
+                                    onClick={e => e.stopPropagation()}
+                                    variant="ghost"
+                                    className="flex items-center gap-1 px-1.5 hover:rounded-md dark:text-neutral-300/80 text-xs"
+                                >
+                                    <UserRoundPlus className="h-3.5 w-3.5" />
+                                </Button>
 
                                 {task.endDate && (
-                                    <div className="flex items-center gap-1 p-2 hover:rounded-md hover:bg-slate-300/20">
-                                        <Calendar className="h-5 w-4" />{' '}
+                                    <Button className="flex items-center gap-1 hover:rounded-md text-xs dark:text-neutral-300">
+                                        <Calendar className="h-3.5 w-3.5" />{' '}
                                         {task.endDate && (
                                             <div>{remainingDateText}</div>
                                         )}
-                                    </div>
+                                    </Button>
+                                )}
+
+                                {task.startDate && !task.endDate && (
+                                    <Button
+                                    className="flex items-center gap-1 hover:rounded-md text-xs dark:text-neutral-300 dark:hover:text-neutral-100"
+                                    variant="ghost"
+                                    >
+                                        <Calendar className="h-3.5 w-3.5" />{' '}
+                                        {String(task.startDate).slice(0, 10)}
+                                    </Button>
                                 )}
                             </div>
 

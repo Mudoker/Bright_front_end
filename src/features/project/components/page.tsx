@@ -13,6 +13,7 @@ import { MemberList } from '@features/project/components/member-list';
 import BreadCrumb from '@components/general/bread-crumb';
 import CustomAlertDialog from '@/components/general/custom-alert-dialog';
 import { Separator } from '@/components/ui/separator';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 
 const breadcrumbItems = [
     { label: 'Home', href: '/' },
@@ -27,7 +28,12 @@ export const Page = ({ projectName = "Bright" }) => {
     const [open, setOpen] = useState(false);
 
     return (
-        <div className="h-dvh w-full overflow-auto px-2 py-5">
+        <OverlayScrollbarsComponent
+            element="div"
+            options={{ scrollbars: { autoHide: 'scroll' } }}
+            defer
+            className="flex h-dvh w-full overflow-auto px-2 py-5"
+        >
             <div className="px-4">
                 {/* Project Headers */}
                 <BreadCrumb items={breadcrumbItems} />
@@ -108,6 +114,6 @@ export const Page = ({ projectName = "Bright" }) => {
                     setIsOpen={setIsUnderDevDialogOpen}
                 />
             )}
-        </div>
+        </OverlayScrollbarsComponent>
     );
 };

@@ -189,7 +189,7 @@ export const KanbanBoard = () => {
                         <Button
                             className="right-2 flex h-12 flex-row items-center p-4"
                             onClick={createColumn}
-                            variant="outline"
+                            variant="ghost"
                         >
                             <PlusCircle width={16} height={16} />
                         </Button>

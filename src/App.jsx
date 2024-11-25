@@ -13,12 +13,9 @@ import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
-import OTPVerification from '@features/auth/components/otp-verification';
 import { AuthenticationPage } from '@features/auth';
-import { RequireAuth } from '@features/auth/components/RequireAuth';
 import Board from '@features/board/Board';
 import Dashboard from '@features/dashboard';
-import DeveloperDock from '@features/dev-dock';
 import { LandingPage } from '@features/landingPage';
 import MessagePage from '@features/message';
 import Account from '@features/setting/component/account-page';
@@ -32,7 +29,6 @@ import { SettingLayout } from './layouts/setting-layout';
 import { Welcome } from './test/Welcome';
 // test
 import { UsersList } from './test/users/userList';
-// import { FileUpload} from './components/general/file-upload';
 
 // Routing from landing page to its child and sign in paage
 const router = createBrowserRouter(
@@ -97,7 +93,7 @@ function App() {
 
     return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />  
+      <RouterProvider router={router} />
     </QueryClientProvider>
   );
 }

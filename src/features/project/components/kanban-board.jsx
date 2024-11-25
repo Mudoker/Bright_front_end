@@ -187,11 +187,11 @@ export const KanbanBoard = () => {
                         </div>
 
                         <Button
-                            className="right-2 h-[38px]"
+                            className="right-2 flex h-12 flex-row items-center p-4"
                             onClick={createColumn}
+                            variant="outline"
                         >
-                            <PlusCircle className="mr-2 h-5" /> Create new
-                            column
+                            <PlusCircle width={16} height={16} />
                         </Button>
                     </div>
 

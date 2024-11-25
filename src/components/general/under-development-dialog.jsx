@@ -25,7 +25,7 @@ export function UnderDevDialog({ isOpen = false, setIsOpen }) {
                     </AlertDialogDescription>
                     <AlertDialogDescription className="flex">
                         Contact us at:
-                        <span className="ml-2 font-bold text-black hover:cursor-pointer">
+                        <span className="ml-2 font-bold hover:cursor-pointer">
                             {BRIGHT_EMAIL}
                         </span>
                     </AlertDialogDescription>

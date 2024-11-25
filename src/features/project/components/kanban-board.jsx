@@ -191,7 +191,7 @@ export const KanbanBoard = () => {
                             onClick={createColumn}
                             variant="outline"
                         >
-                            <PlusCircle size="icon" />
+                            <PlusCircle width={16} height={16} />
                         </Button>
                     </div>
 

@@ -20,6 +20,7 @@ import tinycolor from 'tinycolor2';
 import Divider from '../../../../components/general/divider';
 import { Task } from '../../utils/class';
 import { DetailedTaskView } from './detailed-task-view';
+import IconButton from './icon-button';
 
 export const TaskContainer = ({ task }) => {
     const ref = useRef();
@@ -96,7 +97,7 @@ export const TaskContainer = ({ task }) => {
                     height: dimensions.height,
                     ...style,
                 }}
-                className="mb-1 rounded-md border-2 bg-gray-300/60"
+                className="mb-1 rounded-md border-2 bg-card"
             />
         );
     }
@@ -177,47 +178,39 @@ export const TaskContainer = ({ task }) => {
                         {/* Helper Buttons */}
                         <div className="flex items-center justify-between">
                             <div className="flex gap-2 text-sm">
-                                <Button
-                                    className="flex items-center gap-1 px-1.5 hover:rounded-md dark:text-neutral-300/80 text-xs"
-                                    variant="ghost"
-                                >
-                                    <List className="h-3.5 w-3.5" />
-                                    {task.todos.length}
-                                </Button>
+                                {/* Todo Count Button */}
+                                <IconButton
+                                    icon={List}
+                                    label={task.todos.length}
+                                />
 
-                                <Button
-                                    className="flex items-center gap-1 px-1.5 hover:rounded-md dark:text-neutral-300/80 text-xs"
-                                    variant="ghost"
-                                >
-                                    <Paperclip className="h-3.5 w-3.5" />
-                                    {task.attachments.length}
-                                </Button>
+                                {/* Attachment Count Button */}
+                                <IconButton
+                                    icon={Paperclip}
+                                    label={task.attachments.length}
+                                />
 
-                                <Button
+                                {/* Add User Button */}
+                                <IconButton
+                                    icon={UserRoundPlus}
                                     onClick={e => e.stopPropagation()}
-                                    variant="ghost"
-                                    className="flex items-center gap-1 px-1.5 hover:rounded-md dark:text-neutral-300/80 text-xs"
-                                >
-                                    <UserRoundPlus className="h-3.5 w-3.5" />
-                                </Button>
+                                />
 
                                 {task.endDate && (
-                                    <Button className="flex items-center gap-1 hover:rounded-md text-xs dark:text-neutral-300">
-                                        <Calendar className="h-3.5 w-3.5" />{' '}
-                                        {task.endDate && (
-                                            <div>{remainingDateText}</div>
-                                        )}
-                                    </Button>
+                                    <IconButton
+                                        icon={Calendar}
+                                        label={remainingDateText}
+                                    />
                                 )}
 
                                 {task.startDate && !task.endDate && (
-                                    <Button
-                                    className="flex items-center gap-1 hover:rounded-md text-xs dark:text-neutral-300 dark:hover:text-neutral-100"
-                                    variant="ghost"
-                                    >
-                                        <Calendar className="h-3.5 w-3.5" />{' '}
-                                        {String(task.startDate).slice(0, 10)}
-                                    </Button>
+                                    <IconButton
+                                        icon={Calendar}
+                                        label={String(task.startDate).slice(
+                                            0,
+                                            10
+                                        )}
+                                    />
                                 )}
                             </div>
 

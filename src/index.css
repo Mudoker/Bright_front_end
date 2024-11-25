@@ -91,7 +91,7 @@
   /* Dark Theme Variables */
   :root[data-theme='dark-default'] {
     /* General Background and Foreground */
-    --background: 240 10% 3.9%;
+    --background: 240 6% 10%;
     --foreground: 0 0% 98%;
 
     /* Sidebar */
@@ -125,7 +125,7 @@
     /* File Upload */
     --drag_box: 220, 14%, 91%, 0.4;
 
-    --card: 240 10% 3.9%;
+    --card: 240 10% 7%;
     --card-foreground: 0 0% 98%;
 
     /* Popover */

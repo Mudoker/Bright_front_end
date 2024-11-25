@@ -49,7 +49,7 @@ export function ColumnContainer({
         return (
             <div
                 ref={setNodeRef}
-                className="mb-1 h-auto w-fit overflow-hidden rounded-md bg-gray-300/60"
+                className="mb-1 h-auto w-fit overflow-hidden rounded-md bg-gray-800/20"
                 style={style}
             >
                 <div>
@@ -70,9 +70,9 @@ export function ColumnContainer({
             style={style}
         >
             <div {...attributes} {...listeners}>
-                <div className="flex w-80 max-w-80 justify-between overflow-hidden rounded-md border-2 border-slate-200 bg-white p-2 text-sm">
-                    <div className="flex h-5 items-center font-bold">
-                        <ListTodo className="mr-1 h-5" />
+                <div className="flex w-80 max-w-80 justify-between overflow-hidden rounded-md bg-card p-3.5 text-xs text-foreground">
+                    <div className="flex items-center font-bold">
+                        <ListTodo className="mr-1 h-4 w-4" />
                         <span className="mr-1 max-w-36 truncate">
                             {col.title}
                         </span>
@@ -82,7 +82,7 @@ export function ColumnContainer({
                     {/* Helper buttons */}
                     <div className="flex items-center">
                         <Plus
-                            className="mr-2 h-5 w-5 hover:rounded-full hover:bg-slate-100"
+                            className="mr-2 h-5 w-5 hover:rounded-md hover:bg-slate-600"
                             onClick={() => {
                                 setIsCreateNewTask(true);
                             }}

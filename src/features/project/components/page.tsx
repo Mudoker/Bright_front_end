@@ -1,9 +1,8 @@
 import { Button } from '@/components/ui/button';
-import { BellDot, CircleDot, Heart, Settings, ShieldMinus } from 'lucide-react';
+import { BellDot, Settings, ShieldMinus } from 'lucide-react';
 import React from 'react';
 import { useState } from 'react';
 
-import Divider from '@components/general/divider';
 import BoardTabGroup from '@components/general/tab-group';
 import { UnderDevDialog } from '@components/general/under-development-dialog';
 import { SYSTEM_ALERT } from '../../../config/constants/strings.global';
@@ -13,6 +12,7 @@ import { KanbanBoard } from '@features/project/components/kanban-board';
 import { MemberList } from '@features/project/components/member-list';
 import BreadCrumb from '@components/general/bread-crumb';
 import CustomAlertDialog from '@/components/general/custom-alert-dialog';
+import { Separator } from '@/components/ui/separator';
 
 const breadcrumbItems = [
     { label: 'Home', href: '/' },
@@ -22,7 +22,6 @@ const breadcrumbItems = [
 ];
 
 export const Page = ({ projectName = "Bright" }) => {
-    const [isFavoured, setFavourite] = useState(false);
     const [isUnderDevDialogOpen, setIsUnderDevDialogOpen] = useState(false);
     const [selectedTabIdx, setSelectedTabIdx] = useState(0);
     const [open, setOpen] = useState(false);
@@ -68,14 +67,14 @@ export const Page = ({ projectName = "Bright" }) => {
                     />
                 </div>
 
-                <Divider width="1.5px" height="70%" color="rgba(0,0,0,0.2)" />
+                <Separator orientation="vertical" />
 
-                <div className="flex items-center">
+                <div className="flex items-center gap-3">
                     <MemberList width={7} height={7} />
                     <AddMember open={open} onOpenChange={setOpen} />
                 </div>
 
-                <Divider width="1.5px" height="70%" color="rgba(0,0,0,0.2)" />
+                <Separator orientation="vertical" />
 
                 <CustomAlertDialog
                     title={SYSTEM_ALERT.PRJ_ALT_ACC_TITLE}

@@ -97,7 +97,7 @@ export const TaskContainer = ({ task }) => {
                     height: dimensions.height,
                     ...style,
                 }}
-                className="mb-1 rounded-md border-2 bg-card"
+                className="mb-1 rounded-md bg-card"
             />
         );
     }
@@ -117,7 +117,7 @@ export const TaskContainer = ({ task }) => {
             <div
                 ref={setNodeRef}
                 style={style}
-                className="mb-1 rounded-lg bg-card py-2 text-foreground"
+                className="mb-1 rounded-lg bg-card py-2 text-foreground border"
                 {...attributes}
                 {...listeners}
             >
@@ -177,7 +177,7 @@ export const TaskContainer = ({ task }) => {
 
                         {/* Helper Buttons */}
                         <div className="flex items-center justify-between">
-                            <div className="flex gap-2 text-sm">
+                            <div className="flex gap-4 text-sm">
                                 {/* Todo Count Button */}
                                 <IconButton
                                     icon={List}

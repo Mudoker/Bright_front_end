@@ -13,9 +13,9 @@ const IconButton: FC<IconButtonProps> = ({ icon: Icon, label, onClick, className
         <Button
             onClick={onClick}
             variant="ghost"
-            className={`flex items-center gap-1 px-1.5 hover:rounded-md dark:text-neutral-300/80 text-xs ${className}`}
+            className={`flex flex-row items-center gap-1 px-1.5 hover:rounded-md dark:text-neutral-300/80 ${className} text-xs`}
         >
-            <Icon className="h-3.5 w-3.5" />
+            <Icon className="p-1" />
             {label !== undefined && <span>{label}</span>}
         </Button>
     );

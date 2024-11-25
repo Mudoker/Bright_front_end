@@ -5,6 +5,7 @@ import {
     CommandGroup,
     CommandInput,
     CommandItem,
+    CommandList,
 } from '@/components/ui/command';
 import {
     Popover,
@@ -18,7 +19,7 @@ import { useState } from 'react';
 
 import { DEFAULT_TASK_TAG_ARRAY } from '../../features/project/assets/values';
 
-export const CreatableMultiSelectDropdown = ({
+export const CreatableMultiSelectMenu = ({
     items = DEFAULT_TASK_TAG_ARRAY,
     selectedItemList,
     onSelectItem,
@@ -28,6 +29,7 @@ export const CreatableMultiSelectDropdown = ({
     const [searchPhrase, setSearchPhrase] = useState('');
 
     const parseItemAttributes = item => {
+        if (!item) return { id: '', color: '', title: '' };
         // Split by both '?' delimiters
         const itemParts = item.split('?');
 
@@ -88,63 +90,68 @@ export const CreatableMultiSelectDropdown = ({
                             onChange={e => setSearchPhrase(e.target.value)}
                             placeholder="Search tags..."
                         />
-                        <CommandEmpty className="m-1">
-                            <div
-                                className="flex h-full w-full items-center rounded-sm px-2 py-1.5 text-sm hover:cursor-pointer hover:bg-slate-300/25"
-                                onClick={() => onAddMoreItem(searchPhrase)}
-                            >
-                                <Pencil className="mr-4 h-3 w-3" /> Add &apos;
-                                {searchPhrase}
-                                &apos;
-                            </div>
-                        </CommandEmpty>
-
-                        <CommandGroup>
-                            {Object.keys(items).map(key => (
-                                <CommandItem
-                                    key={key}
-                                    value={`${key}?color=${parseItemAttributes(items[key]).color}`}
-                                    onSelect={currentValue => {
-                                        const originalTitle =
-                                            parseItemAttributes(
-                                                items[key]
-                                            ).title;
-                                        currentValue += `?title=${originalTitle}`;
-                                        onSelectItem(
-                                            selectedItemList.includes(
-                                                currentValue
-                                            )
-                                                ? selectedItemList.filter(
-                                                      item =>
-                                                          item !== currentValue
-                                                  )
-                                                : [
-                                                      ...selectedItemList,
-                                                      currentValue,
-                                                  ]
-                                        );
-                                    }}
+                        <CommandList>
+                            <CommandEmpty className="m-1">
+                                <div
+                                    className="flex h-full w-full items-center rounded-sm px-2 py-1.5 text-sm hover:cursor-pointer hover:bg-slate-300/25"
+                                    onClick={() => onAddMoreItem(searchPhrase)}
                                 >
-                                    {/* Selected mark */}
-                                    <Check
-                                        className={`mr-2 h-4 w-4 ${selectedItemList.some(item => item.startsWith(`${key}?color=`)) ? 'opacity-100' : 'opacity-0'}`}
-                                    />
+                                    <Pencil className="mr-4 h-3 w-3" /> Add
+                                    &apos;
+                                    {searchPhrase}
+                                    &apos;
+                                </div>
+                            </CommandEmpty>
 
-                                    {/* Tag Color Dot */}
-                                    {parseItemAttributes(items[key]).color && (
-                                        <div
-                                            className={`mr-3 h-2 w-2 rounded-full`}
-                                            style={{
-                                                background: `${parseItemAttributes(items[key]).color}`,
-                                            }}
+                            <CommandGroup>
+                                {Object.keys(items).map(key => (
+                                    <CommandItem
+                                        key={key}
+                                        value={`${key}?color=${parseItemAttributes(items[key]).color}`}
+                                        onSelect={currentValue => {
+                                            const originalTitle =
+                                                parseItemAttributes(
+                                                    items[key]
+                                                ).title;
+                                            currentValue += `?title=${originalTitle}`;
+                                            onSelectItem(
+                                                selectedItemList.includes(
+                                                    currentValue
+                                                )
+                                                    ? selectedItemList.filter(
+                                                          item =>
+                                                              item !==
+                                                              currentValue
+                                                      )
+                                                    : [
+                                                          ...selectedItemList,
+                                                          currentValue,
+                                                      ]
+                                            );
+                                        }}
+                                    >
+                                        {/* Selected mark */}
+                                        <Check
+                                            className={`h-1 w-1 ${selectedItemList.some(item => item.startsWith(`${key}?color=`)) ? 'opacity-100' : 'opacity-0'}`}
                                         />
-                                    )}
 
-                                    {/* Title */}
-                                    {parseItemAttributes(items[key]).title}
-                                </CommandItem>
-                            ))}
-                        </CommandGroup>
+                                        {/* Tag Color Dot */}
+                                        {parseItemAttributes(items[key])
+                                            .color && (
+                                            <div
+                                                className={`mr-1 h-2 w-2 rounded-full`}
+                                                style={{
+                                                    background: `${parseItemAttributes(items[key]).color}`,
+                                                }}
+                                            />
+                                        )}
+
+                                        {/* Title */}
+                                        {parseItemAttributes(items[key]).title}
+                                    </CommandItem>
+                                ))}
+                            </CommandGroup>
+                        </CommandList>
                     </Command>
                 </PopoverContent>
             </Popover>
@@ -157,9 +164,4 @@ export const CreatableMultiSelectDropdown = ({
             )}
         </div>
     );
-};
-
-CreatableMultiSelectDropdown.propTypes = {
-    onSelectItem: PropTypes.func,
-    selectedItemList: PropTypes.array,
 };

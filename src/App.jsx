@@ -1,4 +1,14 @@
 import ProjectManagementPage from '@/features/project';
+import { AuthenticationPage } from '@features/auth';
+import Board from '@features/board/Board';
+import Dashboard from '@features/dashboard';
+import { LandingPage } from '@features/landingPage';
+import MessagePage from '@features/message';
+import Account from '@features/setting/component/account-page';
+import Appearance from '@features/setting/component/appearance-page';
+import Notification from '@features/setting/component/notification-page';
+import Profile from '@features/setting/component/profile-page/profile-page';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import 'overlayscrollbars/styles/overlayscrollbars.css';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -9,19 +19,7 @@ import {
     createBrowserRouter,
     createRoutesFromElements,
 } from 'react-router-dom';
-import {
-  QueryClient,
-  QueryClientProvider,
-} from '@tanstack/react-query'
-import { AuthenticationPage } from '@features/auth';
-import Board from '@features/board/Board';
-import Dashboard from '@features/dashboard';
-import { LandingPage } from '@features/landingPage';
-import MessagePage from '@features/message';
-import Account from '@features/setting/component/account-page';
-import Appearance from '@features/setting/component/appearance-page';
-import Notification from '@features/setting/component/notification-page';
-import Profile from '@features/setting/component/profile-page/profile-page';
+
 import Notfoundpage from './layouts/404-page';
 import { AppLayout } from './layouts/app-layout';
 import { LandingAuthLayout } from './layouts/landing-auth-layout';
@@ -81,7 +79,7 @@ const router = createBrowserRouter(
     )
 );
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 function App() {
     // Global States
@@ -92,10 +90,10 @@ function App() {
     }, [currentTheme]);
 
     return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
+        <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+        </QueryClientProvider>
+    );
 }
 
 export default App;

@@ -19,8 +19,8 @@ import tinycolor from 'tinycolor2';
 
 import Divider from '../../../../components/general/divider';
 import { Task } from '../../utils/class';
-import { MemberList } from '../member-list';
 import { DetailedTaskView } from './detailed-task-view';
+import IconButton from './icon-button';
 
 export const TaskContainer = ({ task }) => {
     const ref = useRef();
@@ -97,7 +97,7 @@ export const TaskContainer = ({ task }) => {
                     height: dimensions.height,
                     ...style,
                 }}
-                className="mb-1 rounded-md border-2 bg-gray-300/60"
+                className="mb-1 rounded-md border-2 bg-card"
             />
         );
     }
@@ -117,7 +117,7 @@ export const TaskContainer = ({ task }) => {
             <div
                 ref={setNodeRef}
                 style={style}
-                className="mb-1 rounded-md border-2 border-slate-200 bg-white"
+                className="mb-1 rounded-lg bg-card py-2 text-foreground"
                 {...attributes}
                 {...listeners}
             >
@@ -137,14 +137,14 @@ export const TaskContainer = ({ task }) => {
                                             ).lighten(50),
                                             color: tinycolor(tag.color),
                                         }}
-                                        className="h-6"
+                                        className="h-6 rounded-md"
                                     >
                                         {tag.title}
                                     </Badge>
                                 ))}
 
                             {task.tags.length > 2 && (
-                                <Badge className="h-6 bg-slate-100 text-slate-500 hover:bg-slate-200/80">
+                                <Badge className="h-6 rounded-md bg-slate-100 text-slate-500 hover:bg-slate-200/80">
                                     + {task.tags.length - 2}
                                 </Badge>
                             )}
@@ -161,29 +161,12 @@ export const TaskContainer = ({ task }) => {
 
                     <div>
                         {/* Task Contents */}
-                        <div className="max-w-52 truncate text-xl font-semibold">
+                        <div className="max-w-52 truncate text-lg font-semibold">
                             {task.title}
                         </div>
 
                         <div className="max-w-60 truncate text-sm">
                             {task.des}
-                        </div>
-
-                        {/* Asignee List */}
-                        <div className="flex items-center justify-between">
-                            <MemberList
-                                width={6}
-                                height={6}
-                                members={task.memList}
-                            />
-
-                            {/* prevent on trigger drag event */}
-                            <Button
-                                onClick={e => e.stopPropagation()}
-                                variant="ghost"
-                            >
-                                <UserRoundPlus className="h-4 w-4" />
-                            </Button>
                         </div>
 
                         <Divider
@@ -195,23 +178,39 @@ export const TaskContainer = ({ task }) => {
                         {/* Helper Buttons */}
                         <div className="flex items-center justify-between">
                             <div className="flex gap-2 text-sm">
-                                <div className="flex items-center gap-1 p-2 hover:rounded-md hover:bg-slate-300/20">
-                                    <List className="h-5 w-4" />
-                                    {task.todos.length}
-                                </div>
+                                {/* Todo Count Button */}
+                                <IconButton
+                                    icon={List}
+                                    label={task.todos.length}
+                                />
 
-                                <div className="flex items-center gap-1 p-2 hover:rounded-md hover:bg-slate-300/20">
-                                    <Paperclip className="h-5 w-4" />
-                                    {task.attachments.length}
-                                </div>
+                                {/* Attachment Count Button */}
+                                <IconButton
+                                    icon={Paperclip}
+                                    label={task.attachments.length}
+                                />
+
+                                {/* Add User Button */}
+                                <IconButton
+                                    icon={UserRoundPlus}
+                                    onClick={e => e.stopPropagation()}
+                                />
 
                                 {task.endDate && (
-                                    <div className="flex items-center gap-1 p-2 hover:rounded-md hover:bg-slate-300/20">
-                                        <Calendar className="h-5 w-4" />{' '}
-                                        {task.endDate && (
-                                            <div>{remainingDateText}</div>
+                                    <IconButton
+                                        icon={Calendar}
+                                        label={remainingDateText}
+                                    />
+                                )}
+
+                                {task.startDate && !task.endDate && (
+                                    <IconButton
+                                        icon={Calendar}
+                                        label={String(task.startDate).slice(
+                                            0,
+                                            10
                                         )}
-                                    </div>
+                                    />
                                 )}
                             </div>
 

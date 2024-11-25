@@ -14,19 +14,19 @@ const sampleMembers = [
 
 export const MemberList = ({
     members = sampleMembers,
-    width = 9,
-    height = 9,
+    width = 10,
+    height = 10,
 }) => {
-    // Check if the number of members is less than 5
+    // Check if the number of members is more than 3
     const shouldRenderLink = members.length > 3;
 
     return (
         <div className="flex">
-            <div className="mr-3 flex -space-x-4 rtl:space-x-reverse">
+            <div className="flex">
                 {members.slice(0, 3).map((member, index) => (
                     <Avatar
                         key={index}
-                        className={`w-${width} h-${height} rounded-full`}
+                        className={`w-${width} h-${height} border-2 border-white dark:border-gray-800 rounded-full`}
                     >
                         <AvatarImage src={member.imageUrl} alt={member.name} />
                         <AvatarFallback>BR</AvatarFallback>
@@ -35,17 +35,16 @@ export const MemberList = ({
 
                 {shouldRenderLink && (
                     <a
-                        className={`flex items-center justify-center w-${width} h-${height} z-10 rounded-full bg-gray-600 text-xs font-medium text-white hover:bg-gray-600`}
+                        className={`flex items-center justify-center w-${width} h-${height} text-xs font-medium text-white bg-gray-700 border-2 border-white dark:border-gray-800 rounded-full hover:bg-gray-600`}
                         href="#"
                     >
                         +{members.length - 3}
                     </a>
                 )}
 
-                {members.length == 0 && (
+                {members.length === 0 && (
                     <div className="text-sm font-light text-gray-500/80">
-                        {' '}
-                        No Assignee{' '}
+                        No Assignee
                     </div>
                 )}
             </div>

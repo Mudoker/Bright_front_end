@@ -10,7 +10,7 @@ import {
     AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { CircleDot, Heart, Settings, ShieldMinus } from 'lucide-react';
+import { BellDot, CircleDot, Heart, Settings, ShieldMinus } from 'lucide-react';
 import React from 'react';
 import { useState } from 'react';
 
@@ -51,25 +51,13 @@ export const Page = ({projectName = "Bright"}) => {
 
                     <div className="flex gap-4">
                         <Button
-                            className={
-                                isFavoured ? 'bg-rose-500 hover:bg-red-500' : ''
-                            }
-                            onClick={() => setFavourite(!isFavoured)}
-                        >
-                            <Heart className="mr-2 h-4 w-4" />{' '}
-                            {isFavoured ? 'Favourred' : 'Favour'}
-                        </Button>
-
-                        <Button
-                            className="border-black/15"
                             variant="outline"
                             onClick={() => setIsUnderDevDialogOpen(true)}
                         >
-                            <CircleDot className="mr-2 h-4 w-4" /> Issues
+                            <BellDot className="mr-2 h-4 w-4" /> Notifications
                         </Button>
 
                         <Button
-                            className="border-black/15"
                             variant="outline"
                             onClick={() => setIsUnderDevDialogOpen(true)}
                         >
@@ -102,7 +90,7 @@ export const Page = ({projectName = "Bright"}) => {
                 <AlertDialog>
                     <AlertDialogTrigger asChild>
                         <Button
-                            className="h-8 border-black/15 bg-white text-rose-500 hover:bg-slate-200/75"
+                            className="h-8 text-rose-400"
                             variant="outline"
                         >
                             <ShieldMinus className="h-4" />

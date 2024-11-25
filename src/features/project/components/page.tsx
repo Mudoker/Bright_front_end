@@ -11,39 +11,42 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { CircleDot, Heart, Settings, ShieldMinus } from 'lucide-react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { useState } from 'react';
 
-import Divider from '../../../components/general/divider';
-import BoardTabGroup from '../../../components/general/tab-group';
-import { UnderDevDialog } from '../../../components/general/under-development-dialog';
+import Divider from '@components/general/divider';
+import BoardTabGroup from '@components/general/tab-group';
+import { UnderDevDialog } from '@components/general/under-development-dialog';
 import { SYSTEM_ALERT } from '../../../config/constants/strings.global';
-import AddMember from '../../../layouts/add-member';
-import Board from '../../board/Board';
-import ProjectBreadCrumbs from './breadcrumbs';
-import { KanbanBoard } from './kanban-board';
-import { MemberList } from './member-list';
+import AddMember from '@/layouts/add-member';
+import Board from '@features/board/Board';
+import { KanbanBoard } from '@features/project/components/kanban-board';
+import { MemberList } from '@features/project/components/member-list';
+import BreadCrumb from '@components/general/bread-crumb';
 
-export const Page = () => {
+const breadcrumbItems = [
+    { label: 'Home', href: '/' },
+    { label: 'Documentation', dropdownItems: ['Projects', 'Components'] },
+    { label: 'Software', href: '/docs/components' },
+    { label: 'Bright', isCurrent: true },
+];
+
+export const Page = ({projectName = "Bright"}) => {
     const [isFavoured, setFavourite] = useState(false);
     const [isUnderDevDialogOpen, setIsUnderDevDialogOpen] = useState(false);
     const [selectedTabIdx, setSelectedTabIdx] = useState(0);
     const [open, setOpen] = useState(false);
 
     return (
-        <div className="h-dvh w-full overflow-auto px-2 py-1">
+        <div className="h-dvh w-full overflow-auto px-2 py-5">
             <div className="px-4">
                 {/* Project Headers */}
-                <ProjectBreadCrumbs
-                    projectType="SOFTWARE"
-                    projectOwner="MUDOKER"
-                />
+                <BreadCrumb items={breadcrumbItems} />
 
                 {/* Title + Util Buttons */}
-                <div className="flex items-center justify-between">
-                    <h1 className="mb-3 mt-4 text-4xl font-bold text-slate-700">
-                        Bright
+                <div className="flex items-center mt-5 justify-between">
+                    <h1 className="text-4xl font-bold">
+                        {projectName}
                     </h1>
 
                     <div className="flex gap-4">
@@ -77,7 +80,7 @@ export const Page = () => {
             </div>
 
             {/* Creation Date + Member List + Privacy */}
-            <div className="mb-1 flex h-10 items-center gap-4">
+            <div className="mb-1 flex h-10 items-center gap-4 mt-5">
                 <div className="flex items-center pl-4">
                     <BoardTabGroup
                         selected={selectedTabIdx}
@@ -146,8 +149,4 @@ export const Page = () => {
             )}
         </div>
     );
-};
-
-Page.propTypes = {
-    title: PropTypes.string,
 };

@@ -1,7 +1,6 @@
 /* eslint-disable max-len */
 import userDefaultProfile from '@/assets/images/defaults/user-profile.svg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 const sampleMembers = [
@@ -52,15 +51,4 @@ export const MemberList = ({
             </div>
         </div>
     );
-};
-
-MemberList.propTypes = {
-    members: PropTypes.arrayOf(
-        PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            imageUrl: PropTypes.string.isRequired,
-        })
-    ),
-    width: PropTypes.number,
-    height: PropTypes.number,
 };

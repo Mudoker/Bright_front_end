@@ -23,6 +23,7 @@ import Board from '@features/board/Board';
 import { KanbanBoard } from '@features/project/components/kanban-board';
 import { MemberList } from '@features/project/components/member-list';
 import BreadCrumb from '@components/general/bread-crumb';
+import CustomAlertDialog from '@/components/general/custom-alert-dialog';
 
 const breadcrumbItems = [
     { label: 'Home', href: '/' },
@@ -31,7 +32,7 @@ const breadcrumbItems = [
     { label: 'Bright', isCurrent: true },
 ];
 
-export const Page = ({projectName = "Bright"}) => {
+export const Page = ({ projectName = "Bright" }) => {
     const [isFavoured, setFavourite] = useState(false);
     const [isUnderDevDialogOpen, setIsUnderDevDialogOpen] = useState(false);
     const [selectedTabIdx, setSelectedTabIdx] = useState(0);
@@ -87,35 +88,19 @@ export const Page = ({projectName = "Bright"}) => {
 
                 <Divider width="1.5px" height="70%" color="rgba(0,0,0,0.2)" />
 
-                <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                        <Button
-                            className="h-8 text-rose-400"
-                            variant="outline"
-                        >
+                <CustomAlertDialog
+                    title={SYSTEM_ALERT.PRJ_ALT_ACC_TITLE}
+                    description={SYSTEM_ALERT.PRJ_ALT_ACC_DES}
+                    onAction={() => setIsUnderDevDialogOpen(true)}
+                    actionLabel="Continue"
+                    cancelLabel="Cancel"
+                    trigger={
+                        <Button className="h-8 text-rose-400" variant="outline">
                             <ShieldMinus className="h-4" />
                             Private
                         </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                        <AlertDialogHeader>
-                            <AlertDialogTitle className="text-xl font-bold">
-                                {SYSTEM_ALERT.PRJ_ALT_ACC_TITLE}
-                            </AlertDialogTitle>
-                            <AlertDialogDescription>
-                                {SYSTEM_ALERT.PRJ_ALT_ACC_DES}
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction
-                                onClick={() => setIsUnderDevDialogOpen(true)}
-                            >
-                                Continue
-                            </AlertDialogAction>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
+                    }
+                />
             </div>
 
             {/* Task Management Board */}

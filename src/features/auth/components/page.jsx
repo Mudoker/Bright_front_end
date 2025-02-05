@@ -9,7 +9,7 @@ import { WEBSITE_NAME } from '../../../config/constants/strings.global';
 import AuthBackground from '../assets/bgimg.png';
 import { QUOTE, WEB_BRIEF_INTRO } from '../assets/strings';
 import Loginform from './login/login-form';
-import Signupform from './signup-form';
+import Signupform from './signup/signup-form';
 
 export const Page = () => {
     const [isUserLogin, setIsUserLogin] = useState(true);

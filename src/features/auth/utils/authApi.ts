@@ -16,7 +16,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         // Define the signup endpoint
         signup: builder.mutation({
             query: body => ({
-                url: 'auth/bright/signup', // API endpoint for signup
+                url: 'auth/signup/email', // API endpoint for signup
                 method: 'POST', // HTTP method
                 body, // Request body
             }),

@@ -1,28 +1,33 @@
 import { Button } from '@/components/ui/button';
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormMessage,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import PropTypes from 'prop-types';
-import { toast } from 'sonner'; // Import the toast function from sonner
+import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import axios from 'axios';
+import { BACKEND_URL } from '@/config/constants/strings.global';
 
 import {
-    PASSWORD_INPUT_VALIDATOR,
-    SIGN_UP,
-    SIGN_UP_VALIDATOR,
-} from '../assets/strings';
-import { useSignupMutation } from '../utils/authApi';
-import { BirthdayPicker } from './birthday-picker';
-import OTPVerification from './otp-verification'; // Import the OTPVerification component
+  PASSWORD_INPUT_VALIDATOR,
+  SIGN_UP,
+  SIGN_UP_VALIDATOR,
+} from '../../assets/strings';
+
+import { BirthdayPicker } from '../birthday-picker';
+
+const defaultToastOptions = { style: { border: '1px solid #ccc' }, position: 'top-right', duration: 3000 };
 
 const formSchema = z
   .object({
@@ -44,10 +49,11 @@ const formSchema = z
   });
 
 function Signupform({ onSignUpComplete }) {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [showOTPVerification, setShowOTPVerification] = useState(false); // State to manage OTP verification dialog visibility
-  const [email, setEmail] = useState(''); // State to store the email
-  const [signup] = useSignupMutation();
+  const [showVerificationPopup, setShowVerificationPopup] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(5000);
+  const [email, setEmail] = useState('');
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -63,7 +69,6 @@ function Signupform({ onSignUpComplete }) {
 
   const handleSignUp = async data => {
     setLoading(true);
-
     try {
       const body = {
         email: data.email,
@@ -72,52 +77,49 @@ function Signupform({ onSignUpComplete }) {
         dob: new Date(data.dob).toISOString().slice(0, 10),
       };
 
-      const response = await signup(body);
-      console.log(response);
-      
-      if (response.error) {
-        const error_code = response.error.status;
-        if (error_code === 400) {
-          toast.error("Signup failed", {
-            description: "Invalid credentials. Please try again.",
-          });
-        } else if (error_code === 500) {
-          toast.error("Signup failed", {
-            description: "Server error. Please try again later.",
-          });
-        }
-
-        return;
-      }
+      // Update: use axios to post the signup request similar to login form
+      await axios.post(`${BACKEND_URL}/auth/signUp/email`, body);
 
       toast.success("Signup successful", {
+        ...defaultToastOptions,
         description: "Your account has been created successfully.",
       });
 
-      // Check if the email is unverified
-      if (response.data.emailUnverified) {
-        setEmail(data.email); // Set the email state
-        setShowOTPVerification(true); // Show OTP verification dialog
-      } else {
-        onSignUpComplete(); // Call the onSignUpComplete callback
-      }
+      setEmail(data.email);
+      setShowVerificationPopup(true);
+      setRemainingTime(5000);
     } catch (error) {
       toast.error("Signup failed", {
-        description: "An error occurred. Please try again.",
+        ...defaultToastOptions,
+        description: error.response?.data?.error || "An error occurred. Please try again.",
       });
     } finally {
       setLoading(false);
     }
   };
 
+  useEffect(() => {
+    let timer;
+    if (showVerificationPopup) {
+      timer = setInterval(() => {
+        setRemainingTime(prev => {
+          if (prev <= 50) {
+            clearInterval(timer);
+            navigate('/auth');
+            return 0;
+          }
+          return prev - 50;
+        });
+      }, 50);
+    }
+    return () => clearInterval(timer);
+  }, [showVerificationPopup, navigate]);
+
   const onError = errors => {
     console.log(errors);
   };
 
-  const handleOTPVerificationComplete = () => {
-    setShowOTPVerification(false);
-    onSignUpComplete();
-  };
+  const handleRedirect = () => navigate('/auth');
 
   return (
     <div className="flex flex-col space-y-2 text-center">
@@ -249,8 +251,30 @@ function Signupform({ onSignUpComplete }) {
           </Button>
         </form>
       </Form>
-      {showOTPVerification && (
-        <OTPVerification email={email} onComplete={handleOTPVerificationComplete} />
+
+      {showVerificationPopup && (
+        <Dialog open onOpenChange={setShowVerificationPopup}>
+          <DialogContent className="max-w-sm">
+            <DialogHeader>
+              <DialogTitle>Email Verification</DialogTitle>
+              <DialogDescription>
+                An email has been sent to <strong>{email}</strong>. Please follow the instruction in the email to verify your account.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button
+                onClick={handleRedirect}
+                style={{
+                  background: remainingTime > 0
+                    ? `linear-gradient(to right, #000000 0%, #000000 ${(remainingTime / 5000) * 100}%, #808080 ${(remainingTime / 5000) * 100}%, #808080 100%)`
+                    : "#808080"
+                }}
+              >
+                Redirect in {Math.ceil(remainingTime / 1000)}s
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );

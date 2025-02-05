@@ -18,6 +18,7 @@ import {
     RouterProvider,
     createBrowserRouter,
     createRoutesFromElements,
+    useLocation,
 } from 'react-router-dom';
 
 import Notfoundpage from './layouts/404-page';
@@ -25,6 +26,7 @@ import { AppLayout } from './layouts/app-layout';
 import { LandingAuthLayout } from './layouts/landing-auth-layout';
 import { SettingLayout } from './layouts/setting-layout';
 import { Welcome } from './test/Welcome';
+import { ConfirmPage } from './features/auth/components/confirm-page';
 // test
 import { UsersList } from './test/users/userList';
 
@@ -35,6 +37,7 @@ const router = createBrowserRouter(
             {/* Public routes */}
             <Route index element={<LandingPage />} />
             <Route path="auth" element={<AuthenticationPage />} />
+            <Route path="/auth/confirm" element={<ConfirmPage />} />
 
             {/* Authenticated routes */}
             <Route element={<AppLayout />}>

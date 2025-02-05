@@ -106,6 +106,8 @@ function Signupform({ onSignUpComplete }) {
           if (prev <= 50) {
             clearInterval(timer);
             navigate('/auth');
+            setShowVerificationPopup(false);
+            window.location.reload();
             return 0;
           }
           return prev - 50;
@@ -119,7 +121,7 @@ function Signupform({ onSignUpComplete }) {
     console.log(errors);
   };
 
-  const handleRedirect = () => navigate('/auth');
+  const handleRedirect = () => { navigate('/auth'), setShowVerificationPopup(false); window.location.reload(); };
 
   return (
     <div className="flex flex-col space-y-2 text-center">

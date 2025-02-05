@@ -8,7 +8,8 @@
             "@utils/*": ["./src/utils/*"],
             "@assets/*": ["./src/assets/*"],
             "@test/*": ["./src/test/*"],
-            "@components/*": ["./src/components/*"]
+            "@components/*": ["./src/components/*"],
+            "@constants/*": ["./src/config/constants/*"],
         },
         "resolveJsonModule": true,
         "target": "es5",
